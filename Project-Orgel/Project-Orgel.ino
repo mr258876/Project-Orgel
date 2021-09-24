@@ -3,6 +3,7 @@
 #include <OneButton.h>
 #include <Arduino.h>
 #include <U8g2lib.h>
+#include "UI.h"
 
 #ifdef U8X8_HAVE_HW_SPI
 #include <SPI.h>
@@ -55,13 +56,11 @@ TMC2209Stepper driver(&DRIVER_SERIAL, R_SENSE, DRIVER_ADDRESS);
 // 创建OLED对象
 U8G2_SSD1306_128X64_NONAME_1_HW_I2C u8g2(U8G2_R0, /* reset=*/U8X8_PIN_NONE);
 
+// 实例化运行时变量结构
+playVars pV;
 
-// 运行时变量
-bool playState = false;
-int playBPM = 120;
-int motorCurrent = 300;
-
-bool redrawRequired = true;
+// 创建UI对象
+UI ui(&u8g2, &pV);
 
 // 初始化函数
 void setup()
@@ -77,54 +76,22 @@ void setup()
   rotary.setLowerBound(MIN_POS);    // 设置BPM下限
   rotary.setUpperBound(MAX_POS);    // 设置BPM上限
   rotary.setChangedHandler(rotate); // 设置旋转编码器值变化调用函数
+  rotary.setLeftRotationHandler(left);
+  rotary.setRightRotationHandler(right);
 
-  button.attachClick(buttonClick); // 设置旋转编码器按键单击调用函数
+  button.attachClick(switchPlayStatus); // 设置旋转编码器按键单击调用函数
 
   // OLED
   u8g2.begin();
   u8g2.enableUTF8Print();
+
+  pV.playStatus = false;
+  pV.playBPM = 120;
+  pV.motorCurrent = 300;
+
+  ui.init();
 }
 
-// 运行时循环函数
-void loop()
-{
-  
-  rotary.loop();
-  button.tick();
-
-  CLI();
-
-  if (redrawRequired){
-    homePage();
-  }
-
-  if (DIAG_Pin == LOW){
-    Serial.println("Stall!");
-  }
-}
-
-// 编码器变化调用函数
-void rotate(ESPRotary &rotary)
-{
-  playBPM = rotary.getPosition();
-  if(playState){
-    setSpeed(playBPM);
-  }
-  redrawRequired = true;
-  
-}
-
-// 编码器按键单击函数
-void buttonClick()
-{
-  playState = !playState;
-  if(playState){
-    setSpeed(playBPM);
-  }else {
-    setSpeed(0);
-  }
-  redrawRequired = true;
-}
 
 void driverSetup(){
   pinMode(STEP_Pin, OUTPUT);     // 控制TMC2209步进引脚为输出模式
@@ -142,23 +109,102 @@ void driverSetup(){
   driver.rms_current(300);    // 设置电流大小 (mA)
 }
 
+// 运行时循环函数
+void loop()
+{
+  
+  rotary.loop();
+  button.tick();
+  ui.tick();
+  CLI();
+}
+
+// 编码器变化调用函数
+void rotate(ESPRotary &rotary)
+{
+  if(pV.playStatus){
+    setSpeed(pV.playBPM);
+  }
+}
+void left(ESPRotary &rotary)
+{
+  ui.left();
+}
+void right(ESPRotary &rotary)
+{
+  ui.right();
+}
+
+// 编码器按键单击函数
+void switchPlayStatus()
+{
+  pV.playStatus = !pV.playStatus;
+  if(pV.playStatus){
+    setSpeed(pV.playBPM);
+  }else {
+    setSpeed(0);
+  }
+}
+
 void setSpeed(int BPM){
-  if (playState){
+  if (pV.playStatus){
     // 电机速度设置
     driver.VACTUAL(- BPM * BPM_CALC_CONST / 0.715);
   
     // 电流设置
-    motorCurrent = 950 + 0.2*BPM + 0.0026*BPM*BPM;
-    if (motorCurrent < 800){
-      motorCurrent = 800;
+    pV.motorCurrent = 950 + 0.2*BPM + 0.0026*BPM*BPM;
+    if (pV.motorCurrent < 800){
+      pV.motorCurrent = 800;
     }
-    else if (motorCurrent > 1650){
-      motorCurrent = 1650;
+    else if (pV.motorCurrent > 1650){
+      pV.motorCurrent = 1650;
     }
-    driver.rms_current(motorCurrent);    // 设置电流大小 (mA)
+    driver.rms_current(pV.motorCurrent);    // 设置电流大小 (mA)
   } else {
     driver.VACTUAL(0);
     driver.rms_current(300);    // 设置电流大小 (mA)
   }
-  
+}
+
+
+char s;
+int value = 0;
+byte command = 0;
+void CLI()
+{
+  while (Serial.available() > 0) {
+    s = (char)Serial.read();
+    switch (s) {
+      case 'r':
+        command = 1;
+        break;
+      case 'i':
+        command = 2;
+        break;
+      case 's':
+        command = 3;
+        break;
+      case '\n':
+        switch (command) {
+          case 1:
+            setSpeed(value);
+            Serial.print("BPM->");
+            break;
+          case 2:
+            driver.rms_current(value);
+            Serial.print("Current->");
+            break;
+          case 3:
+            switchPlayStatus();
+            Serial.print("Start/Stop!");
+        }
+        Serial.println(value);
+        command = 0;
+        value = 0;
+        break;
+      default:
+        value = value * 10 + (s - '0');
+        break;
+    }
+  }
 }
