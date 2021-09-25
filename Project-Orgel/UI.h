@@ -25,6 +25,7 @@ public:
     // Display Functions
     void init();
     void homePage();
+    bool inputPage(char[] title, char[] description, char[] unit, int* var, int digits);
 
     // Conltol Functions
     static void left();

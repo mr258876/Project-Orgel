@@ -69,6 +69,21 @@ void UI::homePage()
   } while (u8g2 -> nextPage());
 }
 
+bool UI::inputPage(char[] title, char[] description, char[] unit, int* var, int digits){
+  u8g2 -> setFontDirection(0);
+  u8g2 -> firstPage();
+  do
+  {
+    u8g2 -> setFont(u8g2_font_wqy16_t_gb2312a);
+    u8g2 -> drawUTF8(0, 14, title);
+    u8g2 -> drawUTF8(0, 30, var);
+    u8g2 -> drawUTF8(0, 46, description);
+    u8g2 -> drawUTF8(32, 62, "取消");
+    u8g2 -> drawUTF8(96, 62, "确认");
+  } while (u8g2 -> nextPage());
+  return true;
+}
+
 void UI::left() {
   redrawRequired = true;
   pV->playBPM--;
