@@ -1,5 +1,5 @@
 # Project Orgel
-### An Automatic Musicbox Project
+### An Automatic Musicbox Project  
 
 >## Project Status 
 * Make it work  ✔
@@ -16,6 +16,6 @@
  (Could be replaced with any 2-phase 4-wire step motor, however it should provide enough torque with acceptable noise.)
 * 0.4M60 gear   *1   
  (Also replaceable. Remember to change the transmission ratio.)
-* Rotate Encoder *1
+* Rotatry Encoder *1
 * SSD1306 0.96 inch OLED Screen *1
 * USB-C PD Trigger/Decoy *1         (optional)

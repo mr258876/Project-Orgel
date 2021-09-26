@@ -9,7 +9,7 @@
       "item": {
         "naming": "ON_OFF",
         "name": "play",
-        "variableName": "Play",
+        "variableName": "playMenu",
         "id": 1,
         "eepromAddress": -1,
         "functionName": "switchPlayStatus",
@@ -27,7 +27,7 @@
         "divisor": 1,
         "unitName": "",
         "name": "BPM",
-        "variableName": "BPM",
+        "variableName": "bpmMenu",
         "id": 2,
         "eepromAddress": 2,
         "functionName": "setSpeed",
@@ -42,7 +42,7 @@
       "item": {
         "secured": false,
         "name": "Settings",
-        "variableName": "Settings",
+        "variableName": "settingsMenu",
         "id": 3,
         "eepromAddress": -1,
         "readOnly": false,
@@ -52,14 +52,86 @@
     },
     {
       "parentId": 3,
-      "type": "boolItem",
+      "type": "subMenu",
       "item": {
-        "naming": "ON_OFF",
-        "name": "Auto Current",
-        "variableName": "AutoCurrent",
+        "secured": false,
+        "name": "Motor",
+        "variableName": "motorMenu",
         "id": 4,
-        "eepromAddress": 4,
-        "functionName": "setCurrentOptimize",
+        "eepromAddress": -1,
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true
+      }
+    },
+    {
+      "parentId": 3,
+      "type": "subMenu",
+      "item": {
+        "secured": false,
+        "name": "Wireless",
+        "variableName": "wirelessMenu",
+        "id": 5,
+        "eepromAddress": -1,
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true
+      }
+    },
+    {
+      "parentId": 3,
+      "type": "subMenu",
+      "item": {
+        "secured": false,
+        "name": "About",
+        "variableName": "About",
+        "id": 6,
+        "eepromAddress": -1,
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true
+      }
+    },
+    {
+      "parentId": 6,
+      "type": "textItem",
+      "item": {
+        "textLength": 1,
+        "itemType": "PLAIN_TEXT",
+        "name": "Project-Orgel",
+        "variableName": "aboutText1",
+        "id": 7,
+        "eepromAddress": -1,
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true
+      }
+    },
+    {
+      "parentId": 6,
+      "type": "textItem",
+      "item": {
+        "textLength": 1,
+        "itemType": "PLAIN_TEXT",
+        "name": "Mr258876 on Github",
+        "variableName": "aboutText2",
+        "id": 8,
+        "eepromAddress": -1,
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true
+      }
+    },
+    {
+      "parentId": 6,
+      "type": "textItem",
+      "item": {
+        "textLength": 1,
+        "itemType": "PLAIN_TEXT",
+        "name": "TcMenu TMCStepper",
+        "variableName": "aboutText3",
+        "id": 9,
+        "eepromAddress": -1,
         "readOnly": false,
         "localOnly": false,
         "visible": true
