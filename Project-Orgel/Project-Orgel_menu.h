@@ -26,28 +26,38 @@ extern GraphicsDeviceRenderer renderer;
 
 
 // Global Menu Item exports
-extern TextMenuItem menuaboutText3;
-extern TextMenuItem menuaboutText2;
-extern TextMenuItem menuaboutText1;
+extern TextMenuItem menuAboutText3;
+extern TextMenuItem menuAboutText2;
+extern TextMenuItem menuAboutText1;
 extern BackMenuItem menuBackAbout;
 extern SubMenuItem menuAbout;
-extern BackMenuItem menuBackwirelessMenu;
-extern SubMenuItem menuwirelessMenu;
-extern BackMenuItem menuBackmotorMenu;
-extern SubMenuItem menumotorMenu;
-extern BackMenuItem menuBacksettingsMenu;
-extern SubMenuItem menusettingsMenu;
-extern AnalogMenuItem menubpmMenu;
-extern BooleanMenuItem menuplayMenu;
+extern BackMenuItem menuBackWirelessMenu;
+extern SubMenuItem menuWirelessMenu;
+extern BooleanMenuItem menuStandbyPowerDown;
+extern BooleanMenuItem menuCurrentAutoOptimize;
+extern BackMenuItem menuBackCurrentSettings;
+extern SubMenuItem menuCurrentSettings;
+extern BackMenuItem menuBackGearSettings;
+extern SubMenuItem menuGearSettings;
+extern BackMenuItem menuBackMotorStatus;
+extern SubMenuItem menuMotorStatus;
+extern BackMenuItem menuBackMotorMenu;
+extern SubMenuItem menuMotorMenu;
+extern BackMenuItem menuBackSettingsMenu;
+extern SubMenuItem menuSettingsMenu;
+extern AnalogMenuItem menuBPM;
+extern BooleanMenuItem menuPlay;
 
 // Provide a wrapper to get hold of the root menu item and export setupMenu
-inline MenuItem& rootMenuItem() { return menuplayMenu; }
+inline MenuItem& rootMenuItem() { return menuPlay; }
 void setupMenu();
 
 // Callback functions must always include CALLBACK_FUNCTION after the return type
 #define CALLBACK_FUNCTION
 
 void CALLBACK_FUNCTION setSpeed(int id);
+void CALLBACK_FUNCTION switchCurrentAutoOptimize(int id);
 void CALLBACK_FUNCTION switchPlayStatus(int id);
+void CALLBACK_FUNCTION switchStandbyPowerDown(int id);
 
 #endif // MENU_GENERATED_CODE_H

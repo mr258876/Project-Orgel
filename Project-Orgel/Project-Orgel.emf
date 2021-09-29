@@ -1,7 +1,7 @@
 {
   "version": "1.00",
   "projectName": "Project description",
-  "author": "mr258876",
+  "author": "Mr258876",
   "items": [
     {
       "parentId": 0,
@@ -9,7 +9,7 @@
       "item": {
         "naming": "ON_OFF",
         "name": "play",
-        "variableName": "playMenu",
+        "variableName": "Play",
         "id": 1,
         "eepromAddress": -1,
         "functionName": "switchPlayStatus",
@@ -27,7 +27,7 @@
         "divisor": 1,
         "unitName": "",
         "name": "BPM",
-        "variableName": "bpmMenu",
+        "variableName": "BPM",
         "id": 2,
         "eepromAddress": 2,
         "functionName": "setSpeed",
@@ -42,7 +42,7 @@
       "item": {
         "secured": false,
         "name": "Settings",
-        "variableName": "settingsMenu",
+        "variableName": "SettingsMenu",
         "id": 3,
         "eepromAddress": -1,
         "readOnly": false,
@@ -56,9 +56,81 @@
       "item": {
         "secured": false,
         "name": "Motor",
-        "variableName": "motorMenu",
+        "variableName": "MotorMenu",
         "id": 4,
         "eepromAddress": -1,
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true
+      }
+    },
+    {
+      "parentId": 4,
+      "type": "subMenu",
+      "item": {
+        "secured": false,
+        "name": "Motor Status",
+        "variableName": "MotorStatus",
+        "id": 10,
+        "eepromAddress": -1,
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true
+      }
+    },
+    {
+      "parentId": 4,
+      "type": "subMenu",
+      "item": {
+        "secured": false,
+        "name": "Gear Settings",
+        "variableName": "GearSettings",
+        "id": 11,
+        "eepromAddress": -1,
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true
+      }
+    },
+    {
+      "parentId": 4,
+      "type": "subMenu",
+      "item": {
+        "secured": false,
+        "name": "Current Settings",
+        "variableName": "CurrentSettings",
+        "id": 12,
+        "eepromAddress": -1,
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true
+      }
+    },
+    {
+      "parentId": 12,
+      "type": "boolItem",
+      "item": {
+        "naming": "ON_OFF",
+        "name": "CurrentAutoOptimize",
+        "variableName": "CurrentAutoOptimize",
+        "id": 13,
+        "eepromAddress": 4,
+        "functionName": "switchCurrentAutoOptimize",
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true
+      }
+    },
+    {
+      "parentId": 12,
+      "type": "boolItem",
+      "item": {
+        "naming": "TRUE_FALSE",
+        "name": "Standby Power Down",
+        "variableName": "StandbyPowerDown",
+        "id": 14,
+        "eepromAddress": 5,
+        "functionName": "switchStandbyPowerDown",
         "readOnly": false,
         "localOnly": false,
         "visible": true
@@ -70,7 +142,7 @@
       "item": {
         "secured": false,
         "name": "Wireless",
-        "variableName": "wirelessMenu",
+        "variableName": "WirelessMenu",
         "id": 5,
         "eepromAddress": -1,
         "readOnly": false,
@@ -99,7 +171,7 @@
         "textLength": 1,
         "itemType": "PLAIN_TEXT",
         "name": "Project-Orgel",
-        "variableName": "aboutText1",
+        "variableName": "AboutText1",
         "id": 7,
         "eepromAddress": -1,
         "readOnly": false,
@@ -114,7 +186,7 @@
         "textLength": 1,
         "itemType": "PLAIN_TEXT",
         "name": "Mr258876 on Github",
-        "variableName": "aboutText2",
+        "variableName": "AboutText2",
         "id": 8,
         "eepromAddress": -1,
         "readOnly": false,
@@ -129,7 +201,7 @@
         "textLength": 1,
         "itemType": "PLAIN_TEXT",
         "name": "TcMenu TMCStepper",
-        "variableName": "aboutText3",
+        "variableName": "AboutText3",
         "id": 9,
         "eepromAddress": -1,
         "readOnly": false,

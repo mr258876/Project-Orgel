@@ -1,8 +1,9 @@
 #include "Project-Orgel_menu.h"
 // default CPP main file for sketch
 #include <PlatformDetermination.h>
-
 #include <TaskManagerIO.h>
+
+#include "ThemeProjOrgel.h"
 
 #include <TMCStepper.h>
 
@@ -35,6 +36,7 @@ int motorCurrent = 300;
 void setup()
 {
     setupMenu();
+    installTheme();
 
     Serial.begin(9600);
     Serial.println("Orgel Running...");
@@ -44,15 +46,22 @@ void setup()
     setSpeed(0);
 }
 
+
 void loop()
 {
     taskManager.runLoop();
 }
 
+
+void installTheme(){
+    renderer.setTitleMode(BaseGraphicalRenderer::TITLE_FIRST_ROW);
+    renderer.setUseSliderForAnalog(false);
+    installMonoInverseTitleTheme(renderer, MenuFontDef(nullptr, 1), MenuFontDef(nullptr, 1), true);
+}
+
+
 void driverSetup()
 {
-    pinMode(STEP_Pin, OUTPUT);     // 控制TMC2209步进引脚为输出模式
-    pinMode(DIR_Pin, OUTPUT);      // 控制TMC2209方向引脚为输出模式
     pinMode(ENABLE_Pin, OUTPUT);   // 控制TMC2209使能引脚为输出模式
     pinMode(DIAG_Pin, INPUT);      // 控制TMC2209过载引脚为输入模式
     digitalWrite(ENABLE_Pin, LOW); // 将使能控制引脚设置为低电平从而让电机驱动板进入工作状态
@@ -63,8 +72,9 @@ void driverSetup()
     driver.microsteps(8); // 设置微步大小
 
     // 电流设置
-    driver.rms_current(300); // 设置电流大小 (mA)
+    driver.rms_current(50); // 设置电流大小 (mA)
 }
+
 
 void CALLBACK_FUNCTION setSpeed(int id)
 {
@@ -89,14 +99,10 @@ void CALLBACK_FUNCTION setSpeed(int id)
     else
     {
         driver.VACTUAL(0);
-        driver.rms_current(300); // 设置电流大小 (mA)
+        driver.rms_current(50); // 设置电流大小 (mA)
     }
 }
 
-void CALLBACK_FUNCTION setCurrentOptimize(int id)
-{
-    // TODO - your menu change code
-}
 
 void CALLBACK_FUNCTION switchPlayStatus(int id)
 {
@@ -110,8 +116,12 @@ void CALLBACK_FUNCTION switchPlayStatus(int id)
     }
 }
 
-void loadTheme(){
-    auto & factory = renderer.getGraphicsPropertiesFactory();
-    Coord iconSize(32, 32);
-    factory.addImageToCache(DrawableIcon(settingsMenu.getId(), ))
+
+void CALLBACK_FUNCTION switchCurrentAutoOptimize(int id) {
+    // TODO - your menu change code
+}
+
+
+void CALLBACK_FUNCTION switchStandbyPowerDown(int id) {
+    // TODO - your menu change code
 }
