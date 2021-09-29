@@ -9,8 +9,6 @@
 #define DRIVER_SERIAL Serial2 // 电机驱动硬件串口
 #define DRIVER_ADDRESS 0b00   // 电机驱动串口地址
 #define R_SENSE 0.11f         // Match to your driver <- ???
-#define DIR_Pin 25            // 电机方向控制引脚
-#define STEP_Pin 26           // 电机步进控制引脚
 #define ENABLE_Pin 33         // 电机使能控制引脚
 #define DIAG_Pin 19           // 电机过载指示引脚
 
@@ -110,4 +108,10 @@ void CALLBACK_FUNCTION switchPlayStatus(int id)
     {
         setSpeed(0);
     }
+}
+
+void loadTheme(){
+    auto & factory = renderer.getGraphicsPropertiesFactory();
+    Coord iconSize(32, 32);
+    factory.addImageToCache(DrawableIcon(settingsMenu.getId(), ))
 }

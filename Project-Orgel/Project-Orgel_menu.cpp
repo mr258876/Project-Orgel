@@ -19,16 +19,32 @@ U8g2Drawable gfxDrawable(&gfx);
 GraphicsDeviceRenderer renderer(30, applicationInfo.name, &gfxDrawable);
 
 // Global Menu Item declarations
-const PROGMEM BooleanMenuInfo minfoAutoCurrent = { "Auto Current", 4, 4, 1, setCurrentOptimize, NAMING_TRUE_FALSE };
-BooleanMenuItem menuAutoCurrent(&minfoAutoCurrent, false, NULL);
-RENDERING_CALLBACK_NAME_INVOKE(fnSettingsRtCall, backSubItemRenderFn, "Settings", -1, NO_CALLBACK)
-const PROGMEM SubMenuInfo minfoSettings = { "Settings", 3, 0xffff, 0, NO_CALLBACK };
-BackMenuItem menuBackSettings(fnSettingsRtCall, &menuAutoCurrent);
-SubMenuItem menuSettings(&minfoSettings, &menuBackSettings, NULL);
-const PROGMEM AnalogMenuInfo minfoBPM = { "BPM", 2, 2, 511, setSpeed, 0, 1, "" };
-AnalogMenuItem menuBPM(&minfoBPM, 0, &menuSettings);
-const PROGMEM BooleanMenuInfo minfoPlay = { "play", 1, 0xffff, 1, switchPlayStatus, NAMING_ON_OFF };
-BooleanMenuItem menuPlay(&minfoPlay, false, &menuBPM);
+RENDERING_CALLBACK_NAME_INVOKE(fnaboutText3RtCall, textItemRenderFn, "TcMenu TMCStepper", -1, NO_CALLBACK)
+TextMenuItem menuaboutText3(fnaboutText3RtCall, 9, 1, NULL);
+RENDERING_CALLBACK_NAME_INVOKE(fnaboutText2RtCall, textItemRenderFn, "Mr258876 on Github", -1, NO_CALLBACK)
+TextMenuItem menuaboutText2(fnaboutText2RtCall, 8, 1, &menuaboutText3);
+RENDERING_CALLBACK_NAME_INVOKE(fnaboutText1RtCall, textItemRenderFn, "Project-Orgel", -1, NO_CALLBACK)
+TextMenuItem menuaboutText1(fnaboutText1RtCall, 7, 1, &menuaboutText2);
+RENDERING_CALLBACK_NAME_INVOKE(fnAboutRtCall, backSubItemRenderFn, "About", -1, NO_CALLBACK)
+const PROGMEM SubMenuInfo minfoAbout = { "About", 6, 0xffff, 0, NO_CALLBACK };
+BackMenuItem menuBackAbout(fnAboutRtCall, &menuaboutText1);
+SubMenuItem menuAbout(&minfoAbout, &menuBackAbout, NULL);
+RENDERING_CALLBACK_NAME_INVOKE(fnwirelessMenuRtCall, backSubItemRenderFn, "Wireless", -1, NO_CALLBACK)
+const PROGMEM SubMenuInfo minfowirelessMenu = { "Wireless", 5, 0xffff, 0, NO_CALLBACK };
+BackMenuItem menuBackwirelessMenu(fnwirelessMenuRtCall, NULL);
+SubMenuItem menuwirelessMenu(&minfowirelessMenu, &menuBackwirelessMenu, &menuAbout);
+RENDERING_CALLBACK_NAME_INVOKE(fnmotorMenuRtCall, backSubItemRenderFn, "Motor", -1, NO_CALLBACK)
+const PROGMEM SubMenuInfo minfomotorMenu = { "Motor", 4, 0xffff, 0, NO_CALLBACK };
+BackMenuItem menuBackmotorMenu(fnmotorMenuRtCall, NULL);
+SubMenuItem menumotorMenu(&minfomotorMenu, &menuBackmotorMenu, &menuwirelessMenu);
+RENDERING_CALLBACK_NAME_INVOKE(fnsettingsMenuRtCall, backSubItemRenderFn, "Settings", -1, NO_CALLBACK)
+const PROGMEM SubMenuInfo minfosettingsMenu = { "Settings", 3, 0xffff, 0, NO_CALLBACK };
+BackMenuItem menuBacksettingsMenu(fnsettingsMenuRtCall, &menumotorMenu);
+SubMenuItem menusettingsMenu(&minfosettingsMenu, &menuBacksettingsMenu, NULL);
+const PROGMEM AnalogMenuInfo minfobpmMenu = { "BPM", 2, 2, 511, setSpeed, 0, 1, "" };
+AnalogMenuItem menubpmMenu(&minfobpmMenu, 0, &menusettingsMenu);
+const PROGMEM BooleanMenuInfo minfoplayMenu = { "play", 1, 0xffff, 1, switchPlayStatus, NAMING_ON_OFF };
+BooleanMenuItem menuplayMenu(&minfoplayMenu, false, &menubpmMenu);
 
 void setupMenu() {
     // First we set up eeprom and authentication (if needed).
@@ -37,6 +53,6 @@ void setupMenu() {
     gfx.begin();
     renderer.setUpdatesPerSecond(10);
     switches.initialise(internalDigitalIo(), true);
-    menuMgr.initForEncoder(&renderer, &menuPlay, 34, 35, 32);
+    menuMgr.initForEncoder(&renderer, &menuplayMenu, 34, 35, 32);
 }
 

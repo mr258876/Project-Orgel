@@ -14,6 +14,7 @@
 #include <Arduino.h>
 #include <tcMenu.h>
 #include "tcMenuU8g2.h"
+#include <RuntimeMenuItem.h>
 #include <IoAbstraction.h>
 
 // variables we declare that you may need to access
@@ -25,20 +26,27 @@ extern GraphicsDeviceRenderer renderer;
 
 
 // Global Menu Item exports
-extern BooleanMenuItem menuAutoCurrent;
-extern BackMenuItem menuBackSettings;
-extern SubMenuItem menuSettings;
-extern AnalogMenuItem menuBPM;
-extern BooleanMenuItem menuPlay;
+extern TextMenuItem menuaboutText3;
+extern TextMenuItem menuaboutText2;
+extern TextMenuItem menuaboutText1;
+extern BackMenuItem menuBackAbout;
+extern SubMenuItem menuAbout;
+extern BackMenuItem menuBackwirelessMenu;
+extern SubMenuItem menuwirelessMenu;
+extern BackMenuItem menuBackmotorMenu;
+extern SubMenuItem menumotorMenu;
+extern BackMenuItem menuBacksettingsMenu;
+extern SubMenuItem menusettingsMenu;
+extern AnalogMenuItem menubpmMenu;
+extern BooleanMenuItem menuplayMenu;
 
 // Provide a wrapper to get hold of the root menu item and export setupMenu
-inline MenuItem& rootMenuItem() { return menuPlay; }
+inline MenuItem& rootMenuItem() { return menuplayMenu; }
 void setupMenu();
 
 // Callback functions must always include CALLBACK_FUNCTION after the return type
 #define CALLBACK_FUNCTION
 
-void CALLBACK_FUNCTION setCurrentOptimize(int id);
 void CALLBACK_FUNCTION setSpeed(int id);
 void CALLBACK_FUNCTION switchPlayStatus(int id);
 

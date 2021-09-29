@@ -102,8 +102,7 @@ void CALLBACK_FUNCTION setCurrentOptimize(int id)
 
 void CALLBACK_FUNCTION switchPlayStatus(int id)
 {
-    menuPlay.setCurrentValue(!menuPlay.getCurrentValue());
-    if (menuPlay.getCurrentValue())
+    if (menuPlay.getBoolean())
     {
         setSpeed(menuPlay.getCurrentValue());
     }
