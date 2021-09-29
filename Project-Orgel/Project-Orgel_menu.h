@@ -26,25 +26,29 @@ extern GraphicsDeviceRenderer renderer;
 
 
 // Global Menu Item exports
+extern TextMenuItem menuAboutText4;
 extern TextMenuItem menuAboutText3;
 extern TextMenuItem menuAboutText2;
 extern TextMenuItem menuAboutText1;
 extern BackMenuItem menuBackAbout;
 extern SubMenuItem menuAbout;
-extern BackMenuItem menuBackWirelessMenu;
-extern SubMenuItem menuWirelessMenu;
+extern BackMenuItem menuBackWireless;
+extern SubMenuItem menuWireless;
 extern BooleanMenuItem menuStandbyPowerDown;
 extern BooleanMenuItem menuCurrentAutoOptimize;
-extern BackMenuItem menuBackCurrentSettings;
-extern SubMenuItem menuCurrentSettings;
+extern BackMenuItem menuBackCurrent;
+extern SubMenuItem menuCurrent;
+extern AnalogMenuItem menuDriveRatio;
+extern TextMenuItem menuGearText2;
+extern TextMenuItem menuGearText1;
 extern BackMenuItem menuBackGearSettings;
 extern SubMenuItem menuGearSettings;
 extern BackMenuItem menuBackMotorStatus;
 extern SubMenuItem menuMotorStatus;
-extern BackMenuItem menuBackMotorMenu;
-extern SubMenuItem menuMotorMenu;
-extern BackMenuItem menuBackSettingsMenu;
-extern SubMenuItem menuSettingsMenu;
+extern BackMenuItem menuBackMotor;
+extern SubMenuItem menuMotor;
+extern BackMenuItem menuBackSettings;
+extern SubMenuItem menuSettings;
 extern AnalogMenuItem menuBPM;
 extern BooleanMenuItem menuPlay;
 

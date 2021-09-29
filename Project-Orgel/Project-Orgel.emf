@@ -42,7 +42,7 @@
       "item": {
         "secured": false,
         "name": "Settings",
-        "variableName": "SettingsMenu",
+        "variableName": "Settings",
         "id": 3,
         "eepromAddress": -1,
         "readOnly": false,
@@ -56,7 +56,7 @@
       "item": {
         "secured": false,
         "name": "Motor",
-        "variableName": "MotorMenu",
+        "variableName": "Motor",
         "id": 4,
         "eepromAddress": -1,
         "readOnly": false,
@@ -93,12 +93,59 @@
       }
     },
     {
+      "parentId": 11,
+      "type": "textItem",
+      "item": {
+        "textLength": 5,
+        "itemType": "PLAIN_TEXT",
+        "name": "Gear of Orgel",
+        "variableName": "GearText1",
+        "id": 15,
+        "eepromAddress": -1,
+        "readOnly": true,
+        "localOnly": false,
+        "visible": true
+      }
+    },
+    {
+      "parentId": 11,
+      "type": "textItem",
+      "item": {
+        "textLength": 5,
+        "itemType": "PLAIN_TEXT",
+        "name": "devides Motor *100",
+        "variableName": "GearText2",
+        "id": 17,
+        "eepromAddress": -1,
+        "readOnly": true,
+        "localOnly": false,
+        "visible": true
+      }
+    },
+    {
+      "parentId": 11,
+      "type": "analogItem",
+      "item": {
+        "maxValue": 2047,
+        "offset": 0,
+        "divisor": 1,
+        "unitName": "",
+        "name": "Equals",
+        "variableName": "DriveRatio",
+        "id": 16,
+        "eepromAddress": 48,
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true
+      }
+    },
+    {
       "parentId": 4,
       "type": "subMenu",
       "item": {
         "secured": false,
         "name": "Current Settings",
-        "variableName": "CurrentSettings",
+        "variableName": "Current",
         "id": 12,
         "eepromAddress": -1,
         "readOnly": false,
@@ -142,7 +189,7 @@
       "item": {
         "secured": false,
         "name": "Wireless",
-        "variableName": "WirelessMenu",
+        "variableName": "Wireless",
         "id": 5,
         "eepromAddress": -1,
         "readOnly": false,
@@ -174,7 +221,7 @@
         "variableName": "AboutText1",
         "id": 7,
         "eepromAddress": -1,
-        "readOnly": false,
+        "readOnly": true,
         "localOnly": false,
         "visible": true
       }
@@ -189,7 +236,22 @@
         "variableName": "AboutText2",
         "id": 8,
         "eepromAddress": -1,
-        "readOnly": false,
+        "readOnly": true,
+        "localOnly": false,
+        "visible": true
+      }
+    },
+    {
+      "parentId": 6,
+      "type": "textItem",
+      "item": {
+        "textLength": 5,
+        "itemType": "PLAIN_TEXT",
+        "name": "Libraries Used",
+        "variableName": "AboutText3",
+        "id": 18,
+        "eepromAddress": -1,
+        "readOnly": true,
         "localOnly": false,
         "visible": true
       }
@@ -201,10 +263,10 @@
         "textLength": 1,
         "itemType": "PLAIN_TEXT",
         "name": "TcMenu TMCStepper",
-        "variableName": "AboutText3",
+        "variableName": "AboutText4",
         "id": 9,
         "eepromAddress": -1,
-        "readOnly": false,
+        "readOnly": true,
         "localOnly": false,
         "visible": true
       }

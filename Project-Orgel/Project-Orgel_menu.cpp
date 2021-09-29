@@ -19,8 +19,10 @@ U8g2Drawable gfxDrawable(&gfx);
 GraphicsDeviceRenderer renderer(30, applicationInfo.name, &gfxDrawable);
 
 // Global Menu Item declarations
-RENDERING_CALLBACK_NAME_INVOKE(fnAboutText3RtCall, textItemRenderFn, "TcMenu TMCStepper", -1, NO_CALLBACK)
-TextMenuItem menuAboutText3(fnAboutText3RtCall, 9, 1, NULL);
+RENDERING_CALLBACK_NAME_INVOKE(fnAboutText4RtCall, textItemRenderFn, "TcMenu TMCStepper", -1, NO_CALLBACK)
+TextMenuItem menuAboutText4(fnAboutText4RtCall, 9, 1, NULL);
+RENDERING_CALLBACK_NAME_INVOKE(fnAboutText3RtCall, textItemRenderFn, "Libraries Used", -1, NO_CALLBACK)
+TextMenuItem menuAboutText3(fnAboutText3RtCall, 18, 5, &menuAboutText4);
 RENDERING_CALLBACK_NAME_INVOKE(fnAboutText2RtCall, textItemRenderFn, "Mr258876 on Github", -1, NO_CALLBACK)
 TextMenuItem menuAboutText2(fnAboutText2RtCall, 8, 1, &menuAboutText3);
 RENDERING_CALLBACK_NAME_INVOKE(fnAboutText1RtCall, textItemRenderFn, "Project-Orgel", -1, NO_CALLBACK)
@@ -29,41 +31,55 @@ RENDERING_CALLBACK_NAME_INVOKE(fnAboutRtCall, backSubItemRenderFn, "About", -1, 
 const PROGMEM SubMenuInfo minfoAbout = { "About", 6, 0xffff, 0, NO_CALLBACK };
 BackMenuItem menuBackAbout(fnAboutRtCall, &menuAboutText1);
 SubMenuItem menuAbout(&minfoAbout, &menuBackAbout, NULL);
-RENDERING_CALLBACK_NAME_INVOKE(fnWirelessMenuRtCall, backSubItemRenderFn, "Wireless", -1, NO_CALLBACK)
-const PROGMEM SubMenuInfo minfoWirelessMenu = { "Wireless", 5, 0xffff, 0, NO_CALLBACK };
-BackMenuItem menuBackWirelessMenu(fnWirelessMenuRtCall, NULL);
-SubMenuItem menuWirelessMenu(&minfoWirelessMenu, &menuBackWirelessMenu, &menuAbout);
+RENDERING_CALLBACK_NAME_INVOKE(fnWirelessRtCall, backSubItemRenderFn, "Wireless", -1, NO_CALLBACK)
+const PROGMEM SubMenuInfo minfoWireless = { "Wireless", 5, 0xffff, 0, NO_CALLBACK };
+BackMenuItem menuBackWireless(fnWirelessRtCall, NULL);
+SubMenuItem menuWireless(&minfoWireless, &menuBackWireless, &menuAbout);
 const PROGMEM BooleanMenuInfo minfoStandbyPowerDown = { "Standby Power Down", 14, 5, 1, switchStandbyPowerDown, NAMING_ON_OFF };
 BooleanMenuItem menuStandbyPowerDown(&minfoStandbyPowerDown, false, NULL);
 const PROGMEM BooleanMenuInfo minfoCurrentAutoOptimize = { "CurrentAutoOptimize", 13, 4, 1, switchCurrentAutoOptimize, NAMING_ON_OFF };
 BooleanMenuItem menuCurrentAutoOptimize(&minfoCurrentAutoOptimize, false, &menuStandbyPowerDown);
-RENDERING_CALLBACK_NAME_INVOKE(fnCurrentSettingsRtCall, backSubItemRenderFn, "Current Settings", -1, NO_CALLBACK)
-const PROGMEM SubMenuInfo minfoCurrentSettings = { "Current Settings", 12, 0xffff, 0, NO_CALLBACK };
-BackMenuItem menuBackCurrentSettings(fnCurrentSettingsRtCall, &menuCurrentAutoOptimize);
-SubMenuItem menuCurrentSettings(&minfoCurrentSettings, &menuBackCurrentSettings, NULL);
+RENDERING_CALLBACK_NAME_INVOKE(fnCurrentRtCall, backSubItemRenderFn, "Current Settings", -1, NO_CALLBACK)
+const PROGMEM SubMenuInfo minfoCurrent = { "Current Settings", 12, 0xffff, 0, NO_CALLBACK };
+BackMenuItem menuBackCurrent(fnCurrentRtCall, &menuCurrentAutoOptimize);
+SubMenuItem menuCurrent(&minfoCurrent, &menuBackCurrent, NULL);
+const PROGMEM AnalogMenuInfo minfoDriveRatio = { "Equals", 16, 48, 2047, NO_CALLBACK, 0, 1, "" };
+AnalogMenuItem menuDriveRatio(&minfoDriveRatio, 0, NULL);
+RENDERING_CALLBACK_NAME_INVOKE(fnGearText2RtCall, textItemRenderFn, "devides Motor *100", -1, NO_CALLBACK)
+TextMenuItem menuGearText2(fnGearText2RtCall, 17, 5, &menuDriveRatio);
+RENDERING_CALLBACK_NAME_INVOKE(fnGearText1RtCall, textItemRenderFn, "Gear of Orgel", -1, NO_CALLBACK)
+TextMenuItem menuGearText1(fnGearText1RtCall, 15, 5, &menuGearText2);
 RENDERING_CALLBACK_NAME_INVOKE(fnGearSettingsRtCall, backSubItemRenderFn, "Gear Settings", -1, NO_CALLBACK)
 const PROGMEM SubMenuInfo minfoGearSettings = { "Gear Settings", 11, 0xffff, 0, NO_CALLBACK };
-BackMenuItem menuBackGearSettings(fnGearSettingsRtCall, NULL);
-SubMenuItem menuGearSettings(&minfoGearSettings, &menuBackGearSettings, &menuCurrentSettings);
+BackMenuItem menuBackGearSettings(fnGearSettingsRtCall, &menuGearText1);
+SubMenuItem menuGearSettings(&minfoGearSettings, &menuBackGearSettings, &menuCurrent);
 RENDERING_CALLBACK_NAME_INVOKE(fnMotorStatusRtCall, backSubItemRenderFn, "Motor Status", -1, NO_CALLBACK)
 const PROGMEM SubMenuInfo minfoMotorStatus = { "Motor Status", 10, 0xffff, 0, NO_CALLBACK };
 BackMenuItem menuBackMotorStatus(fnMotorStatusRtCall, NULL);
 SubMenuItem menuMotorStatus(&minfoMotorStatus, &menuBackMotorStatus, &menuGearSettings);
-RENDERING_CALLBACK_NAME_INVOKE(fnMotorMenuRtCall, backSubItemRenderFn, "Motor", -1, NO_CALLBACK)
-const PROGMEM SubMenuInfo minfoMotorMenu = { "Motor", 4, 0xffff, 0, NO_CALLBACK };
-BackMenuItem menuBackMotorMenu(fnMotorMenuRtCall, &menuMotorStatus);
-SubMenuItem menuMotorMenu(&minfoMotorMenu, &menuBackMotorMenu, &menuWirelessMenu);
-RENDERING_CALLBACK_NAME_INVOKE(fnSettingsMenuRtCall, backSubItemRenderFn, "Settings", -1, NO_CALLBACK)
-const PROGMEM SubMenuInfo minfoSettingsMenu = { "Settings", 3, 0xffff, 0, NO_CALLBACK };
-BackMenuItem menuBackSettingsMenu(fnSettingsMenuRtCall, &menuMotorMenu);
-SubMenuItem menuSettingsMenu(&minfoSettingsMenu, &menuBackSettingsMenu, NULL);
+RENDERING_CALLBACK_NAME_INVOKE(fnMotorRtCall, backSubItemRenderFn, "Motor", -1, NO_CALLBACK)
+const PROGMEM SubMenuInfo minfoMotor = { "Motor", 4, 0xffff, 0, NO_CALLBACK };
+BackMenuItem menuBackMotor(fnMotorRtCall, &menuMotorStatus);
+SubMenuItem menuMotor(&minfoMotor, &menuBackMotor, &menuWireless);
+RENDERING_CALLBACK_NAME_INVOKE(fnSettingsRtCall, backSubItemRenderFn, "Settings", -1, NO_CALLBACK)
+const PROGMEM SubMenuInfo minfoSettings = { "Settings", 3, 0xffff, 0, NO_CALLBACK };
+BackMenuItem menuBackSettings(fnSettingsRtCall, &menuMotor);
+SubMenuItem menuSettings(&minfoSettings, &menuBackSettings, NULL);
 const PROGMEM AnalogMenuInfo minfoBPM = { "BPM", 2, 2, 511, setSpeed, 0, 1, "" };
-AnalogMenuItem menuBPM(&minfoBPM, 0, &menuSettingsMenu);
+AnalogMenuItem menuBPM(&minfoBPM, 0, &menuSettings);
 const PROGMEM BooleanMenuInfo minfoPlay = { "play", 1, 0xffff, 1, switchPlayStatus, NAMING_ON_OFF };
 BooleanMenuItem menuPlay(&minfoPlay, false, &menuBPM);
 
 void setupMenu() {
     // First we set up eeprom and authentication (if needed).
+
+    // Now add any readonly, non-remote and visible flags.
+    menuGearText2.setReadOnly(true);
+    menuAboutText1.setReadOnly(true);
+    menuGearText1.setReadOnly(true);
+    menuAboutText4.setReadOnly(true);
+    menuAboutText3.setReadOnly(true);
+    menuAboutText2.setReadOnly(true);
 
     // Code generated by plugins.
     gfx.begin();
