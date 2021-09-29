@@ -4,9 +4,9 @@
 >## Project Status 
 * Make it work  ✔
 * A Basic UI    ✔
+* More Adjustable Values in UI 🚧
 * Current Auto-Optimizing   🚧
-* UI MultiLanguage Support  ⭕
-* More Adjustable Values in UI ⭕
+* UI MultiLanguage Support  🚧
 
 >## Hardware
 * Musicbox (of course) *1
