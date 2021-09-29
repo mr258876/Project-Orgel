@@ -4,6 +4,7 @@
 #include <TaskManagerIO.h>
 
 #include "ThemeProjOrgel.h"
+#include "HomepageProjOrgel.h"
 
 #include <TMCStepper.h>
 
@@ -37,6 +38,7 @@ void setup()
 {
     setupMenu();
     installTheme();
+    homePage();
 
     Serial.begin(9600);
     Serial.println("Orgel Running...");
@@ -76,10 +78,9 @@ void driverSetup()
 }
 
 
-void CALLBACK_FUNCTION setSpeed(int id)
+void setMotorSpeed(int BPM)
 {
-    int BPM = bpmMenu.getCurrentValue();
-    if (playMenu.getCurrentValue())
+    if (menuPlay.getBoolean())
     {
         // 电机速度设置
         driver.VACTUAL(-BPM * BPM_CALC_CONST / 0.715);
@@ -106,13 +107,13 @@ void CALLBACK_FUNCTION setSpeed(int id)
 
 void CALLBACK_FUNCTION switchPlayStatus(int id)
 {
-    if (playMenu.getBoolean())
+    if (menuPlay.getBoolean())
     {
-        setSpeed(playMenu.getCurrentValue());
+        setMotorSpeed(menuPlay.getCurrentValue());
     }
     else
     {
-        setSpeed(0);
+        setMotorSpeed(0);
     }
 }
 

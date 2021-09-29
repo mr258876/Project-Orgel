@@ -125,7 +125,7 @@
       "parentId": 12,
       "type": "boolItem",
       "item": {
-        "naming": "TRUE_FALSE",
+        "naming": "ON_OFF",
         "name": "Standby Power Down",
         "variableName": "StandbyPowerDown",
         "id": 14,

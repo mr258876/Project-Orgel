@@ -33,7 +33,7 @@ RENDERING_CALLBACK_NAME_INVOKE(fnWirelessMenuRtCall, backSubItemRenderFn, "Wirel
 const PROGMEM SubMenuInfo minfoWirelessMenu = { "Wireless", 5, 0xffff, 0, NO_CALLBACK };
 BackMenuItem menuBackWirelessMenu(fnWirelessMenuRtCall, NULL);
 SubMenuItem menuWirelessMenu(&minfoWirelessMenu, &menuBackWirelessMenu, &menuAbout);
-const PROGMEM BooleanMenuInfo minfoStandbyPowerDown = { "Standby Power Down", 14, 5, 1, switchStandbyPowerDown, NAMING_TRUE_FALSE };
+const PROGMEM BooleanMenuInfo minfoStandbyPowerDown = { "Standby Power Down", 14, 5, 1, switchStandbyPowerDown, NAMING_ON_OFF };
 BooleanMenuItem menuStandbyPowerDown(&minfoStandbyPowerDown, false, NULL);
 const PROGMEM BooleanMenuInfo minfoCurrentAutoOptimize = { "CurrentAutoOptimize", 13, 4, 1, switchCurrentAutoOptimize, NAMING_ON_OFF };
 BooleanMenuItem menuCurrentAutoOptimize(&minfoCurrentAutoOptimize, false, &menuStandbyPowerDown);
