@@ -139,3 +139,9 @@ void CALLBACK_FUNCTION switchCurrentAutoOptimize(int id) {
 void CALLBACK_FUNCTION switchStandbyPowerDown(int id) {
     // TODO - your menu change code
 }
+
+
+
+void CALLBACK_FUNCTION backToHomepage(int id) {
+    homePage();
+}

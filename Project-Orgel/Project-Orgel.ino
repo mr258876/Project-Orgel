@@ -131,6 +131,11 @@ void setMotorSpeed(int BPM)
 }
 
 
+void CALLBACK_FUNCTION backToHomepage(int id) {
+    homePage();
+}
+
+
 void CALLBACK_FUNCTION switchCurrentAutoOptimize(int id) {
     // TODO - your menu change code
 }

@@ -26,6 +26,7 @@ extern GraphicsDeviceRenderer renderer;
 
 
 // Global Menu Item exports
+extern ActionMenuItem menuBackToHomepage;
 extern TextMenuItem menuAboutText4;
 extern TextMenuItem menuAboutText3;
 extern TextMenuItem menuAboutText2;
@@ -59,6 +60,7 @@ void setupMenu();
 // Callback functions must always include CALLBACK_FUNCTION after the return type
 #define CALLBACK_FUNCTION
 
+void CALLBACK_FUNCTION backToHomepage(int id);
 void CALLBACK_FUNCTION setSpeed(int id);
 void CALLBACK_FUNCTION switchCurrentAutoOptimize(int id);
 void CALLBACK_FUNCTION switchPlayStatus(int id);
