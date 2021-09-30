@@ -36,4 +36,11 @@ void installMonoInverseTitleTheme(GraphicsDeviceRenderer& bgr, const MenuFontDef
     tcgfx::ConfigurableItemDisplayPropertiesFactory::refreshCache();
 }
 
+
+void installTheme(){
+    renderer.setTitleMode(BaseGraphicalRenderer::TITLE_FIRST_ROW);
+    renderer.setUseSliderForAnalog(false);
+    installMonoInverseTitleTheme(renderer, MenuFontDef(nullptr, 1), MenuFontDef(nullptr, 1), true);
+}
+
 #endif //TCMENU_THEME_PROJ_ORGEL

@@ -59,13 +59,6 @@ void loop()
 }
 
 
-void installTheme(){
-    renderer.setTitleMode(BaseGraphicalRenderer::TITLE_FIRST_ROW);
-    renderer.setUseSliderForAnalog(false);
-    installMonoInverseTitleTheme(renderer, MenuFontDef(nullptr, 1), MenuFontDef(nullptr, 1), true);
-}
-
-
 void driverSetup()
 {
     pinMode(ENABLE_Pin, OUTPUT);    // 控制TMC2209使能引脚为输出模式
