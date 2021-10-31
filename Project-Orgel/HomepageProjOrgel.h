@@ -6,14 +6,13 @@
 class HomePageDrawingHandler : public CustomDrawing
 {
 public:
-    //    virtual ~CustomDrawing() = default;
+    ~HomePageDrawingHandler() = default;
 
     void reset() override
     {
         // if we get here the display has been reset because
         // of a timeout of the user interface for example to
         // take over the display
-        switches.changeEncoderPrecision(menuBPM.getMaximumValue(), menuBPM.getCurrentValue());
         renderer.takeOverDisplay();
     }
 
@@ -21,6 +20,12 @@ public:
     {
         // take over display has just been called, and we
         // now need to do any initial activity
+        switches.changeEncoderPrecision(menuBPM.getMaximumValue(), menuBPM.getCurrentValue());
+        draw();
+    }
+
+    void draw()
+    {   
         gfx.setFontDirection(0);
         gfx.firstPage();
         do
@@ -65,16 +70,17 @@ public:
             renderer.giveBackDisplay();
         }
         else if (userClick == RPRESS_PRESSED)
-        { 
+        {
             menuPlay.setBoolean(!menuPlay.getBoolean());
-            reset();
+            switches.changeEncoderPrecision(menuBPM.getMaximumValue(), menuBPM.getCurrentValue());
+            draw();
         }
         // for example to update a menu based on current value of the encoder.
         // don't forget you could call changePrecision in started(..)
         if (menuBPM.getCurrentValue() != currentValue)
         {
             menuBPM.setCurrentValue(currentValue);
-            reset();
+            draw();
         }
     }
 } HomePageDrawingHandler;
@@ -85,4 +91,4 @@ void homePage()
     renderer.takeOverDisplay();
 }
 
-#endif //TCMENU_HOME_PROJ_ORGEL
+#endif // TCMENU_HOME_PROJ_ORGEL

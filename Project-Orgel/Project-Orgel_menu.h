@@ -16,6 +16,7 @@
 #include "tcMenuU8g2.h"
 #include <RuntimeMenuItem.h>
 #include <IoAbstraction.h>
+#include <ArduinoEEPROMAbstraction.h>
 
 // variables we declare that you may need to access
 extern const PROGMEM ConnectorLocalInfo applicationInfo;
@@ -43,6 +44,7 @@ extern TextMenuItem menuGearText2;
 extern TextMenuItem menuGearText1;
 extern BackMenuItem menuBackGearSettings;
 extern SubMenuItem menuGearSettings;
+extern BooleanMenuItem menuDirection;
 extern BackMenuItem menuBackMotorStatus;
 extern SubMenuItem menuMotorStatus;
 extern BackMenuItem menuBackMotor;
@@ -51,17 +53,20 @@ extern BackMenuItem menuBackSettings;
 extern SubMenuItem menuSettings;
 extern AnalogMenuItem menuBPM;
 extern BooleanMenuItem menuPlay;
+extern ActionMenuItem menuBackToHomepage;
 
 // Provide a wrapper to get hold of the root menu item and export setupMenu
-inline MenuItem& rootMenuItem() { return menuPlay; }
+inline MenuItem& rootMenuItem() { return menuBackToHomepage; }
 void setupMenu();
 
 // Callback functions must always include CALLBACK_FUNCTION after the return type
 #define CALLBACK_FUNCTION
 
+void CALLBACK_FUNCTION changeMotorDir(int id);
 void CALLBACK_FUNCTION setSpeed(int id);
 void CALLBACK_FUNCTION switchCurrentAutoOptimize(int id);
 void CALLBACK_FUNCTION switchPlayStatus(int id);
 void CALLBACK_FUNCTION switchStandbyPowerDown(int id);
+void CALLBACK_FUNCTION toHomePage(int id);
 
 #endif // MENU_GENERATED_CODE_H
