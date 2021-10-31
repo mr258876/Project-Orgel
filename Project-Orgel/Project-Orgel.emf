@@ -1,7 +1,7 @@
 {
   "version": "1.00",
   "projectName": "Project description",
-  "author": "mr258876",
+  "author": "Mr258876",
   "items": [
     {
       "parentId": 0,
@@ -22,14 +22,14 @@
       "type": "boolItem",
       "item": {
         "naming": "ON_OFF",
-        "name": "playStatus",
+        "name": "play",
         "variableName": "Play",
         "id": 1,
         "eepromAddress": -1,
         "functionName": "switchPlayStatus",
         "readOnly": false,
         "localOnly": false,
-        "visible": false
+        "visible": true
       }
     },
     {
@@ -125,7 +125,7 @@
       "parentId": 11,
       "type": "textItem",
       "item": {
-        "textLength": 1,
+        "textLength": 5,
         "itemType": "PLAIN_TEXT",
         "name": "Gear of Orgel",
         "variableName": "GearText1",
@@ -140,7 +140,7 @@
       "parentId": 11,
       "type": "textItem",
       "item": {
-        "textLength": 1,
+        "textLength": 5,
         "itemType": "PLAIN_TEXT",
         "name": "devides Motor *100",
         "variableName": "GearText2",
@@ -159,7 +159,7 @@
         "offset": 0,
         "divisor": 1,
         "unitName": "",
-        "name": "Value",
+        "name": "Equals",
         "variableName": "DriveRatio",
         "id": 16,
         "eepromAddress": 10,
@@ -261,7 +261,7 @@
       "item": {
         "textLength": 1,
         "itemType": "PLAIN_TEXT",
-        "name": "Mr258876 at Github",
+        "name": "Mr258876 on Github",
         "variableName": "AboutText2",
         "id": 8,
         "eepromAddress": -1,
@@ -274,7 +274,7 @@
       "parentId": 6,
       "type": "textItem",
       "item": {
-        "textLength": 1,
+        "textLength": 5,
         "itemType": "PLAIN_TEXT",
         "name": "Libraries Used",
         "variableName": "AboutText3",
@@ -296,20 +296,6 @@
         "id": 9,
         "eepromAddress": -1,
         "readOnly": true,
-        "localOnly": false,
-        "visible": true
-      }
-    },
-    {
-      "parentId": 0,
-      "type": "actionMenu",
-      "item": {
-        "name": "Back To Homepage",
-        "variableName": "BackToHomepage",
-        "id": 19,
-        "eepromAddress": -1,
-        "functionName": "backToHomepage",
-        "readOnly": false,
         "localOnly": false,
         "visible": true
       }

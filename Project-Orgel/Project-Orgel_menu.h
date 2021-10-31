@@ -27,7 +27,6 @@ extern GraphicsDeviceRenderer renderer;
 
 
 // Global Menu Item exports
-extern ActionMenuItem menuBackToHomepage;
 extern TextMenuItem menuAboutText4;
 extern TextMenuItem menuAboutText3;
 extern TextMenuItem menuAboutText2;
