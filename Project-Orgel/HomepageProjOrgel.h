@@ -20,6 +20,7 @@ public:
     {
         // take over display has just been called, and we
         // now need to do any initial activity
+        gfx.setFontPosBaseline();
         switches.changeEncoderPrecision(menuBPM.getMaximumValue(), menuBPM.getCurrentValue());
         draw();
     }
@@ -62,21 +63,19 @@ public:
 
     void renderLoop(unsigned int currentValue, RenderPressMode userClick) override
     {
-        // At this point clicked is the status of the select button
-        // it can be RPRESS_NONE, RPRESS_PRESSED or RPRESS_HELD
-        // encoderValue is the current value of the rotary encoder
+        // Button Hold: go to menu
         if (userClick == RPRESS_HELD)
         {
             renderer.giveBackDisplay();
         }
+        // Button Click: switch status
         else if (userClick == RPRESS_PRESSED)
         {
             menuPlay.setBoolean(!menuPlay.getBoolean());
             switches.changeEncoderPrecision(menuBPM.getMaximumValue(), menuBPM.getCurrentValue());
             draw();
         }
-        // for example to update a menu based on current value of the encoder.
-        // don't forget you could call changePrecision in started(..)
+        // Rotate: change speed
         if (menuBPM.getCurrentValue() != currentValue)
         {
             menuBPM.setCurrentValue(currentValue);

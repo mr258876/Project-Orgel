@@ -7,7 +7,7 @@
       "parentId": 0,
       "type": "actionMenu",
       "item": {
-        "name": "Back To Homepage",
+        "name": "Back and Save",
         "variableName": "BackToHomepage",
         "id": 20,
         "eepromAddress": -1,
@@ -93,6 +93,69 @@
       }
     },
     {
+      "parentId": 10,
+      "type": "floatItem",
+      "item": {
+        "numDecimalPlaces": 2,
+        "name": "Supply Voltage",
+        "variableName": "SupplyVoltage",
+        "id": 21,
+        "eepromAddress": -1,
+        "readOnly": true,
+        "localOnly": false,
+        "visible": true
+      }
+    },
+    {
+      "parentId": 10,
+      "type": "floatItem",
+      "item": {
+        "numDecimalPlaces": 2,
+        "name": "Motor Current",
+        "variableName": "MotorCurrent",
+        "id": 22,
+        "eepromAddress": -1,
+        "readOnly": true,
+        "localOnly": false,
+        "visible": true
+      }
+    },
+    {
+      "parentId": 10,
+      "type": "analogItem",
+      "item": {
+        "maxValue": 510,
+        "offset": 0,
+        "divisor": 1,
+        "unitName": "",
+        "name": "SG_Workload",
+        "variableName": "SGWorkload",
+        "id": 23,
+        "eepromAddress": -1,
+        "readOnly": true,
+        "localOnly": false,
+        "visible": true
+      }
+    },
+    {
+      "parentId": 10,
+      "type": "analogItem",
+      "item": {
+        "maxValue": 2047,
+        "offset": 0,
+        "divisor": 1,
+        "unitName": "mA",
+        "name": "Target Current",
+        "variableName": "TargetCurrent",
+        "id": 25,
+        "eepromAddress": -1,
+        "functionName": "setMotorCurrent",
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true
+      }
+    },
+    {
       "parentId": 4,
       "type": "boolItem",
       "item": {
@@ -125,26 +188,11 @@
       "parentId": 11,
       "type": "textItem",
       "item": {
-        "textLength": 5,
+        "textLength": 1,
         "itemType": "PLAIN_TEXT",
-        "name": "Gear of Orgel",
+        "name": "Orgel Rear Ratio",
         "variableName": "GearText1",
         "id": 15,
-        "eepromAddress": -1,
-        "readOnly": true,
-        "localOnly": false,
-        "visible": true
-      }
-    },
-    {
-      "parentId": 11,
-      "type": "textItem",
-      "item": {
-        "textLength": 5,
-        "itemType": "PLAIN_TEXT",
-        "name": "devides Motor *100",
-        "variableName": "GearText2",
-        "id": 17,
         "eepromAddress": -1,
         "readOnly": true,
         "localOnly": false,
@@ -162,51 +210,7 @@
         "name": "Equals",
         "variableName": "DriveRatio",
         "id": 16,
-        "eepromAddress": 10,
-        "readOnly": false,
-        "localOnly": false,
-        "visible": true
-      }
-    },
-    {
-      "parentId": 4,
-      "type": "subMenu",
-      "item": {
-        "secured": false,
-        "name": "Current Settings",
-        "variableName": "Current",
-        "id": 12,
-        "eepromAddress": -1,
-        "readOnly": false,
-        "localOnly": false,
-        "visible": true
-      }
-    },
-    {
-      "parentId": 12,
-      "type": "boolItem",
-      "item": {
-        "naming": "ON_OFF",
-        "name": "CurrentAutoOptimize",
-        "variableName": "CurrentAutoOptimize",
-        "id": 13,
         "eepromAddress": 3,
-        "functionName": "switchCurrentAutoOptimize",
-        "readOnly": false,
-        "localOnly": false,
-        "visible": true
-      }
-    },
-    {
-      "parentId": 12,
-      "type": "boolItem",
-      "item": {
-        "naming": "ON_OFF",
-        "name": "Standby Power Down",
-        "variableName": "StandbyPowerDown",
-        "id": 14,
-        "eepromAddress": 4,
-        "functionName": "switchStandbyPowerDown",
         "readOnly": false,
         "localOnly": false,
         "visible": true
@@ -355,7 +359,7 @@
       },
       {
         "name": "UPDATES_PER_SEC",
-        "latestValue": "10",
+        "latestValue": "25",
         "subsystem": "DISPLAY"
       },
       {

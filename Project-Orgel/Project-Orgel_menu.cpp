@@ -35,29 +35,27 @@ RENDERING_CALLBACK_NAME_INVOKE(fnWirelessRtCall, backSubItemRenderFn, "Wireless"
 const PROGMEM SubMenuInfo minfoWireless = { "Wireless", 5, 0xffff, 0, NO_CALLBACK };
 BackMenuItem menuBackWireless(fnWirelessRtCall, NULL);
 SubMenuItem menuWireless(&minfoWireless, &menuBackWireless, &menuAbout);
-const PROGMEM BooleanMenuInfo minfoStandbyPowerDown = { "Standby Power Down", 14, 4, 1, switchStandbyPowerDown, NAMING_ON_OFF };
-BooleanMenuItem menuStandbyPowerDown(&minfoStandbyPowerDown, false, NULL);
-const PROGMEM BooleanMenuInfo minfoCurrentAutoOptimize = { "CurrentAutoOptimize", 13, 3, 1, switchCurrentAutoOptimize, NAMING_ON_OFF };
-BooleanMenuItem menuCurrentAutoOptimize(&minfoCurrentAutoOptimize, false, &menuStandbyPowerDown);
-RENDERING_CALLBACK_NAME_INVOKE(fnCurrentRtCall, backSubItemRenderFn, "Current Settings", -1, NO_CALLBACK)
-const PROGMEM SubMenuInfo minfoCurrent = { "Current Settings", 12, 0xffff, 0, NO_CALLBACK };
-BackMenuItem menuBackCurrent(fnCurrentRtCall, &menuCurrentAutoOptimize);
-SubMenuItem menuCurrent(&minfoCurrent, &menuBackCurrent, NULL);
-const PROGMEM AnalogMenuInfo minfoDriveRatio = { "Equals", 16, 10, 2047, NO_CALLBACK, 0, 1, "" };
+const PROGMEM AnalogMenuInfo minfoDriveRatio = { "Equals", 16, 3, 2047, NO_CALLBACK, 0, 1, "" };
 AnalogMenuItem menuDriveRatio(&minfoDriveRatio, 0, NULL);
-RENDERING_CALLBACK_NAME_INVOKE(fnGearText2RtCall, textItemRenderFn, "devides Motor *100", -1, NO_CALLBACK)
-TextMenuItem menuGearText2(fnGearText2RtCall, 17, 5, &menuDriveRatio);
-RENDERING_CALLBACK_NAME_INVOKE(fnGearText1RtCall, textItemRenderFn, "Gear of Orgel", -1, NO_CALLBACK)
-TextMenuItem menuGearText1(fnGearText1RtCall, 15, 5, &menuGearText2);
+RENDERING_CALLBACK_NAME_INVOKE(fnGearText1RtCall, textItemRenderFn, "Orgel Rear Ratio", -1, NO_CALLBACK)
+TextMenuItem menuGearText1(fnGearText1RtCall, 15, 1, &menuDriveRatio);
 RENDERING_CALLBACK_NAME_INVOKE(fnGearSettingsRtCall, backSubItemRenderFn, "Gear Settings", -1, NO_CALLBACK)
 const PROGMEM SubMenuInfo minfoGearSettings = { "Gear Settings", 11, 0xffff, 0, NO_CALLBACK };
 BackMenuItem menuBackGearSettings(fnGearSettingsRtCall, &menuGearText1);
-SubMenuItem menuGearSettings(&minfoGearSettings, &menuBackGearSettings, &menuCurrent);
+SubMenuItem menuGearSettings(&minfoGearSettings, &menuBackGearSettings, NULL);
 const PROGMEM BooleanMenuInfo minfoDirection = { "Direction", 19, 2, 1, changeMotorDir, NAMING_TRUE_FALSE };
 BooleanMenuItem menuDirection(&minfoDirection, false, &menuGearSettings);
+const PROGMEM AnalogMenuInfo minfoTargetCurrent = { "Target Current", 25, 0xffff, 2047, setMotorCurrent, 0, 1, "mA" };
+AnalogMenuItem menuTargetCurrent(&minfoTargetCurrent, 0, NULL);
+const PROGMEM AnalogMenuInfo minfoSGWorkload = { "SG_Workload", 23, 0xffff, 510, NO_CALLBACK, 0, 1, "" };
+AnalogMenuItem menuSGWorkload(&minfoSGWorkload, 0, &menuTargetCurrent);
+const PROGMEM FloatMenuInfo minfoMotorCurrent = { "Motor Current", 22, 0xffff, 2, NO_CALLBACK };
+FloatMenuItem menuMotorCurrent(&minfoMotorCurrent, &menuSGWorkload);
+const PROGMEM FloatMenuInfo minfoSupplyVoltage = { "Supply Voltage", 21, 0xffff, 2, NO_CALLBACK };
+FloatMenuItem menuSupplyVoltage(&minfoSupplyVoltage, &menuMotorCurrent);
 RENDERING_CALLBACK_NAME_INVOKE(fnMotorStatusRtCall, backSubItemRenderFn, "Motor Status", -1, NO_CALLBACK)
 const PROGMEM SubMenuInfo minfoMotorStatus = { "Motor Status", 10, 0xffff, 0, NO_CALLBACK };
-BackMenuItem menuBackMotorStatus(fnMotorStatusRtCall, NULL);
+BackMenuItem menuBackMotorStatus(fnMotorStatusRtCall, &menuSupplyVoltage);
 SubMenuItem menuMotorStatus(&minfoMotorStatus, &menuBackMotorStatus, &menuDirection);
 RENDERING_CALLBACK_NAME_INVOKE(fnMotorRtCall, backSubItemRenderFn, "Motor", -1, NO_CALLBACK)
 const PROGMEM SubMenuInfo minfoMotor = { "Motor", 4, 0xffff, 0, NO_CALLBACK };
@@ -71,7 +69,7 @@ const PROGMEM AnalogMenuInfo minfoBPM = { "BPM", 2, 0xffff, 511, setSpeed, 0, 1,
 AnalogMenuItem menuBPM(&minfoBPM, 0, &menuSettings);
 const PROGMEM BooleanMenuInfo minfoPlay = { "play", 1, 0xffff, 1, switchPlayStatus, NAMING_ON_OFF };
 BooleanMenuItem menuPlay(&minfoPlay, false, &menuBPM);
-const PROGMEM AnyMenuInfo minfoBackToHomepage = { "Back To Homepage", 20, 0xffff, 0, toHomePage };
+const PROGMEM AnyMenuInfo minfoBackToHomepage = { "Back and Save", 20, 0xffff, 0, toHomePage };
 ActionMenuItem menuBackToHomepage(&minfoBackToHomepage, &menuPlay);
 
 void setupMenu() {
@@ -79,15 +77,17 @@ void setupMenu() {
     menuMgr.setEepromRef(&glArduinoEeprom);
     // Now add any readonly, non-remote and visible flags.
     menuGearText1.setReadOnly(true);
+    menuSupplyVoltage.setReadOnly(true);
+    menuSGWorkload.setReadOnly(true);
     menuAboutText3.setReadOnly(true);
-    menuAboutText4.setReadOnly(true);
-    menuAboutText1.setReadOnly(true);
-    menuGearText2.setReadOnly(true);
     menuAboutText2.setReadOnly(true);
+    menuAboutText1.setReadOnly(true);
+    menuAboutText4.setReadOnly(true);
+    menuMotorCurrent.setReadOnly(true);
 
     // Code generated by plugins.
     gfx.begin();
-    renderer.setUpdatesPerSecond(10);
+    renderer.setUpdatesPerSecond(25);
     switches.initialise(internalDigitalIo(), true);
     menuMgr.initForEncoder(&renderer, &menuBackToHomepage, 34, 35, 32);
 }

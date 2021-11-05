@@ -35,16 +35,15 @@ extern BackMenuItem menuBackAbout;
 extern SubMenuItem menuAbout;
 extern BackMenuItem menuBackWireless;
 extern SubMenuItem menuWireless;
-extern BooleanMenuItem menuStandbyPowerDown;
-extern BooleanMenuItem menuCurrentAutoOptimize;
-extern BackMenuItem menuBackCurrent;
-extern SubMenuItem menuCurrent;
 extern AnalogMenuItem menuDriveRatio;
-extern TextMenuItem menuGearText2;
 extern TextMenuItem menuGearText1;
 extern BackMenuItem menuBackGearSettings;
 extern SubMenuItem menuGearSettings;
 extern BooleanMenuItem menuDirection;
+extern AnalogMenuItem menuTargetCurrent;
+extern AnalogMenuItem menuSGWorkload;
+extern FloatMenuItem menuMotorCurrent;
+extern FloatMenuItem menuSupplyVoltage;
 extern BackMenuItem menuBackMotorStatus;
 extern SubMenuItem menuMotorStatus;
 extern BackMenuItem menuBackMotor;
@@ -63,10 +62,9 @@ void setupMenu();
 #define CALLBACK_FUNCTION
 
 void CALLBACK_FUNCTION changeMotorDir(int id);
+void CALLBACK_FUNCTION setMotorCurrent(int id);
 void CALLBACK_FUNCTION setSpeed(int id);
-void CALLBACK_FUNCTION switchCurrentAutoOptimize(int id);
 void CALLBACK_FUNCTION switchPlayStatus(int id);
-void CALLBACK_FUNCTION switchStandbyPowerDown(int id);
 void CALLBACK_FUNCTION toHomePage(int id);
 
 #endif // MENU_GENERATED_CODE_H
