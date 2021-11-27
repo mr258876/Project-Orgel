@@ -40,7 +40,7 @@ INA226 ina;
 // Lock for the I2C Bus
 SemaphoreHandle_t I2CMutex = xSemaphoreCreateMutex();
 // Bus max delay
-#define portMAX_DELAY 50
+//#define portMAX_DELAY 50
 
 // Variables
 bool playStatus = false;
@@ -67,9 +67,9 @@ void setup()
     motorGear = menuGearTeeth.getCurrentValue();
 
     // Configure INA226
-    ina.begin();
-    ina.configure();
-    ina.calibrate(0.1, 1.7); // Rshunt = 0.1 ohm, Max current = 1.7A
+   ina.begin();
+   ina.configure();
+   ina.calibrate(0.1, 1.7); // Rshunt = 0.1 ohm, Max current = 1.7A
 
     Serial.begin(9600);
     Serial.println("Orgel Running...");
@@ -214,6 +214,7 @@ void CALLBACK_FUNCTION toHomePage(int id)
 void CALLBACK_FUNCTION setGearTeeth(int id) {
     // TODO - your menu change code
     motorGear = menuGearTeeth.getCurrentValue();
+    setMotorSpeed(menuBPM.getCurrentValue());
 }
 
 
@@ -221,4 +222,5 @@ void CALLBACK_FUNCTION setGearTeeth(int id) {
 void CALLBACK_FUNCTION setCurrent(int id) {
     // TODO - your menu change code
     motorCurrent = menuCurrent.getCurrentValue();
+    setMotorSpeed(menuBPM.getCurrentValue());
 }
