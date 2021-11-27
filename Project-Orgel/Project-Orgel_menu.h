@@ -35,17 +35,9 @@ extern BackMenuItem menuBackAbout;
 extern SubMenuItem menuAbout;
 extern BackMenuItem menuBackWireless;
 extern SubMenuItem menuWireless;
-extern AnalogMenuItem menuDriveRatio;
-extern TextMenuItem menuGearText1;
-extern BackMenuItem menuBackGearSettings;
-extern SubMenuItem menuGearSettings;
+extern AnalogMenuItem menuCurrent;
+extern AnalogMenuItem menuGearTeeth;
 extern BooleanMenuItem menuDirection;
-extern AnalogMenuItem menuTargetCurrent;
-extern AnalogMenuItem menuSGWorkload;
-extern FloatMenuItem menuMotorCurrent;
-extern FloatMenuItem menuSupplyVoltage;
-extern BackMenuItem menuBackMotorStatus;
-extern SubMenuItem menuMotorStatus;
 extern BackMenuItem menuBackMotor;
 extern SubMenuItem menuMotor;
 extern BackMenuItem menuBackSettings;
@@ -62,7 +54,7 @@ void setupMenu();
 #define CALLBACK_FUNCTION
 
 void CALLBACK_FUNCTION changeMotorDir(int id);
-void CALLBACK_FUNCTION setMotorCurrent(int id);
+void CALLBACK_FUNCTION setGearTeeth(int id);
 void CALLBACK_FUNCTION setSpeed(int id);
 void CALLBACK_FUNCTION switchPlayStatus(int id);
 void CALLBACK_FUNCTION toHomePage(int id);

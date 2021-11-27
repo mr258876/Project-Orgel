@@ -80,83 +80,6 @@
     },
     {
       "parentId": 4,
-      "type": "subMenu",
-      "item": {
-        "secured": false,
-        "name": "Motor Status",
-        "variableName": "MotorStatus",
-        "id": 10,
-        "eepromAddress": -1,
-        "readOnly": false,
-        "localOnly": false,
-        "visible": true
-      }
-    },
-    {
-      "parentId": 10,
-      "type": "floatItem",
-      "item": {
-        "numDecimalPlaces": 2,
-        "name": "Supply Voltage",
-        "variableName": "SupplyVoltage",
-        "id": 21,
-        "eepromAddress": -1,
-        "readOnly": true,
-        "localOnly": false,
-        "visible": true
-      }
-    },
-    {
-      "parentId": 10,
-      "type": "floatItem",
-      "item": {
-        "numDecimalPlaces": 2,
-        "name": "Motor Current",
-        "variableName": "MotorCurrent",
-        "id": 22,
-        "eepromAddress": -1,
-        "readOnly": true,
-        "localOnly": false,
-        "visible": true
-      }
-    },
-    {
-      "parentId": 10,
-      "type": "analogItem",
-      "item": {
-        "maxValue": 510,
-        "offset": 0,
-        "divisor": 1,
-        "unitName": "",
-        "name": "SG_Workload",
-        "variableName": "SGWorkload",
-        "id": 23,
-        "eepromAddress": -1,
-        "readOnly": true,
-        "localOnly": false,
-        "visible": true
-      }
-    },
-    {
-      "parentId": 10,
-      "type": "analogItem",
-      "item": {
-        "maxValue": 2047,
-        "offset": 0,
-        "divisor": 1,
-        "unitName": "mA",
-        "name": "Target Current",
-        "variableName": "TargetCurrent",
-        "id": 25,
-        "eepromAddress": -1,
-        "functionName": "setMotorCurrent",
-        "readOnly": false,
-        "localOnly": false,
-        "visible": true
-      }
-    },
-    {
-      "parentId": 4,
       "type": "boolItem",
       "item": {
         "naming": "TRUE_FALSE",
@@ -172,45 +95,34 @@
     },
     {
       "parentId": 4,
-      "type": "subMenu",
+      "type": "analogItem",
       "item": {
-        "secured": false,
-        "name": "Gear Settings",
-        "variableName": "GearSettings",
-        "id": 11,
-        "eepromAddress": -1,
+        "maxValue": 255,
+        "offset": 0,
+        "divisor": 1,
+        "unitName": "",
+        "name": "Gear Teeth",
+        "variableName": "GearTeeth",
+        "id": 21,
+        "eepromAddress": 3,
+        "functionName": "setGearTeeth",
         "readOnly": false,
         "localOnly": false,
         "visible": true
       }
     },
     {
-      "parentId": 11,
-      "type": "textItem",
-      "item": {
-        "textLength": 1,
-        "itemType": "PLAIN_TEXT",
-        "name": "Orgel Rear Ratio",
-        "variableName": "GearText1",
-        "id": 15,
-        "eepromAddress": -1,
-        "readOnly": true,
-        "localOnly": false,
-        "visible": true
-      }
-    },
-    {
-      "parentId": 11,
+      "parentId": 4,
       "type": "analogItem",
       "item": {
         "maxValue": 2047,
         "offset": 0,
         "divisor": 1,
-        "unitName": "",
-        "name": "Equals",
-        "variableName": "DriveRatio",
-        "id": 16,
-        "eepromAddress": 3,
+        "unitName": "mA",
+        "name": "Current",
+        "variableName": "Current",
+        "id": 22,
+        "eepromAddress": 5,
         "readOnly": false,
         "localOnly": false,
         "visible": true

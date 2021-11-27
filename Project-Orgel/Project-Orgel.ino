@@ -18,7 +18,6 @@
 #define DIAG_Pin 19           // Diag Pin
 
 // 电机内部输出轴旋转一周步数
-// const int STEPS_PER_ROTOR_REV = 194; // Nidec 25GBC12 一圈194*八分之一微步
 const int STEPS_PER_ROTOR_REV = 1600; // 42电机 一圈1600*八分之一微步
 // 输出轴减速比
 // const float GEAR_REDUCTION = 12.0; // Nidec 25GBC12 输出轴减速比1:12
@@ -29,7 +28,7 @@ const float ORGEL_REDUCTION = 0.48; // 29齿八音盒齿轮:60齿电机齿轮
 // 八音盒齿轮周拍
 const float ORGEL_BPM_PER_ROUND = 4.516; // 齿轮周长约1.15picm,纸带一拍0.8cm,故八音盒齿轮旋转一周约4.516拍
 // 获得BPM计算常数
-const float BPM_CALC_CONST = STEPS_PER_ROTOR_REV * GEAR_REDUCTION * ORGEL_REDUCTION / ORGEL_BPM_PER_ROUND / 60;
+const float BPM_CALC_CONST = STEPS_PER_ROTOR_REV *  ORGEL_REDUCTION / ORGEL_BPM_PER_ROUND / 60;
 
 // Create a Driver Object
 TMC2209Stepper driver(&DRIVER_SERIAL, R_SENSE, DRIVER_ADDRESS);
@@ -85,15 +84,15 @@ void setup()
         1               // tskNO_AFFINITY   Whether to scheduling tasks dynamiclly
         );
     
-    xTaskCreatePinnedToCore(
-        runFunctions,      // pvTaskCode   Code to run
-        "runFunctions",    // pcName       A name just for humans
-        8192,           // usStackDepth This stack size can be checked & adjusted by reading the Stack Highwater
-        NULL,           // pvParameters
-        2,              // uxPriority   3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
-        NULL,           // pxCreatedTask
-        1               // tskNO_AFFINITY   Whether to scheduling tasks dynamiclly
-        );
+    // xTaskCreatePinnedToCore(
+    //     runFunctions,      // pvTaskCode   Code to run
+    //     "runFunctions",    // pcName       A name just for humans
+    //     8192,           // usStackDepth This stack size can be checked & adjusted by reading the Stack Highwater
+    //     NULL,           // pvParameters
+    //     2,              // uxPriority   3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
+    //     NULL,           // pxCreatedTask
+    //     1               // tskNO_AFFINITY   Whether to scheduling tasks dynamiclly
+    //     );
 }
 
 void loop()
@@ -120,14 +119,13 @@ void runTcMenu(void *pvParameters)
 }
 
 // 功能、次要进程循环函数
-void runFunctions(void *pvParameters)
-{
-    for (;;)
-    {
-        getPowerStatus();
-        currentOptimize();
-    }
-}
+// void runFunctions(void *pvParameters)
+// {
+//     for (;;)
+//     {
+
+//     }
+// }
 
 // TMC2209初始化
 void driverSetup()
@@ -158,14 +156,12 @@ void CALLBACK_FUNCTION switchPlayStatus(int id)
         playStatus = false;
         setMotorSpeed(0);
     }
-    menuTargetCurrent.setCurrentValue(motorCurrent);
 }
 
 // BPM改变回调
 void CALLBACK_FUNCTION setSpeed(int id)
 {
     setMotorSpeed(menuBPM.getCurrentValue());
-    menuTargetCurrent.setCurrentValue(motorCurrent);
 }
 
 // 改变电机速度
@@ -187,15 +183,6 @@ void setMotorSpeed(int BPM)
 
         // Set Current
         motorCurrent = 950; // Bset Current I found. Even Better than dynamic current.
-        // motorCurrent = 550 + 0.1 * BPM + 0.0015 * BPM * BPM;
-        // if (motorCurrent < 600)
-        // {
-        //     motorCurrent = 600;
-        // }
-        // else if (motorCurrent > 1000)
-        // {
-        //     motorCurrent = 1000;
-        // }
         driver.rms_current(motorCurrent); // 设置电流大小 (mA)
     }
     else
@@ -205,19 +192,10 @@ void setMotorSpeed(int BPM)
     }
 }
 
-// 手动设置电流
-void CALLBACK_FUNCTION setMotorCurrent(int id) {
-    if(menuTargetCurrent.getCurrentValue() != motorCurrent){
-        motorCurrent = menuTargetCurrent.getCurrentValue();
-        driver.rms_current(motorCurrent);
-    }
-}
-
 // 设置电机运行方向
 void CALLBACK_FUNCTION changeMotorDir(int id)
 {
     motorDirection = !motorDirection;
-    setMotorSpeed(menuBPM.getCurrentValue());
 }
 
 // 返回首页
@@ -228,17 +206,8 @@ void CALLBACK_FUNCTION toHomePage(int id)
     renderer.takeOverDisplay();
 }
 
-// 电流计读数
-void getPowerStatus()
-{   
-    xSemaphoreTake(I2CMutex, portMAX_DELAY);
-    menuSupplyVoltage.setFloatValue(ina.readBusVoltage());
-    xSemaphoreGive(I2CMutex);
-}
 
-// 电机负载读数、电流PID调整
-void currentOptimize()
-{
-    int workload = driver.SG_RESULT();
-    menuSGWorkload.setCurrentValue(workload);
+
+void CALLBACK_FUNCTION setGearTeeth(int id) {
+    // TODO - your menu change code
 }
