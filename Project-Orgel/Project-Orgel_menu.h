@@ -54,6 +54,7 @@ void setupMenu();
 #define CALLBACK_FUNCTION
 
 void CALLBACK_FUNCTION changeMotorDir(int id);
+void CALLBACK_FUNCTION setCurrent(int id);
 void CALLBACK_FUNCTION setGearTeeth(int id);
 void CALLBACK_FUNCTION setSpeed(int id);
 void CALLBACK_FUNCTION switchPlayStatus(int id);

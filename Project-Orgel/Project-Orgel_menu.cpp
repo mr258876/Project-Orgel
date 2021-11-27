@@ -35,7 +35,7 @@ RENDERING_CALLBACK_NAME_INVOKE(fnWirelessRtCall, backSubItemRenderFn, "Wireless"
 const PROGMEM SubMenuInfo minfoWireless = { "Wireless", 5, 0xffff, 0, NO_CALLBACK };
 BackMenuItem menuBackWireless(fnWirelessRtCall, NULL);
 SubMenuItem menuWireless(&minfoWireless, &menuBackWireless, &menuAbout);
-const PROGMEM AnalogMenuInfo minfoCurrent = { "Current", 22, 5, 2047, NO_CALLBACK, 0, 1, "mA" };
+const PROGMEM AnalogMenuInfo minfoCurrent = { "Current", 22, 5, 2047, setCurrent, 0, 1, "mA" };
 AnalogMenuItem menuCurrent(&minfoCurrent, 0, NULL);
 const PROGMEM AnalogMenuInfo minfoGearTeeth = { "Gear Teeth", 21, 3, 255, setGearTeeth, 0, 1, "" };
 AnalogMenuItem menuGearTeeth(&minfoGearTeeth, 0, &menuCurrent);

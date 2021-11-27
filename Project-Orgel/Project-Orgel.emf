@@ -123,6 +123,7 @@
         "variableName": "Current",
         "id": 22,
         "eepromAddress": 5,
+        "functionName": "setCurrent",
         "readOnly": false,
         "localOnly": false,
         "visible": true

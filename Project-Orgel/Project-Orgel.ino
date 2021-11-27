@@ -24,11 +24,13 @@ const int STEPS_PER_ROTOR_REV = 1600; // 42电机 一圈1600*八分之一微步
 const float GEAR_REDUCTION = 1.0; // 42电机 输出轴直出
 // 八音盒减速比
 // const float ORGEL_REDUCTION = 0.69; // 29齿八音盒齿轮:42齿电机齿轮
-const float ORGEL_REDUCTION = 0.48; // 29齿八音盒齿轮:60齿电机齿轮
+const float ORGEL_GEAR = 29; // 29齿八音盒齿轮
+const float MOTOR_GEAR = 60; // 60齿电机齿轮
 // 八音盒齿轮周拍
 const float ORGEL_BPM_PER_ROUND = 4.516; // 齿轮周长约1.15picm,纸带一拍0.8cm,故八音盒齿轮旋转一周约4.516拍
 // 获得BPM计算常数
-const float BPM_CALC_CONST = STEPS_PER_ROTOR_REV *  ORGEL_REDUCTION / ORGEL_BPM_PER_ROUND / 60;
+// const float BPM_CALC_CONST = STEPS_PER_ROTOR_REV * GEAR_REDUCTION * ORGEL_GEAR / MOTOR_GEAR / ORGEL_BPM_PER_ROUND / 60;
+float BPM_CALC_CONST = STEPS_PER_ROTOR_REV * GEAR_REDUCTION * ORGEL_GEAR / 1 / ORGEL_BPM_PER_ROUND / 60;
 
 // Create a Driver Object
 TMC2209Stepper driver(&DRIVER_SERIAL, R_SENSE, DRIVER_ADDRESS);
@@ -46,6 +48,7 @@ int playBPM = 120;
 int motorCurrent = 950;
 bool autoCurrentEnabled;
 bool motorDirection;
+int motorGear = 60;
 
 // Current Optimize
 int targetWorkload = 70;
@@ -60,6 +63,8 @@ void setup()
     menuBPM.setCurrentValue(120);
     homePage();
     motorDirection = menuDirection.getBoolean();
+    motorCurrent = menuCurrent.getCurrentValue();
+    motorGear = menuGearTeeth.getCurrentValue();
 
     // Configure INA226
     ina.begin();
@@ -174,15 +179,14 @@ void setMotorSpeed(int BPM)
         // Set Motor Speed
         if (motorDirection)
         {
-            driver.VACTUAL(BPM * BPM_CALC_CONST / 0.715);
+            driver.VACTUAL(BPM * BPM_CALC_CONST / motorGear / 0.715);
         }
         else
         {
-            driver.VACTUAL(-BPM * BPM_CALC_CONST / 0.715);
+            driver.VACTUAL(-BPM * BPM_CALC_CONST / motorGear / 0.715);
         }
 
         // Set Current
-        motorCurrent = 950; // Bset Current I found. Even Better than dynamic current.
         driver.rms_current(motorCurrent); // 设置电流大小 (mA)
     }
     else
@@ -206,8 +210,15 @@ void CALLBACK_FUNCTION toHomePage(int id)
     renderer.takeOverDisplay();
 }
 
-
-
+// 设置齿轮齿数
 void CALLBACK_FUNCTION setGearTeeth(int id) {
     // TODO - your menu change code
+    motorGear = menuGearTeeth.getCurrentValue();
+}
+
+
+
+void CALLBACK_FUNCTION setCurrent(int id) {
+    // TODO - your menu change code
+    motorCurrent = menuCurrent.getCurrentValue();
 }
