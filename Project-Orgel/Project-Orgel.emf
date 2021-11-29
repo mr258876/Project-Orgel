@@ -134,20 +134,6 @@
       "type": "subMenu",
       "item": {
         "secured": false,
-        "name": "Wireless",
-        "variableName": "Wireless",
-        "id": 5,
-        "eepromAddress": -1,
-        "readOnly": false,
-        "localOnly": false,
-        "visible": true
-      }
-    },
-    {
-      "parentId": 3,
-      "type": "subMenu",
-      "item": {
-        "secured": false,
         "name": "About",
         "variableName": "About",
         "id": 6,

@@ -33,8 +33,6 @@ extern TextMenuItem menuAboutText2;
 extern TextMenuItem menuAboutText1;
 extern BackMenuItem menuBackAbout;
 extern SubMenuItem menuAbout;
-extern BackMenuItem menuBackWireless;
-extern SubMenuItem menuWireless;
 extern AnalogMenuItem menuCurrent;
 extern AnalogMenuItem menuGearTeeth;
 extern BooleanMenuItem menuDirection;
