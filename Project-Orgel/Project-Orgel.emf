@@ -164,24 +164,9 @@
       "item": {
         "textLength": 1,
         "itemType": "PLAIN_TEXT",
-        "name": "Mr258876 on Github",
+        "name": "By",
         "variableName": "AboutText2",
-        "id": 8,
-        "eepromAddress": -1,
-        "readOnly": true,
-        "localOnly": false,
-        "visible": true
-      }
-    },
-    {
-      "parentId": 6,
-      "type": "textItem",
-      "item": {
-        "textLength": 5,
-        "itemType": "PLAIN_TEXT",
-        "name": "Libraries Used",
-        "variableName": "AboutText3",
-        "id": 18,
+        "id": 23,
         "eepromAddress": -1,
         "readOnly": true,
         "localOnly": false,
@@ -194,9 +179,9 @@
       "item": {
         "textLength": 1,
         "itemType": "PLAIN_TEXT",
-        "name": "TcMenu TMCStepper",
-        "variableName": "AboutText4",
-        "id": 9,
+        "name": "Mr258876",
+        "variableName": "AboutText3",
+        "id": 8,
         "eepromAddress": -1,
         "readOnly": true,
         "localOnly": false,
