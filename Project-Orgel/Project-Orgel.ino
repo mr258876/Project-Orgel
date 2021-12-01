@@ -9,7 +9,6 @@
 #include "HomepageProjOrgel.h"
 
 #include <TMCStepper.h>
-#include <INA226.h>
 
 #define DRIVER_SERIAL Serial2 // TMC2209 Serial Port
 #define DRIVER_ADDRESS 0b00   // Serial Address
@@ -65,11 +64,6 @@ void setup()
     motorDirection = menuDirection.getBoolean();
     motorCurrent = menuCurrent.getCurrentValue();
     motorGear = menuGearTeeth.getCurrentValue();
-
-    // Configure INA226
-   ina.begin();
-   ina.configure();
-   ina.calibrate(0.1, 1.7); // Rshunt = 0.1 ohm, Max current = 1.7A
 
     Serial.begin(9600);
     Serial.println("Orgel Running...");
