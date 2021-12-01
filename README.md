@@ -29,7 +29,7 @@
 * ESP32-D0DWQ6 开发板 30针 *1
 * TMC2209 步进电机驱动模块 *1
 >⚠注意：模块需要支持以串口方式与MCU进行通信
-* 42BYGH40/39 步进电机 *1  
+* 42BYGH40/39 步进电机 (高40/39mm) *1  
 >ℹ注：可以是任意两相四线步进电机, 但其应能够提供足够力矩(>=300mN\*m)
 * 0.4模齿轮(60齿以上) *1
 >ℹ注：齿轮越大越好，降低电机转速是减小噪音的有效方法
@@ -69,7 +69,7 @@
 
 ![curcit_schema][schema_url]
 
-处于空间利用方面的考量，推荐使用PCB实现上图中电路。水平稀烂，只能画出一手烂板子。如需要，请点击[这里][gerber_url]。
+处于空间利用方面的考量，推荐使用PCB实现上图中电路。水平稀烂，只能画出一手烂板子。如有需要，请点击[这里][gerber_url]。
 >ℹ注：仅适用于尺寸为22\*17的MP1584模块与焊接了TX,RX针脚的乐积TMC2209模块
 
 如果无法进行焊接，则可以考虑使用面包板完成接线。
@@ -92,19 +92,21 @@ U8g2
 >🛑警告：步进电机驱动器运行会产生高温。请小心烫伤。
 
 ### 初次使用
-将程序首次烧录至ESP32时，所有设置为默认初始值0。请遵照下述方法设置齿轮齿数、运行电流并保存后再使用。
+将程序首次烧录至ESP32时，所有设置为默认初始值0。请遵照下述方法设置`齿轮齿数`、`运行电流`并保存后再使用。
 ### 基本操作
 在主视图中，旋转旋钮更改BPM。单击旋钮切换播放状态。
 ![mainframe_zh][mainframe_zh_url]
 ### 菜单与设置
 在主视图中长按可进入主菜单。
 ![tomenu_zh][tomenu_zh_url]
+
 在主菜单中选择`Back and Save`以保存设置并回到主菜单。在主菜单中无操作30秒会自动返回主界面。
 
 >⚠注意：在更改菜单中选项值后必须通过`Back and Save`选项退出菜单，否则在重启后选项值将恢复更改前状态。
 
 在菜单中旋转旋钮查看选项，单击旋钮以与选项交互。在交互状态下旋转旋钮以更改选项值，单击旋钮退出。
 ![menu_zh][menu_zh_url]
+
 各可调节值说明：
  - Motor菜单
      - Direction: 控制电机正反转
@@ -112,7 +114,7 @@ U8g2
      - Current: 电机运行电流设置，单位mA 参考值：1050mA 
     >⚠注意：随着电流的增大，驱动器会产生更多热量并可能导致过热保护，电机可能会产生更大噪音。正常使用请不要将该值提升至1700mA以上。
 
-
+Have fun!
 
 # English
 >## Table of Contents
@@ -122,7 +124,7 @@ U8g2
     - [Gear Modding](#gear-modding)
     - [Mounting](#mounting)
     - [Curcit](#circuit)
-    - [Programming](#programming)
+    - [Uploading Code](#uploading-code)
 - [Usage](#usage)
 
 >## Project Status 
@@ -154,15 +156,49 @@ blablabla
 blablabla
 ### Circuit
 blablabla
-### Programming
+### Uploading Code
 blablabla
 
 ## Usage
+>⚠Caution: Due to the diversity of hardware bundles and differences in modding procedure, unknown bugs might appear in some situations (e.g. functions not working). This manual only represents the operations and results on the testing hardware.
 
+>🛑Warning: The driver moudle would generate heat. Please be aware of burns.
+
+### First Use
+When first upload the code to ESP32, all setting values will be default to 0. Please set `Geat Teeth`, `Current` by following the methods below before use.
+### Basic Operations
+In the main view, change BPM by rotating the knob, switch playback status by pressing the knob once.
+![mainframe_en][mainframe_en_url]
+### Settings
+Pressing down the knob and hold for few seconds to go to the menu.
+![tomenu_en][tomenu_en_url]
+
+Select `Back and Save` in menu to save the settings and back to main view. After entered the menu, it will go back to the main view without saving automatically with no action in 30 secs。
+
+>⚠Caution: Exiting through `Back and Save` option is required after changing any value in the settings menu, or the values will restore after reboot.
+
+In the menu, rotate the knob to go through, intract with options by pressing down once. Change the option value by rotating the knob when option is acticed, and pressing down once to go back to menu.
+![menu_en][menu_en_url]
+
+Explations on adjustable values:
+ - Motor
+     - Direction: The running direction of the motor.
+     - Gear Teeth: Teeth number of the gear installed on the motor. Related to running speed.
+     - Current: The runing current of motor in mA. Reference value: 1050mA. 
+    >⚠Caution：The Driver moudle would produce more heat as the current goes up, and might trigger overheat protection. The motor will produce mote noice as well. Do not raise this value over 1700mA in normal use.
+
+Have fun!
+
+
+[schema_url]:https://github.com/mr258876/Project-Orgel/raw/main/PCB/Schematic_Project%20Orgel_2021-11-29.png
+[gerber_url]:https://github.com/mr258876/Project-Orgel/raw/main/PCB/Gerber_PCB_Project%20Orgel.zip
+
+[zhihu_esp32_environment_url]:https://zhuanlan.zhihu.com/p/107804270
 
 [mainframe_zh_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/MainFrame_zh.png
 [tomenu_zh_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/ToMenu_zh.png
 [menu_zh_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/Menu_zh.png
-[schema_url]:https://github.com/mr258876/Project-Orgel/raw/main/PCB/Schematic_Project%20Orgel_2021-11-29.png
-[gerber_url]:https://github.com/mr258876/Project-Orgel/raw/main/PCB/Gerber_PCB_Project%20Orgel.zip
-[zhihu_esp32_environment_url]:https://zhuanlan.zhihu.com/p/107804270
+
+[mainframe_en_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/MainFrame_en.png
+[tomenu_en_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/ToMenu_en.png
+[menu_en_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/Menu_en.png
