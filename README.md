@@ -69,7 +69,8 @@
 
 ![curcit_schema][schema_url]
 
-处于空间利用方面的考量，推荐使用PCB实现上图中电路。作者水平稀烂，只能画出一手烂板子。如需要，请点击[这里][gerber_url]。*注：仅适用于尺寸为22\*17的MP1584模块与焊接了TX,RX针脚的乐积TMC2209模块*
+处于空间利用方面的考量，推荐使用PCB实现上图中电路。水平稀烂，只能画出一手烂板子。如需要，请点击[这里][gerber_url]。
+>ℹ注：仅适用于尺寸为22\*17的MP1584模块与焊接了TX,RX针脚的乐积TMC2209模块
 
 如果无法进行焊接，则可以考虑使用面包板完成接线。
 ### 控制程序烧录
@@ -94,14 +95,16 @@ U8g2
 将程序首次烧录至ESP32时，所有设置为默认初始值0。请遵照下述方法设置齿轮齿数、运行电流并保存后再使用。
 ### 基本操作
 在主视图中，旋转旋钮更改BPM。单击旋钮切换播放状态。
+![mainframe_zh][mainframe_zh_url]
 ### 菜单与设置
 在主视图中长按可进入主菜单。
+![tomenu_zh][tomenu_zh_url]
 在主菜单中选择`Back and Save`以保存设置并回到主菜单。在主菜单中无操作30秒会自动返回主界面。
 
 >⚠注意：在更改菜单中选项值后必须通过`Back and Save`选项退出菜单，否则在重启后选项值将恢复更改前状态。
 
 在菜单中旋转旋钮查看选项，单击旋钮以与选项交互。在交互状态下旋转旋钮以更改选项值，单击旋钮退出。
-
+![menu_zh][menu_zh_url]
 各可调节值说明：
  - Motor菜单
      - Direction: 控制电机正反转
@@ -157,6 +160,9 @@ blablabla
 ## Usage
 
 
+[mainframe_zh_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/MainFrame_zh.png
+[tomenu_zh_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/ToMenu_zh.png
+[menu_zh_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/Menu_zh.png
 [schema_url]:https://github.com/mr258876/Project-Orgel/raw/main/PCB/Schematic_Project%20Orgel_2021-11-29.png
 [gerber_url]:https://github.com/mr258876/Project-Orgel/raw/main/PCB/Gerber_PCB_Project%20Orgel.zip
 [zhihu_esp32_environment_url]:https://zhuanlan.zhihu.com/p/107804270
