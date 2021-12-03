@@ -9,7 +9,7 @@
 >## 目录
 - [项目状态](#项目状态)
 - [配件](#配件)
-- [某个简短的安装指南](#某个简短的安装指南)
+- [某个简短的改装指南](#某个简短的改装指南)
     - [传动改造](#传动改造)
     - [八音盒及电机的固定](#八音盒及电机的固定)
     - [电路搭建](#电路搭建)
@@ -42,7 +42,7 @@
 * 用于固定八音盒与电机的木盒、木块等 *1
 * 用于固定的M3螺丝、M3螺母若干
 
-## 某个简短的安装指南
+## 某个简短的改装指南
 接下来的步骤组成了一个简短的安装指南。步骤供参考，可根据实际情况进行调整。
 ### 传动改造
 如图所示，改装电动只需使用八音盒传动部分中的部分齿轮。由于避开了传动部分中的易损齿轮，对该齿轮损坏的八音盒进行改装不失为一个绝佳选择。
@@ -116,7 +116,7 @@ Have fun!
 >## Table of Contents
 - [Project Status](#project-ptatus)
 - [Hardware Requirements](#hardware-requirements)
-- [A Brief Installiation Guide](#a-brief-installiation-guide)
+- [A Brief Modding Guide](#a-brief-modding-guide)
     - [Gear Modding](#gear-modding)
     - [Mounting](#mounting)
     - [Curcit](#circuit)
@@ -149,7 +149,7 @@ Have fun!
 * Box or something else for mounting musicbox and motor *1
 * M3 Screws & Nuts for Mounting
 
-## A Brief Insalliation Guide
+## A Brief Modding Guide
 The following steps constitute a biref installiation guide, which you could refer to but don’t have to follow
 ### Gear Modding
 To be added
@@ -190,9 +190,9 @@ Explations on adjustable values:
 
 Have fun!
 
-[before_modding_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/before_modding.png
-[after_modding_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/after_modding.png
-[handle_removed_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/handle_removed.png
+[before_modding_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/before_modding.jpg
+[after_modding_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/after_modding.jpg
+[handle_removed_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/handle_removed.jpg
 
 [schema_url]:https://github.com/mr258876/Project-Orgel/raw/main/PCB/Schematic_Project%20Orgel_2021-11-29.png
 [gerber_url]:https://github.com/mr258876/Project-Orgel/raw/main/PCB/Gerber_PCB_Project%20Orgel.zip
@@ -200,10 +200,10 @@ Have fun!
 [zhihu_esp32_environment_url]:https://zhuanlan.zhihu.com/p/107804270
 [randomnerdtutorials_esp32_environment_url]:https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/
 
-[mainframe_zh_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/MainFrame_zh.png
-[tomenu_zh_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/ToMenu_zh.png
-[menu_zh_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/Menu_zh.png
+[mainframe_zh_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/MainFrame_zh.jpg
+[tomenu_zh_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/ToMenu_zh.jpg
+[menu_zh_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/Menu_zh.jpg
 
-[mainframe_en_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/MainFrame_en.png
-[tomenu_en_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/ToMenu_en.png
-[menu_en_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/Menu_en.png
+[mainframe_en_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/MainFrame_en.jpg
+[tomenu_en_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/ToMenu_en.jpg
+[menu_en_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/Menu_en.jpg
