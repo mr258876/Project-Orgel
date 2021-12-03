@@ -31,6 +31,7 @@
 >⚠注意：模块需要支持以串口方式与MCU进行通信
 * 42BYGH40/39 步进电机 (高40/39mm) *1  
 >ℹ注：可以是任意两相四线步进电机, 但其应能够提供足够力矩(>=300mN\*m)
+* 42步进电机支架 (可选) *1
 * 0.4模齿轮(60齿以上) *1
 >ℹ注：齿轮越大越好，降低电机转速是减小噪音的有效方法
 >⚠注意：齿轮需要能够与电机输出轴匹配
@@ -38,22 +39,17 @@
 * SSD1306 0.96 寸 OLED 模块 *1
 * 电源 (Plan A): USB-C PD 诱骗器 *1, 支持PD快充协议的充电器 *1, MP1584 DC-DC 降压模块 *1
 * 电源 (Plan B): 3.3/5/12v 多路输出电源模块 *1, 12v/2A 电源适配器 *1
+* 用于固定八音盒与电机的木盒、木块等 *1
 * 用于固定的M3螺丝、M3螺母若干
 
 ## 某个简短的安装指南
 接下来的步骤组成了一个简短的安装指南。步骤供参考，可根据实际情况进行调整。
 ### 传动改造
 如图所示，改装电动只需使用八音盒传动部分中的部分齿轮。由于避开了传动部分中的易损齿轮，对该齿轮损坏的八音盒进行改装不失为一个绝佳选择。
+![before_modding][before_modding_url]
+![after_modding][after_modding_url]
 
-将八音盒原本用于连接手柄的传动齿轮拆下，以禁用手柄。
-
-首先将八音盒手柄支架部分整体拆下。
-
-随后使用尖嘴钳将齿轮支架稍稍掰弯以取出齿轮。
-
-手柄也可取下。
-
-最后将支架装回八音盒。
+>⚠注意：在手摇八音盒中，手柄部分通常为噪音的源头之一。为了达到静音目的，断开手柄与其他齿轮间的传动是必要的。移除手柄或②号齿轮均可实现。图为移除了手柄及②号齿轮的八音盒。![handle_removed][handle_removed_url]
 ### 八音盒及电机的固定
 毫无疑问，电机需要与八音盒固定在一起以进行传动。该部分有较多方案可供选择，故此处将不做较多阐述，实际应用时可不必遵照。
 
@@ -63,7 +59,7 @@
 
 由于42电机的体积较大，因此八音盒原配木盒大概率需要进行更换。目前市面上有多种尺寸木盒可供选择。此处示例中的木盒尺寸为 长20cm\*宽13.5cm*高9cm
 
-将八音盒与电机放入盒中，对空间进行规划。用铅笔画出，随后钻孔/开槽，将八音盒与电机固定在木盒中。
+将八音盒与电机放入盒中，对空间进行规划。用铅笔标记螺丝孔位及纸带入口/出口，随后钻孔/开槽，将八音盒与电机固定在木盒中。
 ### 电路搭建
 本项目中的电路十分简单，如下图所示。
 
@@ -111,7 +107,7 @@ U8g2
  - Motor菜单
      - Direction: 控制电机正反转
      - Gear Teeth: 电机齿轮齿数设置
-     - Current: 电机运行电流设置，单位mA 参考值：1050mA 
+     - Current: 电机运行电流设置，单位mA 参考值：1050mA
     >⚠注意：随着电流的增大，驱动器会产生更多热量并可能导致过热保护，电机可能会产生更大噪音。正常使用请不要将该值提升至1700mA以上。
 
 Have fun!
@@ -139,25 +135,30 @@ Have fun!
 * Musicbox (of course) *1
 * ESP32-D0DWQ6 Dev Moudle 30pin *1
 * TMC2209 Stepper Driver Module *1
-* 42BYGH40/39 Stepper *1  
- (Could be replaced with any 2-phase 4-wire step motor, however it should provide enough torque(>=300mN*m).)
-* 0.4M gear(At least 60 teeth) *1   
+>⚠Caution: the driver moudlue should be able to communicate with the MCU through UART or Serial port.
+* 42BYGH40/39 NEMA17 Stepper *1  
+>ℹNote: Could be replaced with any 2-phase 4-wire step motor, however it should provide enough torque(>=300mN*m).
+* NEMA17 Motor Stand (optional) *1
+* 0.4M gear(At least 60 teeth) *1  
+>ℹNote：It is a good idea to have a bigger gear, reducing the motor speed is an effective way to reduce noise.
+>⚠Caution: The gear should be able to match the output shaft of the motor.
 * Rotatry Encoder *1
 * SSD1306 0.96 inch OLED Screen *1
 * Power Supply (Plan A): USB-C PD Trigger/Decoy *1, Phone charger with fast charging support *1, MP1584 DC-DC step-down moudle *1
 * Power Supply (Plan B): 3.3/5/12v multi-output power moudle *1, 12v/2A AC/DC adapter *1
+* Box or something else for mounting musicbox and motor *1
 * M3 Screws & Nuts for Mounting
 
 ## A Brief Insalliation Guide
 The following steps constitute a biref installiation guide, which you could refer to but don’t have to follow
 ### Gear Modding
-blablabla
+To be added
 ### Mounting
-blablabla
+To be added
 ### Circuit
-blablabla
+To be added
 ### Uploading Code
-blablabla
+To be added
 
 ## Usage
 >⚠Caution: Due to the diversity of hardware bundles and differences in modding procedure, unknown bugs might appear in some situations (e.g. functions not working). This manual only represents the operations and results on the testing hardware.
@@ -185,15 +186,19 @@ Explations on adjustable values:
      - Direction: The running direction of the motor.
      - Gear Teeth: Teeth number of the gear installed on the motor. Related to running speed.
      - Current: The runing current of motor in mA. Reference value: 1050mA. 
-    >⚠Caution：The Driver moudle would produce more heat as the current goes up, and might trigger overheat protection. The motor will produce mote noice as well. Do not raise this value over 1700mA in normal use.
+    >⚠Caution：The Driver moudle would produce more heat as the current goes up, and might trigger overheat protection. The motor will produce more noise as well. Do not raise this value over 1700mA in normal use.
 
 Have fun!
 
+[before_modding_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/before_modding.png
+[after_modding_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/after_modding.png
+[handle_removed_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/handle_removed.png
 
 [schema_url]:https://github.com/mr258876/Project-Orgel/raw/main/PCB/Schematic_Project%20Orgel_2021-11-29.png
 [gerber_url]:https://github.com/mr258876/Project-Orgel/raw/main/PCB/Gerber_PCB_Project%20Orgel.zip
 
 [zhihu_esp32_environment_url]:https://zhuanlan.zhihu.com/p/107804270
+[randomnerdtutorials_esp32_environment_url]:https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/
 
 [mainframe_zh_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/MainFrame_zh.png
 [tomenu_zh_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/ToMenu_zh.png
