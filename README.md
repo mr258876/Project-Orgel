@@ -5,6 +5,9 @@
 - [中文](#中文)
 - [English](#english)
 
+>ℹ注：第一次写用户指南之类的说明文档，如果有任何疑惑欢迎开Issue <br/>
+ℹNote: First time writing a user's guide document, please bring up an Issue if there's anything confusing.
+
 # 中文
 >## 目录
 - [项目状态](#项目状态)
@@ -32,9 +35,9 @@
 * 42BYGH40/39 步进电机 (高40/39mm) *1  
 >ℹ注：可以是任意两相四线步进电机, 但其应能够提供足够力矩(>=300mN\*m)
 * 42步进电机支架 (可选) *1
-* 0.4模齿轮(60齿以上) *1
+* 0.4模齿轮(60齿以上，但不宜过大) *1
 >ℹ注：齿轮越大越好，降低电机转速是减小噪音的有效方法
->⚠注意：齿轮需要能够与电机输出轴匹配
+<br/>⚠注意：齿轮需要能够与电机输出轴匹配
 * 旋转编码器 *1
 * SSD1306 0.96 寸 OLED 模块 *1
 * 电源 (Plan A): USB-C PD 诱骗器 *1, 支持PD快充协议的充电器 *1, MP1584 DC-DC 降压模块 *1
@@ -49,7 +52,8 @@
 ![before_modding][before_modding_url]
 ![after_modding][after_modding_url]
 
->⚠注意：在手摇八音盒中，手柄部分通常为噪音的源头之一。为了达到静音目的，断开手柄与其他齿轮间的传动是必要的。移除手柄或②号齿轮均可实现。图为移除了手柄及②号齿轮的八音盒。![handle_removed][handle_removed_url]
+>⚠注意：在手摇八音盒中，手柄部分通常为噪音的源头之一。为了达到静音目的，断开手柄与其他齿轮间的传动是必要的。移除手柄或②号齿轮均可实现。图为移除了手柄及②号齿轮的八音盒。
+![handle_removed][handle_removed_url]
 ### 八音盒及电机的固定
 毫无疑问，电机需要与八音盒固定在一起以进行传动。该部分有较多方案可供选择，故此处将不做较多阐述，实际应用时可不必遵照。
 
@@ -57,16 +61,14 @@
 
 考虑到八音盒可能需要一个共鸣腔，推荐将八音盒与电机固定在木盒中。如不考虑共鸣，或不方便对木盒进行钻孔/开槽，则也可固定在木块或其他材料上。此处以固定在木盒中为例。
 
-由于42电机的体积较大，因此八音盒原配木盒大概率需要进行更换。目前市面上有多种尺寸木盒可供选择。此处示例中的木盒尺寸为 长20cm\*宽13.5cm*高9cm
-
-将八音盒与电机放入盒中，对空间进行规划。用铅笔标记螺丝孔位及纸带入口/出口，随后钻孔/开槽，将八音盒与电机固定在木盒中。
+由于42电机的体积较大，因此八音盒原配木盒大概率需要进行更换。目前市面上有多种尺寸木盒可供选择。上一节示例中的木盒尺寸为 长20cm\*宽13.5cm*高9cm。
 ### 电路搭建
 本项目中的电路十分简单，如下图所示。
 
 ![curcit_schema][schema_url]
 
 处于空间利用方面的考量，推荐使用PCB实现上图中电路。水平稀烂，只能画出一手烂板子。如有需要，请点击[这里][gerber_url]。
->ℹ注：仅适用于尺寸为22\*17的MP1584模块与焊接了TX,RX针脚的乐积TMC2209模块
+>ℹ注：仅适用于尺寸为22mm\*17mm的MP1584模块与焊接了TX,RX针脚的乐积TMC2209模块
 
 如果无法进行焊接，则可以考虑使用面包板完成接线。
 ### 控制程序烧录
@@ -139,9 +141,9 @@ Have fun!
 * 42BYGH40/39 NEMA17 Stepper *1  
 >ℹNote: Could be replaced with any 2-phase 4-wire step motor, however it should provide enough torque(>=300mN*m).
 * NEMA17 Motor Stand (optional) *1
-* 0.4M gear(At least 60 teeth) *1  
+* 0.4M gear(At least 60 teeth, but not too big) *1  
 >ℹNote：It is a good idea to have a bigger gear, reducing the motor speed is an effective way to reduce noise.
->⚠Caution: The gear should be able to match the output shaft of the motor.
+<br/>⚠Caution: The gear should be able to match the output shaft of the motor.
 * Rotatry Encoder *1
 * SSD1306 0.96 inch OLED Screen *1
 * Power Supply (Plan A): USB-C PD Trigger/Decoy *1, Phone charger with fast charging support *1, MP1584 DC-DC step-down moudle *1
@@ -150,15 +152,42 @@ Have fun!
 * M3 Screws & Nuts for Mounting
 
 ## A Brief Modding Guide
-The following steps constitute a biref installiation guide, which you could refer to but don’t have to follow
+The following steps constitute a biref modding guide, which you could refer to but don’t have to strictly follow.
 ### Gear Modding
-To be added
+Only some of all gears in the musicbox will be used after the modding, as shown in the picture below. Avoiding the vulnerable gear(gear #2), it is a good choice to mod a musicbox with that gear damaged.
+![before_modding][before_modding_url]
+![after_modding][after_modding_url]
+
+>⚠Caution：The handle is usually one of the main noise source. In order to get silent, it is necessary to disconnect the transmission between the handle and other gears, which could be implemented by removing the handle or gear #2. A music box with handle and gear #2 removed is as shown. ![handle_removed][handle_removed_url]
 ### Mounting
-To be added
+Without doubt, the motor needs to be mounted with the musicbox. With many solutions avilable, there will not be much description here, and you don't have to follow.
+
+>⚠Caution: No matter how they are mounted, **the gear of motor have to work as close as possible**, or there will might be noise and the gear may got damange.
+
+Considering that the music box may need a resonance cavity, it is recommended to fix the music box and the motor in a wooden box. If resonance is not considered, or it is inconvenient to drill/slot the wooden box, it can also be fixed on a wooden block or other materials. Take fixing in a wooden box as an example
+
+Due to the ize of the NEMA-17 motor, the original wooden box of the music box will most likely need to be replaced. There are many sizes of wooden boxes available on the market. The size of the wooden box in the example in the previous section is L20cm * W13.5cm * H9cm.
 ### Circuit
-To be added
+The circuit used in this project is simple, schematic as shown below.
+
+![curcit_schema][schema_url]
+
+Considerated in space utilization, using a PCB to imply the curcit is recommedned. As a beginner of drawing PCB, only a poor board could be provided. Click [here][gerber_url] if you would take a look.
+>ℹNote：Only applies to MP1584 with size 2mm\*17mm and Lerdge TMC2209 module with TX/RX pin soldered.
+
+Using a breadboard to apply the cutcit also works.
 ### Uploading Code
-To be added
+The last step is to upload the controlling program to the ESP32.
+
+First, you will need an Arduino-ESP32 environment. There's a [guide from randomnerdtutorials][randomnerdtutorials_esp32_environment_url] could be used as a reference.
+
+The following libraries are also required after building up the environment:
+```
+tcMenu
+TMCStepper
+U8g2
+```
+After that, open `Project-Orgel.ino` in folder `Project-Oegel` with Arduino-IDE to upload.
 
 ## Usage
 >⚠Caution: Due to the diversity of hardware bundles and differences in modding procedure, unknown bugs might appear in some situations (e.g. functions not working). This manual only represents the operations and results on the testing hardware.
