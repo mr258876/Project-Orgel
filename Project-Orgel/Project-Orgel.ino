@@ -33,8 +33,6 @@ float BPM_CALC_CONST = STEPS_PER_ROTOR_REV * GEAR_REDUCTION * ORGEL_GEAR / 1 / O
 
 // Create a Driver Object
 TMC2209Stepper driver(&DRIVER_SERIAL, R_SENSE, DRIVER_ADDRESS);
-// Power Sensor
-INA226 ina;
 
 // Lock for the I2C Bus
 SemaphoreHandle_t I2CMutex = xSemaphoreCreateMutex();
@@ -211,8 +209,7 @@ void CALLBACK_FUNCTION setGearTeeth(int id) {
     setMotorSpeed(menuBPM.getCurrentValue());
 }
 
-
-
+// 电流数值改变回调函数
 void CALLBACK_FUNCTION setCurrent(int id) {
     // TODO - your menu change code
     motorCurrent = menuCurrent.getCurrentValue();
