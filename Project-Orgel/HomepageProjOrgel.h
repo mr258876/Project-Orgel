@@ -1,5 +1,5 @@
-#ifndef TCMENU_HOME_PROJ_ORGEL
-#define TCMENU_HOME_PROJ_ORGEL
+#ifndef _PROJECT_ORGEL_TCMENU_HOME_
+#define _PROJECT_ORGEL_TCMENU_HOME_
 
 #include <BaseRenderers.h>
 
@@ -35,14 +35,14 @@ public:
             gfx.setCursor(30, 63);
             gfx.print(menuBPM.getCurrentValue());
 
-            gfx.setFont(u8g2_font_wqy16_t_gb2312a);
+            gfx.setFont(u8g2_font_wqy14_t_gb2312a);
             if (menuPlay.getCurrentValue())
             {
-                gfx.drawUTF8(0, 14, "正在播放");
+                gfx.drawUTF8(0, 14, txtPlay);
             }
             else
             {
-                gfx.drawUTF8(0, 14, "已停止");
+                gfx.drawUTF8(0, 14, txtStop);
             }
 
             gfx.setFont(u8g2_font_open_iconic_play_4x_t);

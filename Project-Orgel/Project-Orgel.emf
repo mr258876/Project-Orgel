@@ -131,6 +131,24 @@
     },
     {
       "parentId": 3,
+      "type": "enumItem",
+      "item": {
+        "enumEntries": [
+          "ENG",
+          "CHS"
+        ],
+        "name": "Language",
+        "variableName": "Language",
+        "id": 24,
+        "eepromAddress": 7,
+        "functionName": "setLanguage",
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true
+      }
+    },
+    {
+      "parentId": 3,
       "type": "subMenu",
       "item": {
         "secured": false,
@@ -252,13 +270,8 @@
         "subsystem": "DISPLAY"
       },
       {
-        "name": "PULLUP_LOGIC",
-        "latestValue": "true",
-        "subsystem": "INPUT"
-      },
-      {
-        "name": "INTERRUPT_SWITCHES",
-        "latestValue": "false",
+        "name": "SW_POLLING_MODE",
+        "latestValue": "SWITCHES_POLL_EVERYTHING",
         "subsystem": "INPUT"
       },
       {
@@ -292,6 +305,11 @@
         "subsystem": "INPUT"
       },
       {
+        "name": "PULLUP_LOGIC",
+        "latestValue": "true",
+        "subsystem": "INPUT"
+      },
+      {
         "name": "ENCODER_IS_QUARTER_CYCLE",
         "latestValue": "false",
         "subsystem": "INPUT"
@@ -304,6 +322,11 @@
     "authenticatorDefinition": "",
     "projectIoExpanders": [
       "deviceIO:"
-    ]
+    ],
+    "menuInMenuCollection": {
+      "menuDefinitions": []
+    },
+    "packageNamespace": "",
+    "appIsModular": false
   }
 }
