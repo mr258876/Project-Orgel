@@ -22,6 +22,9 @@
 extern const PROGMEM ConnectorLocalInfo applicationInfo;
 extern U8G2_SSD1306_128X64_NONAME_F_HW_I2C gfx;
 extern GraphicsDeviceRenderer renderer;
+extern int language;
+extern char* txtPlay;
+extern char* txtStop;
 
 // Any externals needed by IO expanders, EEPROMs etc
 
@@ -32,6 +35,7 @@ extern TextMenuItem menuAboutText2;
 extern TextMenuItem menuAboutText1;
 extern BackMenuItem menuBackAbout;
 extern SubMenuItem menuAbout;
+extern EnumMenuItem menuLanguage;
 extern AnalogMenuItem menuCurrent;
 extern AnalogMenuItem menuGearTeeth;
 extern BooleanMenuItem menuDirection;
@@ -53,6 +57,7 @@ void setupMenu();
 void CALLBACK_FUNCTION changeMotorDir(int id);
 void CALLBACK_FUNCTION setCurrent(int id);
 void CALLBACK_FUNCTION setGearTeeth(int id);
+void CALLBACK_FUNCTION setLanguage(int id);
 void CALLBACK_FUNCTION setSpeed(int id);
 void CALLBACK_FUNCTION switchPlayStatus(int id);
 void CALLBACK_FUNCTION toHomePage(int id);

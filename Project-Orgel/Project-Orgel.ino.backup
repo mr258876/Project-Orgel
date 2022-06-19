@@ -13,7 +13,7 @@
 #define DRIVER_SERIAL Serial2 // TMC2209 Serial Port
 #define DRIVER_ADDRESS 0b00   // Serial Address
 #define R_SENSE 0.11f         // Match to your driver <- ???
-#define ENABLE_Pin 33         // Enable Pin
+#define ENABLE_Pin 23         // Enable Pin
 #define DIAG_Pin 19           // Diag Pin
 
 // 电机内部输出轴旋转一周步数
@@ -33,13 +33,6 @@ float BPM_CALC_CONST = STEPS_PER_ROTOR_REV * GEAR_REDUCTION * ORGEL_GEAR / 1 / O
 
 // Create a Driver Object
 TMC2209Stepper driver(&DRIVER_SERIAL, R_SENSE, DRIVER_ADDRESS);
-// Power Sensor
-INA226 ina;
-
-// Lock for the I2C Bus
-SemaphoreHandle_t I2CMutex = xSemaphoreCreateMutex();
-// Bus max delay
-//#define portMAX_DELAY 50
 
 // Variables
 bool playStatus = false;
@@ -65,7 +58,7 @@ void setup()
     motorCurrent = menuCurrent.getCurrentValue();
     motorGear = menuGearTeeth.getCurrentValue();
 
-    Serial.begin(9600);
+    Serial.begin(115200);
     Serial.println("Orgel Running...");
 
     // Init TMC2209 driver
@@ -74,24 +67,24 @@ void setup()
 
     // Different func. run in two cores
     xTaskCreatePinnedToCore(
-        runTcMenu,      // pvTaskCode   Code to run
-        "runTcMenu",    // pcName       A name just for humans
-        8192,           // usStackDepth This stack size can be checked & adjusted by reading the Stack Highwater
-        NULL,           // pvParameters
-        2,              // uxPriority   3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
-        NULL,           // pxCreatedTask
-        1               // tskNO_AFFINITY   Whether to scheduling tasks dynamiclly
-        );
-    
-    // xTaskCreatePinnedToCore(
-    //     runFunctions,      // pvTaskCode   Code to run
-    //     "runFunctions",    // pcName       A name just for humans
-    //     8192,           // usStackDepth This stack size can be checked & adjusted by reading the Stack Highwater
-    //     NULL,           // pvParameters
-    //     2,              // uxPriority   3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
-    //     NULL,           // pxCreatedTask
-    //     1               // tskNO_AFFINITY   Whether to scheduling tasks dynamiclly
-    //     );
+        runTcMenu,   // pvTaskCode   Code to run
+        "runTcMenu", // pcName       A name just for humans
+        8192,        // usStackDepth This stack size can be checked & adjusted by reading the Stack Highwater
+        NULL,        // pvParameters
+        2,           // uxPriority   3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
+        NULL,        // pxCreatedTask
+        1            // tskCore
+    );
+
+    xTaskCreatePinnedToCore(
+        runFunctions,     // pvTaskCode   Code to run
+        "runFunctions",   // pcName       A name just for humans
+        8192,             // usStackDepth This stack size can be checked & adjusted by reading the Stack Highwater
+        NULL,             // pvParameters
+        tskIDLE_PRIORITY, // uxPriority   3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
+        NULL,             // pxCreatedTask
+        0                 // tskCore
+    );
 }
 
 void loop()
@@ -104,27 +97,28 @@ void installTheme()
     renderer.setTitleMode(BaseGraphicalRenderer::TITLE_FIRST_ROW);
     renderer.setUseSliderForAnalog(false);
     installMonoInverseTitleTheme(renderer, MenuFontDef(nullptr, 1), MenuFontDef(nullptr, 1), true);
+    gfx.enableUTF8Print();    // 启用UTF-8以支持多语言
+    gfx.setFontPosBaseline(); // 设置字体基线
 }
 
 // TcMenu 主进程循环函数
 void runTcMenu(void *pvParameters)
 {
-    for (;;)
-    {   
-        xSemaphoreTake(I2CMutex, portMAX_DELAY);
+    while (true)
+    {
         taskManager.runLoop();
-        xSemaphoreGive(I2CMutex);
     }
 }
 
 // 功能、次要进程循环函数
-// void runFunctions(void *pvParameters)
-// {
-//     for (;;)
-//     {
-
-//     }
-// }
+void runFunctions(void *pvParameters)
+{
+    while (true)
+    {
+        /* code */
+    }
+    
+}
 
 // TMC2209初始化
 void driverSetup()
@@ -205,15 +199,15 @@ void CALLBACK_FUNCTION toHomePage(int id)
 }
 
 // 设置齿轮齿数
-void CALLBACK_FUNCTION setGearTeeth(int id) {
+void CALLBACK_FUNCTION setGearTeeth(int id)
+{
     // TODO - your menu change code
     motorGear = menuGearTeeth.getCurrentValue();
     setMotorSpeed(menuBPM.getCurrentValue());
 }
 
-
-
-void CALLBACK_FUNCTION setCurrent(int id) {
+void CALLBACK_FUNCTION setCurrent(int id)
+{
     // TODO - your menu change code
     motorCurrent = menuCurrent.getCurrentValue();
     setMotorSpeed(menuBPM.getCurrentValue());

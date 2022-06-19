@@ -23,9 +23,9 @@
 * 基础原理验证 ✔
 * 基础 UI ✔
 * 更多可在UI中调节的值 ✔
-* 电流自动优化 ❌
-* UI 多语言支持 ❌
-* 项目自述 🚧
+* UI 多语言支持 ✔
+* 项目自述 ✔
+* 无线控制 🚧
 
 >## 配件
 * 八音盒 (废话) *1
@@ -33,7 +33,7 @@
 * TMC2209 步进电机驱动模块 *1
 >⚠注意：模块需要支持以串口方式与MCU进行通信
 * 42BYGH40/39 步进电机 (高40/39mm) *1  
->ℹ注：可以是任意两相四线步进电机, 但其应能够提供足够力矩(>=300mN\*m)
+>ℹ注：可以是任意两相四线步进电机, 但其应能够提供足够力矩(推荐300mN\*m以上)
 * 42步进电机支架 (可选) *1
 * 0.4模齿轮(60齿以上，但不宜过大) *1
 >ℹ注：齿轮越大越好，降低电机转速是减小噪音的有效方法
@@ -106,11 +106,14 @@ U8g2
 ![menu_zh][menu_zh_url]
 
 各可调节值说明：
- - Motor菜单
-     - Direction: 控制电机正反转
-     - Gear Teeth: 电机齿轮齿数设置
-     - Current: 电机运行电流设置，单位mA 参考值：1050mA
+ - 电机设置
+     - 反向运转: 控制电机正反转
+     - 齿轮齿数: 电机齿轮齿数设置
+     - 运行电流: 电机运行电流设置，单位mA 参考值：1050mA
     >⚠注意：随着电流的增大，驱动器会产生更多热量并可能导致过热保护，电机可能会产生更大噪音。正常使用请不要将该值提升至1700mA以上。
+ - 语言
+     - ENG：英语
+     - CHS：简体中文
 
 Have fun!
 
@@ -129,9 +132,9 @@ Have fun!
 * Make it work  ✔
 * A Basic UI    ✔
 * More Adjustable Values in UI ✔
-* Current Auto-Optimizing   ❌
-* UI MultiLanguage Support  ❌
-* Readme 🚧
+* UI MultiLanguage Support   ✔
+* Readme  ✔
+* Wireless Control 🚧
 
 >## Hardware Requirements
 * Musicbox (of course) *1
@@ -139,7 +142,7 @@ Have fun!
 * TMC2209 Stepper Driver Module *1
 >⚠Caution: the driver moudlue should be able to communicate with the MCU through UART or Serial port.
 * 42BYGH40/39 NEMA17 Stepper *1  
->ℹNote: Could be replaced with any 2-phase 4-wire step motor, however it should provide enough torque(>=300mN*m).
+>ℹNote: Could be replaced with any 2-phase 4-wire step motor, however it should provide enough torque(recommand 300mN*m or above).
 * NEMA17 Motor Stand (optional) *1
 * 0.4M gear(At least 60 teeth, but not too big) *1  
 >ℹNote：It is a good idea to have a bigger gear, reducing the motor speed is an effective way to reduce noise.
@@ -216,6 +219,9 @@ Explations on adjustable values:
      - Gear Teeth: Teeth number of the gear installed on the motor. Related to running speed.
      - Current: The runing current of motor in mA. Reference value: 1050mA. 
     >⚠Caution：The Driver moudle would produce more heat as the current goes up, and might trigger overheat protection. The motor will produce more noise as well. Do not raise this value over 1700mA in normal use.
+ - Language
+     - ENG: English
+     - CHS: Simplified Chinese
 
 Have fun!
 
