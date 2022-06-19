@@ -106,11 +106,14 @@ U8g2
 ![menu_zh][menu_zh_url]
 
 各可调节值说明：
- - Motor菜单
-     - Direction: 控制电机正反转
-     - Gear Teeth: 电机齿轮齿数设置
-     - Current: 电机运行电流设置，单位mA 参考值：1050mA
+ - 电机设置
+     - 反向运转: 控制电机正反转
+     - 齿轮齿数: 电机齿轮齿数设置
+     - 运行电流: 电机运行电流设置，单位mA 参考值：1050mA
     >⚠注意：随着电流的增大，驱动器会产生更多热量并可能导致过热保护，电机可能会产生更大噪音。正常使用请不要将该值提升至1700mA以上。
+ - 语言
+     - ENG：英语
+     - CHS：简体中文
 
 Have fun!
 
@@ -216,6 +219,9 @@ Explations on adjustable values:
      - Gear Teeth: Teeth number of the gear installed on the motor. Related to running speed.
      - Current: The runing current of motor in mA. Reference value: 1050mA. 
     >⚠Caution：The Driver moudle would produce more heat as the current goes up, and might trigger overheat protection. The motor will produce more noise as well. Do not raise this value over 1700mA in normal use.
+ - Language
+     - ENG: English
+     - CHS: Simplified Chinese
 
 Have fun!
 
