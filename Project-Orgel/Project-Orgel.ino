@@ -32,11 +32,6 @@ float BPM_CALC_CONST = STEPS_PER_ROTOR_REV * GEAR_REDUCTION * ORGEL_GEAR / 1 / O
 // Create a Driver Object
 TMC2209Stepper driver(&DRIVER_SERIAL, R_SENSE, DRIVER_ADDRESS);
 
-// Lock for the I2C Bus
-SemaphoreHandle_t I2CMutex = xSemaphoreCreateMutex();
-// Bus max delay
-//#define portMAX_DELAY 50
-
 // Variables
 bool playStatus = false;
 int playBPM = 120;
