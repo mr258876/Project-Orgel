@@ -11,7 +11,7 @@
 #define DRIVER_SERIAL Serial2 // TMC2209 Serial Port
 #define DRIVER_ADDRESS 0b00   // Serial Address
 #define R_SENSE 0.11f         // Match to your driver <- ???
-#define ENABLE_Pin 23         // Enable Pin
+#define ENABLE_Pin 33         // Enable Pin
 #define DIAG_Pin 19           // Diag Pin
 
 // 电机内部输出轴旋转一周步数
@@ -40,9 +40,6 @@ bool autoCurrentEnabled;
 bool motorDirection;
 int motorGear = 60;
 
-// Current Optimize
-int targetWorkload = 70;
-
 void setup()
 {
     // TcMenu Initialize
@@ -61,31 +58,11 @@ void setup()
     // Init TMC2209 driver
     driverSetup();
     setSpeed(0);
-
-    // Different func. run in two cores
-    xTaskCreatePinnedToCore(
-        runTcMenu,   // pvTaskCode   Code to run
-        "runTcMenu", // pcName       A name just for humans
-        8192,        // usStackDepth This stack size can be checked & adjusted by reading the Stack Highwater
-        NULL,        // pvParameters
-        2,           // uxPriority   3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
-        NULL,        // pxCreatedTask
-        1            // tskCore
-    );
-
-    xTaskCreatePinnedToCore(
-        runFunctions,     // pvTaskCode   Code to run
-        "runFunctions",   // pcName       A name just for humans
-        8192,             // usStackDepth This stack size can be checked & adjusted by reading the Stack Highwater
-        NULL,             // pvParameters
-        tskIDLE_PRIORITY, // uxPriority   3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
-        NULL,             // pxCreatedTask
-        0                 // tskCore
-    );
 }
 
 void loop()
 {
+    taskManager.runLoop();
 }
 
 // TcMenu 主题设置
@@ -98,26 +75,7 @@ void installTheme()
     gfx.setFontPosBaseline(); // 设置字体基线
 }
 
-// TcMenu 主进程循环函数
-void runTcMenu(void *pvParameters)
-{
-    while (true)
-    {
-        taskManager.runLoop();
-    }
-}
-
-// 功能、次要进程循环函数
-void runFunctions(void *pvParameters)
-{
-    while (true)
-    {
-        /* code */
-    }
-    
-}
-
-// TMC2209初始化
+// 电机初始化
 void driverSetup()
 {
     pinMode(ENABLE_Pin, OUTPUT);   // 控制TMC2209使能引脚为输出模式
@@ -131,27 +89,6 @@ void driverSetup()
 
     // 电流设置
     driver.rms_current(50); // 设置电流大小 (mA)
-}
-
-// 变更播放状态
-void CALLBACK_FUNCTION switchPlayStatus(int id)
-{
-    if (menuPlay.getBoolean())
-    {
-        playStatus = true;
-        setMotorSpeed(menuBPM.getCurrentValue());
-    }
-    else
-    {
-        playStatus = false;
-        setMotorSpeed(0);
-    }
-}
-
-// BPM改变回调
-void CALLBACK_FUNCTION setSpeed(int id)
-{
-    setMotorSpeed(menuBPM.getCurrentValue());
 }
 
 // 改变电机速度
@@ -179,6 +116,27 @@ void setMotorSpeed(int BPM)
         driver.VACTUAL(0);
         driver.rms_current(50);
     }
+}
+
+// 变更播放状态
+void CALLBACK_FUNCTION switchPlayStatus(int id)
+{
+    if (menuPlay.getBoolean())
+    {
+        playStatus = true;
+        setMotorSpeed(menuBPM.getCurrentValue());
+    }
+    else
+    {
+        playStatus = false;
+        setMotorSpeed(0);
+    }
+}
+
+// BPM改变回调
+void CALLBACK_FUNCTION setSpeed(int id)
+{
+    setMotorSpeed(menuBPM.getCurrentValue());
 }
 
 // 设置电机运行方向
