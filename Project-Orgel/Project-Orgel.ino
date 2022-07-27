@@ -12,7 +12,6 @@
 #define DRIVER_ADDRESS 0b00   // Serial Address
 #define R_SENSE 0.11f         // Match to your driver <- ???
 #define ENABLE_Pin 33         // Enable Pin
-#define DIAG_Pin 19           // Diag Pin
 
 // 电机内部输出轴旋转一周步数
 const int STEPS_PER_ROTOR_REV = 1600; // 42电机 一圈1600*八分之一微步
@@ -79,7 +78,6 @@ void installTheme()
 void driverSetup()
 {
     pinMode(ENABLE_Pin, OUTPUT);   // 控制TMC2209使能引脚为输出模式
-    pinMode(DIAG_Pin, INPUT);      // 控制TMC2209过载引脚为输入模式
     digitalWrite(ENABLE_Pin, LOW); // 将使能控制引脚设置为低电平从而让电机驱动板进入工作状态
 
     DRIVER_SERIAL.begin(115200); // 启动串口
