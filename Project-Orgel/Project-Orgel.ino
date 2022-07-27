@@ -82,7 +82,7 @@ void driverSetup()
     pinMode(ENABLE_Pin, OUTPUT);    // 使能引脚输出模式
     digitalWrite(ENABLE_Pin, LOW);  // 将使能控制引脚设置为低电平从而让电机驱动板进入工作状态
 
-    stepper.setMaxSpeed(1000.0);     // 设置电机最大速度300 
+    stepper.setMaxSpeed(10240.0);     // 设置电机最大速度300 
     stepper.setAcceleration(20.0);  // 设置电机加速度20.0  
     setMotorSpeed(playBPM);
 }
