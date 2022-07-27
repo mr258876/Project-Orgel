@@ -6,12 +6,11 @@
 #include "ThemeProjOrgel.h"
 #include "HomepageProjOrgel.h"
 
-#include <TMCStepper.h>
+#include <AccelStepper.h>
 
-#define DRIVER_SERIAL Serial2 // TMC2209 Serial Port
-#define DRIVER_ADDRESS 0b00   // Serial Address
-#define R_SENSE 0.11f         // Match to your driver <- ???
-#define ENABLE_Pin 33         // Enable Pin
+#define ENABLE_Pin  33      // Enable Pin
+#define DIR_Pin     25      // Direction Pin    
+#define STEP_Pin    26      // Step Pin
 
 // 电机内部输出轴旋转一周步数
 const int STEPS_PER_ROTOR_REV = 1600; // 42电机 一圈1600*八分之一微步
@@ -28,8 +27,8 @@ const float ORGEL_BPM_PER_ROUND = 4.516; // 齿轮周长约1.15picm,纸带一拍
 // const float BPM_CALC_CONST = STEPS_PER_ROTOR_REV * GEAR_REDUCTION * ORGEL_GEAR / MOTOR_GEAR / ORGEL_BPM_PER_ROUND / 60;
 float BPM_CALC_CONST = STEPS_PER_ROTOR_REV * GEAR_REDUCTION * ORGEL_GEAR / 1 / ORGEL_BPM_PER_ROUND / 60;
 
-// Create a Driver Object
-TMC2209Stepper driver(&DRIVER_SERIAL, R_SENSE, DRIVER_ADDRESS);
+// Create a Stepper Object
+AccelStepper stepper(1, STEP_Pin, DIR_Pin);
 
 // Variables
 bool playStatus = false;
@@ -60,8 +59,9 @@ void setup()
 }
 
 void loop()
-{
+{   
     taskManager.runLoop();
+    stepper.runSpeed();
 }
 
 // TcMenu 主题设置
@@ -76,17 +76,15 @@ void installTheme()
 
 // 电机初始化
 void driverSetup()
-{
-    pinMode(ENABLE_Pin, OUTPUT);   // 控制TMC2209使能引脚为输出模式
-    digitalWrite(ENABLE_Pin, LOW); // 将使能控制引脚设置为低电平从而让电机驱动板进入工作状态
+{   
+    pinMode(STEP_Pin, OUTPUT);      // 步进引脚输出模式
+    pinMode(DIR_Pin, OUTPUT);       // 方向引脚输出模式
+    pinMode(ENABLE_Pin, OUTPUT);    // 使能引脚输出模式
+    digitalWrite(ENABLE_Pin, LOW);  // 将使能控制引脚设置为低电平从而让电机驱动板进入工作状态
 
-    DRIVER_SERIAL.begin(115200); // 启动串口
-
-    driver.begin();       // 开始通讯
-    driver.microsteps(8); // 设置微步大小
-
-    // 电流设置
-    driver.rms_current(50); // 设置电流大小 (mA)
+    stepper.setMaxSpeed(1000.0);     // 设置电机最大速度300 
+    stepper.setAcceleration(20.0);  // 设置电机加速度20.0  
+    setMotorSpeed(playBPM);
 }
 
 // 改变电机速度
@@ -99,20 +97,16 @@ void setMotorSpeed(int BPM)
         // Set Motor Speed
         if (motorDirection)
         {
-            driver.VACTUAL(BPM * BPM_CALC_CONST / motorGear / 0.715);
+            stepper.setSpeed(BPM * BPM_CALC_CONST / motorGear);
         }
         else
         {
-            driver.VACTUAL(-BPM * BPM_CALC_CONST / motorGear / 0.715);
+            stepper.setSpeed(-BPM * BPM_CALC_CONST / motorGear);
         }
-
-        // Set Current
-        driver.rms_current(motorCurrent); // 设置电流大小 (mA)
     }
     else
     {
-        driver.VACTUAL(0);
-        driver.rms_current(50);
+        stepper.setSpeed(0);
     }
 }
 

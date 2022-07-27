@@ -126,7 +126,7 @@
         "functionName": "setCurrent",
         "readOnly": false,
         "localOnly": false,
-        "visible": true
+        "visible": false
       }
     },
     {
