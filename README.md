@@ -25,7 +25,7 @@
 * 更多可在UI中调节的值 ✔
 * UI 多语言支持 ✔
 * 项目自述 ✔
-* 无线控制 🚧
+
 
 >## 配件
 * 八音盒 (废话) *1
@@ -98,6 +98,20 @@
 ### 控制程序烧录
 改装的最后一步是将电机控制程序烧录至ESP32中。
 
+您可以直接刷入 Release 中已编译好的固件，或自行使用Arduino编译并刷入。
+
+#### 刷入已编译固件
+
+0. 移步[乐鑫科技网站]("https://www.espressif.com.cn/zh-hans/support/download/other-tools")并下载`ESP Download Tool(Flash下载工具)`。</br>
+
+1. 打开ESP Download Tool，芯片类型选择`ESP32`，工作模式选择`开发模式`。</br>
+![image](/pics/flash_step1.png)</br>
+2. 按照下图设置刷入的文件、flash地址、flash速度，串口及下载速度按实际情况选择。</br>
+![image](/pics/flash_step2.png)</br>
+3. 点击`下载`按钮。当状态显示`完成`后，断开开发版与电脑的连接。</br>
+
+#### 自行编译并刷入
+
 首先需要在电脑上搭建Arduino-ESP32环境。[知乎用户铁熊的文章][zhihu_esp32_environment_url]可供参考。
 
 在环境搭建完成后，还需要在库管理器中安装以下库：
@@ -158,7 +172,7 @@ Have fun!
 * More Adjustable Values in UI ✔
 * UI MultiLanguage Support   ✔
 * Readme  ✔
-* Wireless Control 🚧
+
 
 >## Hardware Requirements
 * Musicbox (of course) *1
@@ -203,8 +217,24 @@ Considerated in space utilization, using a PCB to imply the curcit is recommedne
 >ℹNote：Only applies to MP1584 with size 2mm\*17mm and Lerdge TMC2209 module with TX/RX pin soldered.
 
 Using a breadboard to apply the cutcit also works.
+
 ### Uploading Code
 The last step is to upload the controlling program to the ESP32.
+
+You can flash the compiled firmware directly into Release, or use Arduino to compile and flash it yourself.
+
+#### Flash the compiled firmware
+
+0. Go to [Espressif Technology website]("https://www.espressif.com.cn/en/support/download/other-tools") and download `ESP Download Tool`. </br>
+
+1. Open ESP Download Tool, select `ESP32` for chip type, and `Development Mode` for working mode. </br>
+![image](/pics/flash_step1.png)</br>
+2. Set the flashed file, flash address, flash speed, serial port and download speed according to the actual situation according to the figure below. </br>
+![image](/pics/flash_step2.png)</br>
+3. Click the `Download` button. When the status shows `Done`, disconnect the development version from the computer. </br>
+
+#### Compile and flash by yourself
+
 
 First, you will need an Arduino-ESP32 environment. There's a [guide from randomnerdtutorials][randomnerdtutorials_esp32_environment_url] could be used as a reference.
 

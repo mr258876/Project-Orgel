@@ -1,0 +1,4 @@
+build/
+/debug_custom.json
+/debug.cfg
+/esp32.svd
