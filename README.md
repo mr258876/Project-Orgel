@@ -116,9 +116,9 @@
 
 在环境搭建完成后，还需要在库管理器中安装以下库：
 ```
-tcMenu
-TMCStepper
-U8g2
+tcMenu      @2.4.0
+TMCStepper  @0.7.3
+U8g2        @2.34.4
 ```
 准备完成后，使用Arduino IDE打开`Project-Oegel`文件夹中的`Project-Orgel.ino`进行烧录。
 
@@ -240,9 +240,9 @@ First, you will need an Arduino-ESP32 environment. There's a [guide from randomn
 
 The following libraries are also required after building up the environment:
 ```
-tcMenu
-TMCStepper
-U8g2
+tcMenu      @2.4.0
+TMCStepper  @0.7.3
+U8g2        @2.34.4
 ```
 After that, open `Project-Orgel.ino` in folder `Project-Oegel` with Arduino-IDE to upload.
 

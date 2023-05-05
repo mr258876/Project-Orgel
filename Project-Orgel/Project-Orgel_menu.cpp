@@ -8,6 +8,8 @@
     use elsewhere.
  */
 
+#include "pinouts.h"
+
 #include <EEPROM.h>
 #include <tcMenu.h>
 #include "Project-Orgel_menu.h"
@@ -16,7 +18,7 @@
 // Global variable declarations
 const extern PROGMEM ConnectorLocalInfo applicationInfo = {"Project-Orgel", "b17605de-fb70-4e86-93dc-73130cb2c43e"};
 ArduinoEEPROMAbstraction glArduinoEeprom(&EEPROM);
-U8G2_SSD1306_128X64_NONAME_F_HW_I2C gfx(U8G2_R0, U8X8_PIN_NONE, U8X8_PIN_NONE, U8X8_PIN_NONE);
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C gfx(U8G2_R0, DISPLAY_I2C_RST_Pin, DISPLAY_I2C_SCL_Pin, DISPLAY_I2C_SDA_Pin);
 U8g2Drawable gfxDrawable(&gfx);
 GraphicsDeviceRenderer renderer(30, applicationInfo.name, &gfxDrawable);
 int language = 0;
@@ -75,7 +77,7 @@ void setupMenu()
     gfx.begin();
     renderer.setUpdatesPerSecond(30);
     switches.init(internalDigitalIo(), SWITCHES_POLL_EVERYTHING, true);
-    menuMgr.initForEncoder(&renderer, &menuBackToHomepage, 34, 35, 32);
+    menuMgr.initForEncoder(&renderer, &menuBackToHomepage, ENCODER_A_Pin, ENCODER_B_Pin, ENCODER_OK_Pin);
 
     menuMgr.load();
     setLanguage(0);
