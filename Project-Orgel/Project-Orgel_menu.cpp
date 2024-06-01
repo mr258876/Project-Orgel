@@ -8,99 +8,62 @@
     use elsewhere.
  */
 
-#include "pinouts.h"
-
-#include <EEPROM.h>
 #include <tcMenu.h>
 #include "Project-Orgel_menu.h"
-#include "multiLanguage.h"
 
 // Global variable declarations
-const extern PROGMEM ConnectorLocalInfo applicationInfo = {"Project-Orgel", "b17605de-fb70-4e86-93dc-73130cb2c43e"};
+const PROGMEM  ConnectorLocalInfo applicationInfo = { "Project-Orgel", "b17605de-fb70-4e86-93dc-73130cb2c43e" };
 ArduinoEEPROMAbstraction glArduinoEeprom(&EEPROM);
-U8G2_SSD1306_128X64_NONAME_F_HW_I2C gfx(U8G2_R0, DISPLAY_I2C_RST_Pin, DISPLAY_I2C_SCL_Pin, DISPLAY_I2C_SDA_Pin);
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C gfx(U8G2_R0, U8X8_PIN_NONE, U8X8_PIN_NONE, U8X8_PIN_NONE);
 U8g2Drawable gfxDrawable(&gfx);
 GraphicsDeviceRenderer renderer(30, applicationInfo.name, &gfxDrawable);
-int language = 0;
-char* txtPlay = (char*) lang[language][TEXT_PLAYING];
-char* txtStop = (char*) lang[language][TEXT_STOPPED];
 
 // Global Menu Item declarations
-RENDERING_CALLBACK_NAME_INVOKE_ML(fnAboutText3RtCall, textItemRenderFn, lang[language][TEXT_ABOUT_3], -1, NO_CALLBACK)
-TextMenuItem menuAboutText3(fnAboutText3RtCall, 8, 1, NULL);
-RENDERING_CALLBACK_NAME_INVOKE_ML(fnAboutText2RtCall, textItemRenderFn, lang[language][TEXT_ABOUT_2], -1, NO_CALLBACK)
-TextMenuItem menuAboutText2(fnAboutText2RtCall, 23, 1, &menuAboutText3);
-RENDERING_CALLBACK_NAME_INVOKE_ML(fnAboutText1RtCall, textItemRenderFn, lang[language][TEXT_ABOUT_1], -1, NO_CALLBACK)
-TextMenuItem menuAboutText1(fnAboutText1RtCall, 7, 1, &menuAboutText2);
-RENDERING_CALLBACK_NAME_INVOKE_ML(fnAboutRtCall, backSubItemRenderFn, lang[language][TEXT_ABOUT], -1, NO_CALLBACK)
-SubMenuInfo_ML minfoAbout = {lang[language][TEXT_ABOUT], 6, 0xffff, 0, NO_CALLBACK};
-BackMenuItem menuBackAbout(fnAboutRtCall, &menuAboutText1);
-SubMenuItem menuAbout(&minfoAbout, &menuBackAbout, NULL);
+const PROGMEM AnyMenuInfo minfoAboutText3 = { "Version", 23, 0xffff, 0, NO_CALLBACK };
+TextMenuItem menuAboutText3(&minfoAboutText3, "0.3.0", 5, nullptr, INFO_LOCATION_PGM);
+const PROGMEM AnyMenuInfo minfoAboutText2 = { "By Mr258876", 8, 0xffff, 0, NO_CALLBACK };
+TextMenuItem menuAboutText2(&minfoAboutText2, "", 1, &menuAboutText3, INFO_LOCATION_PGM);
+const PROGMEM AnyMenuInfo minfoAboutText1 = { "Project-Orgel", 7, 0xffff, 0, NO_CALLBACK };
+TextMenuItem menuAboutText1(&minfoAboutText1, "", 1, &menuAboutText2, INFO_LOCATION_PGM);
+const PROGMEM SubMenuInfo minfoAbout = { "About", 6, 0xffff, 0, NO_CALLBACK };
+BackMenuItem menuBackAbout(&minfoAbout, &menuAboutText1, INFO_LOCATION_PGM);
+SubMenuItem menuAbout(&minfoAbout, &menuBackAbout, nullptr, INFO_LOCATION_PGM);
 const char enumStrLanguage_0[] PROGMEM = "ENG";
 const char enumStrLanguage_1[] PROGMEM = "CHS";
-const char *const enumStrLanguage[] PROGMEM = {enumStrLanguage_0, enumStrLanguage_1};
-EnumMenuInfo_ML minfoLanguage = {lang[language][TEXT_LANGUAGE], 24, 7, 1, setLanguage, enumStrLanguage};
-EnumMenuItem menuLanguage(&minfoLanguage, 0, &menuAbout);
-AnalogMenuInfo_ML minfoCurrent = {lang[language][TEXT_MOTOR_CURRENT], 22, 5, 2047, setCurrent, 0, 1, "mA"};
-AnalogMenuItem menuCurrent(&minfoCurrent, 0, NULL);
-AnalogMenuInfo_ML minfoGearTeeth = {lang[language][TEXT_MOTOR_GEAR_TEETH], 21, 3, 255, setGearTeeth, 0, 1, ""};
-AnalogMenuItem menuGearTeeth(&minfoGearTeeth, 0, &menuCurrent);
-BooleanMenuInfo_ML minfoDirection = {lang[language][TEXT_MOTOR_DIRECTION], 19, 2, 1, changeMotorDir, NAMING_TRUE_FALSE};
-BooleanMenuItem menuDirection(&minfoDirection, false, &menuGearTeeth);
-RENDERING_CALLBACK_NAME_INVOKE_ML(fnMotorRtCall, backSubItemRenderFn, lang[language][TEXT_MOTOR_SETTINGS], -1, NO_CALLBACK)
-SubMenuInfo_ML minfoMotor = {lang[language][TEXT_MOTOR_SETTINGS], 4, 0xffff, 0, NO_CALLBACK};
-BackMenuItem menuBackMotor(fnMotorRtCall, &menuDirection);
-SubMenuItem menuMotor(&minfoMotor, &menuBackMotor, &menuLanguage);
-RENDERING_CALLBACK_NAME_INVOKE_ML(fnSettingsRtCall, backSubItemRenderFn, lang[language][TEXT_SETTINGS], -1, NO_CALLBACK)
-SubMenuInfo_ML minfoSettings = {lang[language][TEXT_SETTINGS], 3, 0xffff, 0, NO_CALLBACK};
-BackMenuItem menuBackSettings(fnSettingsRtCall, &menuMotor);
-SubMenuItem menuSettings(&minfoSettings, &menuBackSettings, NULL);
-AnalogMenuInfo_ML minfoBPM = {lang[language][TEXT_PLAY_BPM], 2, 0xffff, 511, setSpeed, 0, 1, ""};
-AnalogMenuItem menuBPM(&minfoBPM, 0, &menuSettings);
-BooleanMenuInfo_ML minfoPlay = {lang[language][TEXT_NOW_PLAYING], 1, 0xffff, 1, switchPlayStatus, NAMING_ON_OFF};
-BooleanMenuItem menuPlay(&minfoPlay, false, &menuBPM);
-AnyMenuInfo_ML minfoBackToHomepage = {lang[language][TEXT_BACK_AND_SAVE], 20, 0xffff, 0, toHomePage};
-ActionMenuItem menuBackToHomepage(&minfoBackToHomepage, &menuPlay);
+const char* const enumStrLanguage[] PROGMEM  = { enumStrLanguage_0, enumStrLanguage_1 };
+const PROGMEM EnumMenuInfo minfoLanguage = { "Language", 24, 7, 1, setLanguage, enumStrLanguage };
+EnumMenuItem menuLanguage(&minfoLanguage, 0, &menuAbout, INFO_LOCATION_PGM);
+const PROGMEM AnalogMenuInfo minfoCurrent = { "Current", 22, 5, 2047, setCurrent, 0, 1, "mA" };
+AnalogMenuItem menuCurrent(&minfoCurrent, 0, nullptr, INFO_LOCATION_PGM);
+const PROGMEM AnalogMenuInfo minfoGearTeeth = { "Gear Teeth", 21, 3, 255, setGearTeeth, 0, 1, "" };
+AnalogMenuItem menuGearTeeth(&minfoGearTeeth, 0, &menuCurrent, INFO_LOCATION_PGM);
+const PROGMEM BooleanMenuInfo minfoDirection = { "Reversed", 19, 2, 1, changeMotorDir, NAMING_CHECKBOX };
+BooleanMenuItem menuDirection(&minfoDirection, false, &menuGearTeeth, INFO_LOCATION_PGM);
+const PROGMEM SubMenuInfo minfoMotor = { "Motor", 4, 0xffff, 0, NO_CALLBACK };
+BackMenuItem menuBackMotor(&minfoMotor, &menuDirection, INFO_LOCATION_PGM);
+SubMenuItem menuMotor(&minfoMotor, &menuBackMotor, &menuLanguage, INFO_LOCATION_PGM);
+const PROGMEM AnalogMenuInfo minfoBPM = { "BPM", 2, 0xffff, 511, setSpeed, 0, 1, "" };
+AnalogMenuItem menuBPM(&minfoBPM, 120, &menuMotor, INFO_LOCATION_PGM);
+const PROGMEM BooleanMenuInfo minfoPlay = { "play", 1, 0xffff, 1, switchPlayStatus, NAMING_TRUE_FALSE };
+BooleanMenuItem menuPlay(&minfoPlay, false, &menuBPM, INFO_LOCATION_PGM);
+const PROGMEM AnyMenuInfo minfoBackToHomepage = { "Back", 20, 0xffff, 0, toHomePage };
+ActionMenuItem menuBackToHomepage(&minfoBackToHomepage, &menuPlay, INFO_LOCATION_PGM);
 
-void setupMenu()
-{
+void setupMenu() {
     // First we set up eeprom and authentication (if needed).
-    EEPROM.begin(512);
+    setSizeBasedEEPROMStorageEnabled(false);
     menuMgr.setEepromRef(&glArduinoEeprom);
-
     // Now add any readonly, non-remote and visible flags.
     menuAboutText1.setReadOnly(true);
-    menuAboutText2.setReadOnly(true);
     menuAboutText3.setReadOnly(true);
+    menuAboutText2.setReadOnly(true);
+    menuBPM.setVisible(false);
+    menuPlay.setVisible(false);
 
-    // Code generated by plugins.
+    // Code generated by plugins and new operators.
     gfx.begin();
     renderer.setUpdatesPerSecond(30);
     switches.init(internalDigitalIo(), SWITCHES_POLL_EVERYTHING, true);
-    menuMgr.initForEncoder(&renderer, &menuBackToHomepage, ENCODER_A_Pin, ENCODER_B_Pin, ENCODER_OK_Pin);
-
-    menuMgr.load();
-    setLanguage(0);
+    menuMgr.initForEncoder(&renderer, &menuBackToHomepage, 34, 35, 32);
 }
 
-void CALLBACK_FUNCTION setLanguage(int id) {
-    language = menuLanguage.getCurrentValue();
-    
-    strcpy(minfoAbout.name, lang[language][TEXT_ABOUT]);
-    strcpy(minfoLanguage.name, lang[language][TEXT_LANGUAGE]);
-    strcpy(minfoCurrent.name, lang[language][TEXT_MOTOR_CURRENT]);
-    strcpy(minfoGearTeeth.name, lang[language][TEXT_MOTOR_GEAR_TEETH]);
-    strcpy(minfoDirection.name, lang[language][TEXT_MOTOR_DIRECTION]);
-    strcpy(minfoMotor.name, lang[language][TEXT_MOTOR_SETTINGS]);
-    strcpy(minfoSettings.name, lang[language][TEXT_SETTINGS]);
-    strcpy(minfoBPM.name, lang[language][TEXT_PLAY_BPM]);
-    strcpy(minfoPlay.name, lang[language][TEXT_PLAYING]);
-    strcpy(minfoBackToHomepage.name, lang[language][TEXT_BACK_AND_SAVE]);
-
-    txtPlay = (char*) lang[language][TEXT_PLAYING];
-    txtStop = (char*) lang[language][TEXT_STOPPED];
-
-    menuMgr.save();
-    EEPROM.commit();
-    
-}

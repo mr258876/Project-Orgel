@@ -2,6 +2,7 @@
 #define _PROJECT_ORGEL_TCMENU_HOME_
 
 #include <BaseRenderers.h>
+#include "lv_i18n.h"
 
 class HomePageDrawingHandler : public CustomDrawing
 {
@@ -38,11 +39,11 @@ public:
             gfx.setFont(u8g2_font_wqy14_t_gb2312a);
             if (menuPlay.getCurrentValue())
             {
-                gfx.drawUTF8(0, 14, txtPlay);
+                gfx.drawUTF8(0, 14, _("Playing"));
             }
             else
             {
-                gfx.drawUTF8(0, 14, txtStop);
+                gfx.drawUTF8(0, 14, _("Stopped"));
             }
 
             gfx.setFont(u8g2_font_open_iconic_play_4x_t);
@@ -56,7 +57,7 @@ public:
             }
 
             gfx.setFont(u8g2_font_profont17_mr);
-            gfx.drawUTF8(3, 62, "BPM");
+            gfx.drawUTF8(3, 62, _("BPM"));
 
         } while (gfx.nextPage());
     }

@@ -5,9 +5,6 @@
 - [中文](#中文)
 - [English](#english)
 
->ℹ注：第一次写用户指南之类的说明文档，如果有任何疑惑欢迎开Issue <br/>
-ℹNote: First time writing a user's guide document, please bring up an Issue if there's anything confusing.
-
 # 中文
 >## 目录
 - [项目状态](#项目状态)
@@ -117,11 +114,14 @@
 
 在环境搭建完成后，还需要在库管理器中安装以下库：
 ```
-tcMenu      @2.4.0
+tcMenu      @4.2.1
 TMCStepper  @0.7.3
 U8g2        @2.34.4
+NimBLE      @1.4.1
 ```
 准备完成后，使用Arduino IDE打开`Project-Oegel`文件夹中的`Project-Orgel.ino`进行烧录。
+
+>⚠注意：Arduino IDE中的esp32开发板版本不可使用`3.0.0`及以上版本！
 
 ## 使用指南
 >⚠注意：由于硬件组合及改装操作的多样性，在不同情形下运行可能触发未知的bug，如部分功能不可用等。该指南仅代表在测试硬件上的操作及运行效果。
@@ -242,11 +242,14 @@ First, you will need an Arduino-ESP32 environment. There's a [guide from randomn
 
 The following libraries are also required after building up the environment:
 ```
-tcMenu      @2.4.0
+tcMenu      @4.2.1
 TMCStepper  @0.7.3
 U8g2        @2.34.4
+NimBLE      @1.4.1
 ```
 After that, open `Project-Orgel.ino` in folder `Project-Oegel` with Arduino-IDE to upload.
+
+>⚠Note：`esp32` version in Arduino IDE should be below `3.0.0`, or compilation will fail!
 
 ## Usage
 >⚠Caution: Due to the diversity of hardware bundles and differences in modding procedure, unknown bugs might appear in some situations (e.g. functions not working). This manual only represents the operations and results on the testing hardware.

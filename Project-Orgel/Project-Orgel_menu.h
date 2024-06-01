@@ -16,15 +16,14 @@
 #include "tcMenuU8g2.h"
 #include <RuntimeMenuItem.h>
 #include <IoAbstraction.h>
+#include <EepromItemStorage.h>
 #include <ArduinoEEPROMAbstraction.h>
 
 // variables we declare that you may need to access
 extern const PROGMEM ConnectorLocalInfo applicationInfo;
 extern U8G2_SSD1306_128X64_NONAME_F_HW_I2C gfx;
+extern U8g2Drawable gfxDrawable;
 extern GraphicsDeviceRenderer renderer;
-extern int language;
-extern char* txtPlay;
-extern char* txtStop;
 
 // Any externals needed by IO expanders, EEPROMs etc
 
@@ -41,8 +40,6 @@ extern AnalogMenuItem menuGearTeeth;
 extern BooleanMenuItem menuDirection;
 extern BackMenuItem menuBackMotor;
 extern SubMenuItem menuMotor;
-extern BackMenuItem menuBackSettings;
-extern SubMenuItem menuSettings;
 extern AnalogMenuItem menuBPM;
 extern BooleanMenuItem menuPlay;
 extern ActionMenuItem menuBackToHomepage;

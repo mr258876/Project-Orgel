@@ -11,6 +11,8 @@
 #include <HardwareSerial.h>
 #include <TMCStepper.h>
 
+#include "lv_i18n.h"
+
 #if SOC_UART_NUM > 2
 #define DRIVER_SERIAL Serial2 // TMC2209 Serial Port
 #elif SOC_UART_NUM > 1
@@ -47,18 +49,30 @@ int motorGear = 60;
 
 void setup()
 {
+    Serial.begin(115200);
+    Serial.println("Orgel Running...");
+
+    EEPROM.begin(512);
+
+    // Init locale engine first, or gfx crashes
+    lv_i18n_init(lv_i18n_language_pack);
+    lv_i18n_set_locale(lv_i18n_language_pack[0]->locale_name);
+
+
     // TcMenu Initialize
     setupMenu();
     menuMgr.load();
+    
+    // Reset language base on value loaded
+    lv_i18n_set_locale(lv_i18n_language_pack[menuLanguage.getCurrentValue()]->locale_name);
+
+    // Continue TcMenu Init
     installTheme();
-    menuBPM.setCurrentValue(120);
     homePage();
+    
     motorDirection = menuDirection.getBoolean();
     motorCurrent = menuCurrent.getCurrentValue();
     motorGear = menuGearTeeth.getCurrentValue();
-
-    Serial.begin(115200);
-    Serial.println("Orgel Running...");
 
     // Set serial pinout
     DRIVER_SERIAL.begin(115200, SERIAL_8N1, MOTOR_SERIAL_RX_Pin, MOTOR_SERIAL_TX_Pin);
@@ -175,4 +189,12 @@ void CALLBACK_FUNCTION setCurrent(int id)
     // TODO - your menu change code
     motorCurrent = menuCurrent.getCurrentValue();
     setMotorSpeed(menuBPM.getCurrentValue());
+}
+
+
+void CALLBACK_FUNCTION setLanguage(int id) {
+    lv_i18n_set_locale(lv_i18n_language_pack[menuLanguage.getCurrentValue()]->locale_name);
+    menuMgr.save();
+    EEPROM.commit();
+    menuMgr.resetMenu(false);
 }

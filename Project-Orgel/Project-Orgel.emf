@@ -7,21 +7,23 @@
       "parentId": 0,
       "type": "actionMenu",
       "item": {
-        "name": "Back and Save",
+        "name": "Back",
         "variableName": "BackToHomepage",
         "id": 20,
         "eepromAddress": -1,
         "functionName": "toHomePage",
         "readOnly": false,
         "localOnly": false,
-        "visible": true
+        "visible": true,
+        "staticDataInRAM": false
       }
     },
     {
       "parentId": 0,
       "type": "boolItem",
+      "defaultValue": "false",
       "item": {
-        "naming": "ON_OFF",
+        "naming": "TRUE_FALSE",
         "name": "play",
         "variableName": "Play",
         "id": 1,
@@ -29,17 +31,20 @@
         "functionName": "switchPlayStatus",
         "readOnly": false,
         "localOnly": false,
-        "visible": true
+        "visible": false,
+        "staticDataInRAM": false
       }
     },
     {
       "parentId": 0,
       "type": "analogItem",
+      "defaultValue": "120",
       "item": {
         "maxValue": 511,
         "offset": 0,
         "divisor": 1,
         "unitName": "",
+        "step": 1,
         "name": "BPM",
         "variableName": "BPM",
         "id": 2,
@@ -47,25 +52,12 @@
         "functionName": "setSpeed",
         "readOnly": false,
         "localOnly": false,
-        "visible": true
+        "visible": false,
+        "staticDataInRAM": false
       }
     },
     {
       "parentId": 0,
-      "type": "subMenu",
-      "item": {
-        "secured": false,
-        "name": "Settings",
-        "variableName": "Settings",
-        "id": 3,
-        "eepromAddress": -1,
-        "readOnly": false,
-        "localOnly": false,
-        "visible": true
-      }
-    },
-    {
-      "parentId": 3,
       "type": "subMenu",
       "item": {
         "secured": false,
@@ -75,32 +67,37 @@
         "eepromAddress": -1,
         "readOnly": false,
         "localOnly": false,
-        "visible": true
+        "visible": true,
+        "staticDataInRAM": false
       }
     },
     {
       "parentId": 4,
       "type": "boolItem",
+      "defaultValue": "false",
       "item": {
-        "naming": "TRUE_FALSE",
-        "name": "Direction",
+        "naming": "CHECKBOX",
+        "name": "Reversed",
         "variableName": "Direction",
         "id": 19,
         "eepromAddress": 2,
         "functionName": "changeMotorDir",
         "readOnly": false,
         "localOnly": false,
-        "visible": true
+        "visible": true,
+        "staticDataInRAM": false
       }
     },
     {
       "parentId": 4,
       "type": "analogItem",
+      "defaultValue": "0",
       "item": {
         "maxValue": 255,
         "offset": 0,
         "divisor": 1,
         "unitName": "",
+        "step": 1,
         "name": "Gear Teeth",
         "variableName": "GearTeeth",
         "id": 21,
@@ -108,17 +105,20 @@
         "functionName": "setGearTeeth",
         "readOnly": false,
         "localOnly": false,
-        "visible": true
+        "visible": true,
+        "staticDataInRAM": false
       }
     },
     {
       "parentId": 4,
       "type": "analogItem",
+      "defaultValue": "0",
       "item": {
         "maxValue": 2047,
         "offset": 0,
         "divisor": 1,
         "unitName": "mA",
+        "step": 1,
         "name": "Current",
         "variableName": "Current",
         "id": 22,
@@ -126,12 +126,14 @@
         "functionName": "setCurrent",
         "readOnly": false,
         "localOnly": false,
-        "visible": true
+        "visible": true,
+        "staticDataInRAM": false
       }
     },
     {
-      "parentId": 3,
+      "parentId": 0,
       "type": "enumItem",
+      "defaultValue": "0",
       "item": {
         "enumEntries": [
           "ENG",
@@ -144,11 +146,12 @@
         "functionName": "setLanguage",
         "readOnly": false,
         "localOnly": false,
-        "visible": true
+        "visible": true,
+        "staticDataInRAM": false
       }
     },
     {
-      "parentId": 3,
+      "parentId": 0,
       "type": "subMenu",
       "item": {
         "secured": false,
@@ -158,12 +161,14 @@
         "eepromAddress": -1,
         "readOnly": false,
         "localOnly": false,
-        "visible": true
+        "visible": true,
+        "staticDataInRAM": false
       }
     },
     {
       "parentId": 6,
       "type": "textItem",
+      "defaultValue": "",
       "item": {
         "textLength": 1,
         "itemType": "PLAIN_TEXT",
@@ -173,37 +178,42 @@
         "eepromAddress": -1,
         "readOnly": true,
         "localOnly": false,
-        "visible": true
+        "visible": true,
+        "staticDataInRAM": false
       }
     },
     {
       "parentId": 6,
       "type": "textItem",
+      "defaultValue": "",
       "item": {
         "textLength": 1,
         "itemType": "PLAIN_TEXT",
-        "name": "By",
+        "name": "By Mr258876",
         "variableName": "AboutText2",
-        "id": 23,
-        "eepromAddress": -1,
-        "readOnly": true,
-        "localOnly": false,
-        "visible": true
-      }
-    },
-    {
-      "parentId": 6,
-      "type": "textItem",
-      "item": {
-        "textLength": 1,
-        "itemType": "PLAIN_TEXT",
-        "name": "Mr258876",
-        "variableName": "AboutText3",
         "id": 8,
         "eepromAddress": -1,
         "readOnly": true,
         "localOnly": false,
-        "visible": true
+        "visible": true,
+        "staticDataInRAM": false
+      }
+    },
+    {
+      "parentId": 6,
+      "type": "textItem",
+      "defaultValue": "0.3.0",
+      "item": {
+        "textLength": 5,
+        "itemType": "PLAIN_TEXT",
+        "name": "Version",
+        "variableName": "AboutText3",
+        "id": 23,
+        "eepromAddress": -1,
+        "readOnly": true,
+        "localOnly": false,
+        "visible": true,
+        "staticDataInRAM": false
       }
     }
   ],
@@ -211,7 +221,6 @@
     "embeddedPlatform": "ARDUINO_ESP32",
     "lastDisplayUuid": "fd998437-c4b2-4386-ba88-d0ae7c20620b",
     "lastInputUuid": "6dd87e7d-e751-4912-a70d-91793b1d3d87",
-    "lastRemoteUuid": "2c101fec-1f7d-4ff3-8d2b-992ad41e7fcb",
     "lastRemoteUuids": [
       "2c101fec-1f7d-4ff3-8d2b-992ad41e7fcb"
     ],
@@ -270,6 +279,11 @@
         "subsystem": "DISPLAY"
       },
       {
+        "name": "USE_UTF8_SUPPORT",
+        "latestValue": "true",
+        "subsystem": "DISPLAY"
+      },
+      {
         "name": "SW_POLLING_MODE",
         "latestValue": "SWITCHES_POLL_EVERYTHING",
         "subsystem": "INPUT"
@@ -316,8 +330,9 @@
       }
     ],
     "namingRecursive": false,
-    "saveToSrc": false,
     "useCppMain": false,
+    "saveLocation": "ALL_TO_CURRENT",
+    "usingSizedEEPROMStorage": false,
     "eepromDefinition": "eeprom:",
     "authenticatorDefinition": "",
     "projectIoExpanders": [
@@ -327,6 +342,8 @@
       "menuDefinitions": []
     },
     "packageNamespace": "",
-    "appIsModular": false
-  }
+    "appIsModular": false,
+    "listOfEmbeddedForms": []
+  },
+  "stringLists": []
 }
