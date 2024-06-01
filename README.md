@@ -25,6 +25,7 @@
 * 更多可在UI中调节的值 ✔
 * UI 多语言支持 ✔
 * 项目自述 ✔
+* 无线控制 🚧
 
 
 >## 配件
@@ -172,6 +173,7 @@ Have fun!
 * More Adjustable Values in UI ✔
 * UI MultiLanguage Support   ✔
 * Readme  ✔
+* Wireless Control 🚧
 
 
 >## Hardware Requirements
