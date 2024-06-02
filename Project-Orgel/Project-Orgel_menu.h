@@ -40,6 +40,7 @@ extern AnalogMenuItem menuGearTeeth;
 extern BooleanMenuItem menuDirection;
 extern BackMenuItem menuBackMotor;
 extern SubMenuItem menuMotor;
+extern BooleanMenuItem menuBluetooth;
 extern AnalogMenuItem menuBPM;
 extern BooleanMenuItem menuPlay;
 extern ActionMenuItem menuBackToHomepage;
@@ -52,6 +53,7 @@ void setupMenu();
 #define CALLBACK_FUNCTION
 
 void CALLBACK_FUNCTION changeMotorDir(int id);
+void CALLBACK_FUNCTION setBluetoothOn(int id);
 void CALLBACK_FUNCTION setCurrent(int id);
 void CALLBACK_FUNCTION setGearTeeth(int id);
 void CALLBACK_FUNCTION setLanguage(int id);

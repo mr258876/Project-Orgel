@@ -58,6 +58,23 @@
     },
     {
       "parentId": 0,
+      "type": "boolItem",
+      "defaultValue": "false",
+      "item": {
+        "naming": "ON_OFF",
+        "name": "Bluetooth",
+        "variableName": "Bluetooth",
+        "id": 25,
+        "eepromAddress": 9,
+        "functionName": "setBluetoothOn",
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true,
+        "staticDataInRAM": false
+      }
+    },
+    {
+      "parentId": 0,
       "type": "subMenu",
       "item": {
         "secured": false,

@@ -3,9 +3,15 @@
 
 #include <BaseRenderers.h>
 #include "lv_i18n.h"
+#include "BLEInterface.h"
 
 class HomePageDrawingHandler : public CustomDrawing
 {
+private:
+    bool isPlaying = false;
+    uint16_t lastEncVal = 0;
+    uint16_t lastBPM = 0;
+
 public:
     ~HomePageDrawingHandler() = default;
 
@@ -23,6 +29,9 @@ public:
         // now need to do any initial activity
         gfx.setFontPosBaseline();
         switches.changeEncoderPrecision(menuBPM.getMaximumValue(), menuBPM.getCurrentValue());
+        isPlaying = menuPlay.getBoolean();
+        lastEncVal = menuBPM.getCurrentValue();
+        lastBPM = menuBPM.getCurrentValue();
         draw();
     }
 
@@ -73,14 +82,27 @@ public:
         else if (userClick == RPRESS_PRESSED)
         {
             menuPlay.setBoolean(!menuPlay.getBoolean());
+            isPlaying = menuPlay.getBoolean();
             switches.changeEncoderPrecision(menuBPM.getMaximumValue(), menuBPM.getCurrentValue());
             draw();
+            ble_notify_bpm();
         }
         // Rotate: change speed
-        if (menuBPM.getCurrentValue() != currentValue)
+        if (lastEncVal != currentValue)
         {
-            menuBPM.setCurrentValue(currentValue);
+            menuBPM.setCurrentValue(menuBPM.getCurrentValue() + (currentValue - lastEncVal));
+            lastEncVal = currentValue;
+            lastBPM = menuBPM.getCurrentValue();
             draw();
+            ble_notify_bpm();
+        }
+        // Value changed from BLE
+        if (menuBPM.getCurrentValue() != lastBPM || menuPlay.getBoolean() != isPlaying)
+        {
+            lastBPM = menuBPM.getCurrentValue();
+            isPlaying = menuPlay.getBoolean();
+            draw();
+            ble_notify_bpm();
         }
     }
 } HomePageDrawingHandler;

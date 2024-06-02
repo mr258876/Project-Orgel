@@ -15,6 +15,10 @@
     - [电路搭建](#电路搭建)
     - [控制程序烧录](#控制程序烧录)
 - [使用指南](#使用指南)
+    - [初次使用](#初次使用)
+    - [基本操作](#基本操作)
+    - [菜单与设置](#菜单与设置)
+    - [无线控制](#无线控制)
 
 >## 项目状态
 * 基础原理验证 ✔
@@ -152,20 +156,49 @@ NimBLE      @1.4.1
     >⚠注意：随着电流的增大，驱动器会产生更多热量并可能导致过热保护，电机可能会产生更大噪音。正常使用请不要将该值提升至1700mA以上。
  - 语言
      - ENG：英语
-     - CHS：简体中文
+     - 中文：简体中文
+ - 蓝牙
+     - 开：开启蓝牙并启用无线控制功能
+     - 关：关闭蓝牙并停用无线控制功能
+
+### 无线控制
+
+>TODO
 
 Have fun!
 
 # English
 >## Table of Contents
-- [Project Status](#project-ptatus)
-- [Hardware Requirements](#hardware-requirements)
-- [A Brief Modding Guide](#a-brief-modding-guide)
+- [Project Orgel](#project-orgel)
+    - [赛博音乐盒计划第一部分](#赛博音乐盒计划第一部分)
+    - [Cyber Musicbox Project Part I](#cyber-musicbox-project-part-i)
+- [中文](#中文)
+    - [参考链接](#参考链接)
+  - [某个简短的改装指南](#某个简短的改装指南)
+    - [传动改造](#传动改造)
+    - [八音盒及电机的固定](#八音盒及电机的固定)
+    - [电路搭建](#电路搭建)
+    - [控制程序烧录](#控制程序烧录)
+      - [刷入已编译固件](#刷入已编译固件)
+      - [自行编译并刷入](#自行编译并刷入)
+  - [使用指南](#使用指南)
+    - [初次使用](#初次使用)
+    - [基本操作](#基本操作)
+    - [菜单与设置](#菜单与设置)
+    - [无线控制](#无线控制)
+- [English](#english)
+  - [A Brief Modding Guide](#a-brief-modding-guide)
     - [Gear Modding](#gear-modding)
     - [Mounting](#mounting)
-    - [Curcit](#circuit)
+    - [Circuit](#circuit)
     - [Uploading Code](#uploading-code)
-- [Usage](#usage)
+      - [Flash the compiled firmware](#flash-the-compiled-firmware)
+      - [Compile and flash by yourself](#compile-and-flash-by-yourself)
+  - [Usage](#usage)
+    - [First Use](#first-use)
+    - [Basic Operations](#basic-operations)
+    - [Settings](#settings)
+    - [Wireless Control](#wireless-control)
 
 >## Project Status 
 * Make it work  ✔
@@ -274,13 +307,20 @@ In the menu, rotate the knob to go through, intract with options by pressing dow
 
 Explations on adjustable values:
  - Motor
-     - Direction: The running direction of the motor.
+     - Reversed: To reverse the motor operation direction.
      - Gear Teeth: Teeth number of the gear installed on the motor. Related to running speed.
      - Current: The runing current of motor in mA. Reference value: 1050mA. 
     >⚠Caution：The Driver moudle would produce more heat as the current goes up, and might trigger overheat protection. The motor will produce more noise as well. Do not raise this value over 1700mA in normal use.
  - Language
      - ENG: English
-     - CHS: Simplified Chinese
+     - 中文: Simplified Chinese
+ - Bluetooth
+     - On: Turn on bluetooth, and enable wireless control
+     - Off: Turn off bluetooth, and disable wireless control
+
+### Wireless Control
+
+>TODO
 
 Have fun!
 

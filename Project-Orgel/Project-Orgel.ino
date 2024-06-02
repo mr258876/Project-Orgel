@@ -13,6 +13,9 @@
 
 #include "lv_i18n.h"
 
+#include <NimBLEDevice.h> // Bluetooth
+#include "BLEInterface.h"
+
 #if SOC_UART_NUM > 2
 #define DRIVER_SERIAL Serial2 // TMC2209 Serial Port
 #elif SOC_UART_NUM > 1
@@ -34,19 +37,24 @@ const double ORGEL_GEAR = 29.0; // 29齿八音盒齿轮
 const double ORGEL_BPM_PER_ROUND = 4.51603944; // 齿轮周长约1.15picm,纸带一拍0.8cm,故八音盒齿轮旋转一周约4.516拍
 // 获得BPM计算常数
 // const double BPM_CALC_CONST = STEPS_PER_ROTOR_REV * GEAR_REDUCTION * ORGEL_GEAR / MOTOR_GEAR / ORGEL_BPM_PER_ROUND / 60;
-double BPM_CALC_CONST = STEPS_PER_ROTOR_REV * GEAR_REDUCTION * ORGEL_GEAR / ORGEL_BPM_PER_ROUND / 60;   // <- 电机齿轮现在由菜单赋值并在设置BPM时计算齿轮比
+double BPM_CALC_CONST = STEPS_PER_ROTOR_REV * GEAR_REDUCTION * ORGEL_GEAR / ORGEL_BPM_PER_ROUND / 60; // <- 电机齿轮现在由菜单赋值并在设置BPM时计算齿轮比
 
 // Create a Driver Object
 TMC2209Stepper *driver;
 
 // Variables
 bool playStatus = false;
-int playBPM = 120;
-int motorCurrent = 950;
+int16_t playBPM = 120;
+int16_t motorCurrent = 950;
 bool autoCurrentEnabled;
 bool motorDirection;
-int motorGear = 60;
+int16_t motorGear = 60;
 
+////////// FUNCTION PROTOTYPES //////////
+static void enableBluetooth(void *params);
+static void disableBluetooth(void *params);
+
+////////// FUNCTIONS ///////////
 void setup()
 {
     Serial.begin(115200);
@@ -58,18 +66,20 @@ void setup()
     lv_i18n_init(lv_i18n_language_pack);
     lv_i18n_set_locale(lv_i18n_language_pack[0]->locale_name);
 
-
     // TcMenu Initialize
     setupMenu();
     menuMgr.load();
-    
+
     // Reset language base on value loaded
     lv_i18n_set_locale(lv_i18n_language_pack[menuLanguage.getCurrentValue()]->locale_name);
+
+    // Init Bluetooth
+    setBluetoothOn(25);
 
     // Continue TcMenu Init
     installTheme();
     homePage();
-    
+
     motorDirection = menuDirection.getBoolean();
     motorCurrent = menuCurrent.getCurrentValue();
     motorGear = menuGearTeeth.getCurrentValue();
@@ -186,15 +196,55 @@ void CALLBACK_FUNCTION setGearTeeth(int id)
 // 电流数值改变回调函数
 void CALLBACK_FUNCTION setCurrent(int id)
 {
-    // TODO - your menu change code
     motorCurrent = menuCurrent.getCurrentValue();
     setMotorSpeed(menuBPM.getCurrentValue());
 }
 
-
-void CALLBACK_FUNCTION setLanguage(int id) {
+void CALLBACK_FUNCTION setLanguage(int id)
+{
     lv_i18n_set_locale(lv_i18n_language_pack[menuLanguage.getCurrentValue()]->locale_name);
     menuMgr.save();
     EEPROM.commit();
     menuMgr.resetMenu(false);
+}
+
+static bool bluetooth_switching = false;
+void CALLBACK_FUNCTION setBluetoothOn(int id)
+{
+    if (bluetooth_switching)
+    {
+        return;
+    }
+
+    if (menuBluetooth.getBoolean())
+    {
+        /* Start a new task to handle switching */
+        xTaskCreate(enableBluetooth, "enableBLE", 4096, NULL, 1, NULL);
+        bluetooth_switching = true;
+    }
+    else
+    {
+        /* Start a new task to handle switching */
+        xTaskCreate(disableBluetooth, "disableBLE", 4096, NULL, 1, NULL);
+        bluetooth_switching = true;
+    }
+
+    menuMgr.save();
+    EEPROM.commit();
+}
+
+static void enableBluetooth(void *params)
+{
+    ble_on();
+
+    bluetooth_switching = false;
+    vTaskDelete(NULL);
+}
+
+static void disableBluetooth(void *params)
+{
+    ble_off();
+
+    bluetooth_switching = false;
+    vTaskDelete(NULL);
 }

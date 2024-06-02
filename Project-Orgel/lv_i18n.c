@@ -53,6 +53,9 @@ static lv_i18n_phrase_t zh_cn_singulars[] = {
     {"Version", "版本"},
     {"Playing", "正在播放"},
     {"Stopped", "已停止"},
+    {"Bluetooth", "蓝牙"},
+    {"ON", "开"},
+    {"OFF", "关"},
     {NULL, NULL} // End mark
 };
 

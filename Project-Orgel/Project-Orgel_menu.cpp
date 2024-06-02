@@ -42,8 +42,10 @@ BooleanMenuItem menuDirection(&minfoDirection, false, &menuGearTeeth, INFO_LOCAT
 const PROGMEM SubMenuInfo minfoMotor = { "Motor", 4, 0xffff, 0, NO_CALLBACK };
 BackMenuItem menuBackMotor(&minfoMotor, &menuDirection, INFO_LOCATION_PGM);
 SubMenuItem menuMotor(&minfoMotor, &menuBackMotor, &menuLanguage, INFO_LOCATION_PGM);
+const PROGMEM BooleanMenuInfo minfoBluetooth = { "Bluetooth", 25, 9, 1, setBluetoothOn, NAMING_ON_OFF };
+BooleanMenuItem menuBluetooth(&minfoBluetooth, false, &menuMotor, INFO_LOCATION_PGM);
 const PROGMEM AnalogMenuInfo minfoBPM = { "BPM", 2, 0xffff, 511, setSpeed, 0, 1, "" };
-AnalogMenuItem menuBPM(&minfoBPM, 120, &menuMotor, INFO_LOCATION_PGM);
+AnalogMenuItem menuBPM(&minfoBPM, 120, &menuBluetooth, INFO_LOCATION_PGM);
 const PROGMEM BooleanMenuInfo minfoPlay = { "play", 1, 0xffff, 1, switchPlayStatus, NAMING_TRUE_FALSE };
 BooleanMenuItem menuPlay(&minfoPlay, false, &menuBPM, INFO_LOCATION_PGM);
 const PROGMEM AnyMenuInfo minfoBackToHomepage = { "Back", 20, 0xffff, 0, toHomePage };
