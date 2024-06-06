@@ -1,8 +1,8 @@
 #ifndef TCMENU_THEME_PROJ_ORGEL
 #define TCMENU_THEME_PROJ_ORGEL
 
-color_t defaultItemPaletteMono[] = {1, 0, 1, 1};
-color_t defaultTitlePaletteMono[] = {0, 1, 0, 0};
+const color_t defaultItemPaletteMono[] = {1, 0, 1, 1};
+const color_t defaultTitlePaletteMono[] = {0, 1, 0, 0};
 
 #define TITLE_PADDING 0
 #define TITLE_SPACING 0

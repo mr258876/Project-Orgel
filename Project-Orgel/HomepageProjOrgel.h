@@ -4,6 +4,7 @@
 #include <BaseRenderers.h>
 #include "lv_i18n.h"
 #include "BLEInterface.h"
+#include "u8g2_wqy_14_project_orgel.h"
 
 class HomePageDrawingHandler : public CustomDrawing
 {
@@ -45,7 +46,7 @@ public:
             gfx.setCursor(30, 63);
             gfx.print(menuBPM.getCurrentValue());
 
-            gfx.setFont(u8g2_font_wqy14_t_gb2312a);
+            gfx.setFont(u8g2_wqy_14_project_orgel);
             if (menuPlay.getCurrentValue())
             {
                 gfx.drawUTF8(0, 14, _("Playing"));

@@ -2,8 +2,6 @@
 #include <NimBLEDevice.h>
 #include "Project-Orgel_menu.h"
 
-const char *TAG = "BLEInterface";
-
 static bool BLEStarted = false;
 
 static NimBLEServer *pBLEServer = nullptr;
@@ -69,7 +67,7 @@ void ble_on()
         NimBLEDevice::setSecurityRespKey(BLE_SM_PAIR_KEY_DIST_ENC | BLE_SM_PAIR_KEY_DIST_ID);
 
         // Enable pairing & RPA
-#ifdef IDF_BUILD_TARGET
+#if defined(ESP_PLATFORM)
         NimBLEDevice::setOwnAddrType(BLE_OWN_ADDR_PUBLIC, false);
 #endif
         NimBLEDevice::setSecurityAuth(true, true, true);

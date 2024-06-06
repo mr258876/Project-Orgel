@@ -17,7 +17,7 @@ static inline uint32_t op_w(uint32_t val) { UNUSED(val); return 0; }
 static inline uint32_t op_f(uint32_t val) { UNUSED(val); return 0; }
 static inline uint32_t op_t(uint32_t val) { UNUSED(val); return 0; }
 
-static lv_i18n_phrase_t en_us_singulars[] = {
+static const lv_i18n_phrase_t en_us_singulars[] = {
     {"CHS", "中文"},
     {NULL, NULL} // End mark
 };
@@ -41,7 +41,7 @@ static const lv_i18n_lang_t en_us_lang = {
     .locale_plural_fn = en_us_plural_fn
 };
 
-static lv_i18n_phrase_t zh_cn_singulars[] = {
+static const lv_i18n_phrase_t zh_cn_singulars[] = {
     {"Back", "返回"},
     {"Motor", "电机设置"},
     {"Language", "语言(Lang)"},

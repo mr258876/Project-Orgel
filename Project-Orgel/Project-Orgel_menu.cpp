@@ -14,13 +14,17 @@
 // Global variable declarations
 const PROGMEM  ConnectorLocalInfo applicationInfo = { "Project-Orgel", "b17605de-fb70-4e86-93dc-73130cb2c43e" };
 ArduinoEEPROMAbstraction glArduinoEeprom(&EEPROM);
+#if defined(ESP_PLATFORM)
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C gfx(U8G2_R0, U8X8_PIN_NONE, U8X8_PIN_NONE, U8X8_PIN_NONE);
+#elif defined(NRF51)
+U8G2_SSD1306_128X64_NONAME_1_HW_I2C gfx(U8G2_R0, U8X8_PIN_NONE, U8X8_PIN_NONE, U8X8_PIN_NONE);
+#endif
 U8g2Drawable gfxDrawable(&gfx);
 GraphicsDeviceRenderer renderer(30, applicationInfo.name, &gfxDrawable);
 
 // Global Menu Item declarations
 const PROGMEM AnyMenuInfo minfoAboutText3 = { "Version", 23, 0xffff, 0, NO_CALLBACK };
-TextMenuItem menuAboutText3(&minfoAboutText3, "0.3.0", 5, nullptr, INFO_LOCATION_PGM);
+TextMenuItem menuAboutText3(&minfoAboutText3, "0.3.1", 5, nullptr, INFO_LOCATION_PGM);
 const PROGMEM AnyMenuInfo minfoAboutText2 = { "By Mr258876", 8, 0xffff, 0, NO_CALLBACK };
 TextMenuItem menuAboutText2(&minfoAboutText2, "", 1, &menuAboutText3, INFO_LOCATION_PGM);
 const PROGMEM AnyMenuInfo minfoAboutText1 = { "Project-Orgel", 7, 0xffff, 0, NO_CALLBACK };

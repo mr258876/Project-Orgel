@@ -16,6 +16,8 @@
 #include <NimBLEDevice.h> // Bluetooth
 #include "BLEInterface.h"
 
+#include "u8g2_wqy_14_project_orgel.h"
+
 #if SOC_UART_NUM > 2
 #define DRIVER_SERIAL Serial2 // TMC2209 Serial Port
 #elif SOC_UART_NUM > 1
@@ -57,10 +59,12 @@ static void disableBluetooth(void *params);
 ////////// FUNCTIONS ///////////
 void setup()
 {
-#ifdef IDF_TARGET
+#if defined(ESP_PLATFORM)
     EEPROM.begin(512);
-#else if defined NRF51
+#elif defined(NRF51)
     EEPROM.begin();
+#else
+#error unsupported platform!
 #endif
 
     // Init locale engine first, or gfx crashes
@@ -86,11 +90,13 @@ void setup()
     motorGear = menuGearTeeth.getCurrentValue();
 
     // Set serial pinout
-#ifdef IDF_TARGET
+#if defined(ESP_PLATFORM)
     DRIVER_SERIAL.begin(115200, SERIAL_8N1, MOTOR_SERIAL_RX_Pin, MOTOR_SERIAL_TX_Pin);
-#else if defined NRF51
+#elif defined(NRF51)
     DRIVER_SERIAL.setPins(MOTOR_SERIAL_RX_Pin, MOTOR_SERIAL_TX_Pin);
     DRIVER_SERIAL.begin(115200);
+#else
+#error unsupported platform!
 #endif
     driver = new TMC2209Stepper(&DRIVER_SERIAL, R_SENSE, DRIVER_ADDRESS);
 
@@ -109,7 +115,7 @@ void installTheme()
 {
     renderer.setTitleMode(BaseGraphicalRenderer::TITLE_FIRST_ROW);
     renderer.setUseSliderForAnalog(false);
-    installMonoInverseTitleTheme(renderer, MenuFontDef(u8g2_font_wqy14_t_gb2312b, 1), MenuFontDef(u8g2_font_wqy14_t_gb2312b, 1), true);
+    installMonoInverseTitleTheme(renderer, MenuFontDef(u8g2_wqy_14_project_orgel, 1), MenuFontDef(u8g2_wqy_14_project_orgel, 1), true);
     gfx.enableUTF8Print();    // 启用UTF-8以支持多语言
     gfx.setFontPosBaseline(); // 设置字体基线
 }
@@ -187,7 +193,7 @@ void CALLBACK_FUNCTION changeMotorDir(int id)
 void CALLBACK_FUNCTION toHomePage(int id)
 {
     menuMgr.save();
-#ifdef IDF_TARGET
+#if defined(ESP_PLATFORM)
     EEPROM.commit();
 #endif
     renderer.takeOverDisplay();
@@ -212,7 +218,7 @@ void CALLBACK_FUNCTION setLanguage(int id)
 {
     lv_i18n_set_locale(lv_i18n_language_pack[menuLanguage.getCurrentValue()]->locale_name);
     menuMgr.save();
-#ifdef IDF_TARGET
+#if defined(ESP_PLATFORM)
     EEPROM.commit();
 #endif
     menuMgr.resetMenu(false);
@@ -229,18 +235,18 @@ void CALLBACK_FUNCTION setBluetoothOn(int id)
     if (menuBluetooth.getBoolean())
     {
         /* Start a new task to handle switching */
-        xTaskCreate(enableBluetooth, "enableBLE", 2048, NULL, 1, NULL);
+        xTaskCreate(enableBluetooth, "enableBLE", 4096, NULL, 1, NULL);
         bluetooth_switching = true;
     }
     else
     {
         /* Start a new task to handle switching */
-        xTaskCreate(disableBluetooth, "disableBLE", 2048, NULL, 1, NULL);
+        xTaskCreate(disableBluetooth, "disableBLE", 4096, NULL, 1, NULL);
         bluetooth_switching = true;
     }
 
     menuMgr.save();
-#ifdef IDF_TARGET
+#if defined(ESP_PLATFORM)
     EEPROM.commit();
 #endif
 }
