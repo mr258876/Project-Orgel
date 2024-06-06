@@ -57,10 +57,11 @@ static void disableBluetooth(void *params);
 ////////// FUNCTIONS ///////////
 void setup()
 {
-    Serial.begin(115200);
-    Serial.println("Orgel Running...");
-
+#ifdef IDF_TARGET
     EEPROM.begin(512);
+#else if defined NRF51
+    EEPROM.begin();
+#endif
 
     // Init locale engine first, or gfx crashes
     lv_i18n_init(lv_i18n_language_pack);
@@ -85,7 +86,12 @@ void setup()
     motorGear = menuGearTeeth.getCurrentValue();
 
     // Set serial pinout
+#ifdef IDF_TARGET
     DRIVER_SERIAL.begin(115200, SERIAL_8N1, MOTOR_SERIAL_RX_Pin, MOTOR_SERIAL_TX_Pin);
+#else if defined NRF51
+    DRIVER_SERIAL.setPins(MOTOR_SERIAL_RX_Pin, MOTOR_SERIAL_TX_Pin);
+    DRIVER_SERIAL.begin(115200);
+#endif
     driver = new TMC2209Stepper(&DRIVER_SERIAL, R_SENSE, DRIVER_ADDRESS);
 
     // Init TMC2209 driver
@@ -181,7 +187,9 @@ void CALLBACK_FUNCTION changeMotorDir(int id)
 void CALLBACK_FUNCTION toHomePage(int id)
 {
     menuMgr.save();
+#ifdef IDF_TARGET
     EEPROM.commit();
+#endif
     renderer.takeOverDisplay();
 }
 
@@ -204,7 +212,9 @@ void CALLBACK_FUNCTION setLanguage(int id)
 {
     lv_i18n_set_locale(lv_i18n_language_pack[menuLanguage.getCurrentValue()]->locale_name);
     menuMgr.save();
+#ifdef IDF_TARGET
     EEPROM.commit();
+#endif
     menuMgr.resetMenu(false);
 }
 
@@ -219,18 +229,20 @@ void CALLBACK_FUNCTION setBluetoothOn(int id)
     if (menuBluetooth.getBoolean())
     {
         /* Start a new task to handle switching */
-        xTaskCreate(enableBluetooth, "enableBLE", 4096, NULL, 1, NULL);
+        xTaskCreate(enableBluetooth, "enableBLE", 2048, NULL, 1, NULL);
         bluetooth_switching = true;
     }
     else
     {
         /* Start a new task to handle switching */
-        xTaskCreate(disableBluetooth, "disableBLE", 4096, NULL, 1, NULL);
+        xTaskCreate(disableBluetooth, "disableBLE", 2048, NULL, 1, NULL);
         bluetooth_switching = true;
     }
 
     menuMgr.save();
+#ifdef IDF_TARGET
     EEPROM.commit();
+#endif
 }
 
 static void enableBluetooth(void *params)
