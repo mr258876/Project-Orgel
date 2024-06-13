@@ -23,7 +23,7 @@
 #elif SOC_UART_NUM > 1
 #define DRIVER_SERIAL Serial1 // ESP32C3 have only 2 serial ports
 #else
-#define DRIVER_SERIAL Serial
+#define DRIVER_SERIAL Serial  // nRF51 have only 1 serial port
 #endif
 
 #define DRIVER_ADDRESS 0b00 // Serial Address
@@ -235,13 +235,13 @@ void CALLBACK_FUNCTION setBluetoothOn(int id)
     if (menuBluetooth.getBoolean())
     {
         /* Start a new task to handle switching */
-        xTaskCreate(enableBluetooth, "enableBLE", 4096, NULL, 1, NULL);
+        xTaskCreate(enableBluetooth, "enableBLE", 3072, NULL, 1, NULL);
         bluetooth_switching = true;
     }
     else
     {
         /* Start a new task to handle switching */
-        xTaskCreate(disableBluetooth, "disableBLE", 4096, NULL, 1, NULL);
+        xTaskCreate(disableBluetooth, "disableBLE", 3072, NULL, 1, NULL);
         bluetooth_switching = true;
     }
 
