@@ -10,6 +10,7 @@
 
 #include <tcMenu.h>
 #include "Project-Orgel_menu.h"
+#include "pinouts.h"
 
 // Global variable declarations
 const PROGMEM  ConnectorLocalInfo applicationInfo = { "Project-Orgel", "b17605de-fb70-4e86-93dc-73130cb2c43e" };
@@ -70,6 +71,6 @@ void setupMenu() {
     gfx.begin();
     renderer.setUpdatesPerSecond(30);
     switches.init(internalDigitalIo(), SWITCHES_POLL_EVERYTHING, true);
-    menuMgr.initForEncoder(&renderer, &menuBackToHomepage, 34, 35, 32);
+    menuMgr.initForEncoder(&renderer, &menuBackToHomepage, ENCODER_A_Pin, ENCODER_B_Pin, ENCODER_OK_Pin);
 }
 
