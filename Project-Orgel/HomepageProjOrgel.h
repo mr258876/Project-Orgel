@@ -84,7 +84,7 @@ public:
         {
             menuPlay.setBoolean(!menuPlay.getBoolean());
             isPlaying = menuPlay.getBoolean();
-            switches.changeEncoderPrecision(menuBPM.getMaximumValue(), menuBPM.getCurrentValue());
+            switches.changeEncoderPrecision(menuBPM.getMaximumValue(), currentValue);
             draw();
             ble_notify_bpm();
         }
@@ -102,6 +102,8 @@ public:
         {
             lastBPM = menuBPM.getCurrentValue();
             isPlaying = menuPlay.getBoolean();
+            lastEncVal = lastBPM;
+            switches.changeEncoderPrecision(menuBPM.getMaximumValue(), lastBPM);
             draw();
             ble_notify_bpm();
         }

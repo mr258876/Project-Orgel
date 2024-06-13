@@ -25,7 +25,7 @@ GraphicsDeviceRenderer renderer(30, applicationInfo.name, &gfxDrawable);
 
 // Global Menu Item declarations
 const PROGMEM AnyMenuInfo minfoAboutText3 = { "Version", 23, 0xffff, 0, NO_CALLBACK };
-TextMenuItem menuAboutText3(&minfoAboutText3, "0.3.1", 5, nullptr, INFO_LOCATION_PGM);
+TextMenuItem menuAboutText3(&minfoAboutText3, "0.3.2", 5, nullptr, INFO_LOCATION_PGM);
 const PROGMEM AnyMenuInfo minfoAboutText2 = { "By Mr258876", 8, 0xffff, 0, NO_CALLBACK };
 TextMenuItem menuAboutText2(&minfoAboutText2, "", 1, &menuAboutText3, INFO_LOCATION_PGM);
 const PROGMEM AnyMenuInfo minfoAboutText1 = { "Project-Orgel", 7, 0xffff, 0, NO_CALLBACK };
