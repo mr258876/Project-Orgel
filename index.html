@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN" class="mdui-theme-auto">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+    <meta name="renderer" content="webkit" />
+
+    <title>八音盒实用程序</title>
+    <!-- <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png"> -->
+    <!-- <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png"> -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+    <script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0%;
+            overflow: hidden;
+        }
+
+        :not(:defined) {
+            visibility: hidden;
+        }
+
+        .main {
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            flex: 1;
+            padding: 1rem;
+            max-width: 63.875rem;
+        }
+
+        .bpm-flex {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .bpm-disp-flex {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .bpm-btn-grid {
+            display: inline-grid;
+            grid-template-columns: 1fr 1fr;
+            grid-row-gap: 5px;
+            grid-column-gap: 5px;
+        }
+
+        .progress-bar {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <mdui-layout full-height>
+        <mdui-layout-main id="settings-container">
+            <div class="main">
+                <main class="container mdui-prose" id="basic-info">
+                    <div class="bpm-flex">
+                        <div class="bpm-disp-flex">
+                            <h1><small>BPM</small> <span id="bpm-val">120</span></h1>
+                            <mdui-button-icon icon="edit" class="control-btn" id="bpm-input-btn"
+                                style="font-size: var(--mdui-typescale-body-large-size);" disabled></mdui-button-icon>
+                        </div>
+                        <div class="bpm-btn-grid">
+                            <mdui-button variant="elevated" class="control-btn bpm-quick-btn" id="bpm-m1-btn"
+                                disabled>-1</mdui-button>
+                            <mdui-button variant="elevated" class="control-btn bpm-quick-btn" id="bpm-p1-btn"
+                                disabled>+1</mdui-button>
+                            <mdui-button variant="elevated" class="control-btn bpm-quick-btn" id="bpm-m5-btn"
+                                disabled>-5</mdui-button>
+                            <mdui-button variant="elevated" class="control-btn bpm-quick-btn" id="bpm-p5-btn"
+                                disabled>+5</mdui-button>
+                            <mdui-button variant="elevated" class="control-btn bpm-quick-btn" id="bpm-m10-btn"
+                                disabled>-10</mdui-button>
+                            <mdui-button variant="elevated" class="control-btn bpm-quick-btn" id="bpm-p10-btn"
+                                disabled>+10</mdui-button>
+                        </div>
+                    </div>
+                    <br />
+                    <mdui-segmented-button-group full-width class="control-btn" id="bpm-play-btn" selects="single"
+                        value="play" disabled>
+                        <mdui-segmented-button icon="play_arrow" value="play">Play</mdui-segmented-button>
+                        <mdui-segmented-button icon="pause" value="pause">Pause</mdui-segmented-button>
+                    </mdui-segmented-button-group>
+                    <br />
+                    <div id="select-device-div">
+                        <p>您需要先选择设备以使用控制功能。</p>
+                        <mdui-button variant="tonal" id="select-device-btn">选择设备</mdui-button>
+                    </div>
+                </main>
+            </div>
+        </mdui-layout-main>
+
+        <mdui-top-app-bar order="1">
+            <div style="display: flex; flex-direction: column; width: 100%;">
+                <div style="display: flex; flex-direction: row;">
+                    <mdui-button-icon icon="menu" id="drawer-menu-btn"></mdui-button-icon>
+                    <mdui-top-app-bar-title>八音盒实用程序</mdui-top-app-bar-title>
+                    <div style="flex-grow: 1;"></div>
+                </div>
+                <mdui-linear-progress class="progress-bar"></mdui-linear-progress>
+            </div>
+        </mdui-top-app-bar>
+
+        <mdui-navigation-drawer id="drawer" order="2" scroll-behavior="elevate" close-on-overlay-click>
+            <mdui-list>
+                <mdui-list-item icon="info" id="utility-about-div">关于实用程序</mdui-list-item>
+            </mdui-list>
+        </mdui-navigation-drawer>
+    </mdui-layout>
+</body>
+
+<script>
+    $ = mdui.$
+    mdui.setColorScheme('#006e1c');
+
+    const UTILITY_VERSION = 20240613;
+    const ORGEL_BLE_SERVICE_UUID = "00003200-0000-1000-74ee-55c0f7e56c13";
+    const ORGEL_BLE_CHAR_UUID = "00003201-0000-1000-74ee-55c0f7e56c13";
+
+    var BLEDevice;
+    var BLEServer;
+    var Orgelservice;
+    var playChar;
+
+    ////////////////////
+    //  helper函数
+    ////////////////////
+
+    // 隐藏 / 显示进度条
+    function hideProgressBar() {
+        $(".progress-bar").hide();
+    }
+    function showProgressBar() {
+        $(".progress-bar").show();
+    }
+
+    //获取url中的参数
+    function getUrlParam(name) {
+        let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        let r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]); return null; //返回参数值
+    }
+
+    String.prototype.format = String.prototype.f = function () {
+        let s = this,
+            i = arguments.length;
+
+        while (i--) {
+            s = s.replace(new RegExp('\\{' + i + '\\}', 'gm'), arguments[i]);
+        }
+        return s;
+    };
+
+    ////////////////////
+    //  ajax函数
+    ////////////////////
+
+    // 选择BLE设备
+    async function selectDevice() {
+        let options = { filters: [{ services: [ORGEL_BLE_SERVICE_UUID] }] };
+
+        BLEDevice = null;
+        BLEServer = null;
+        try {
+            console.log('Requesting Bluetooth Device...');
+            BLEDevice = await navigator.bluetooth.requestDevice(options);
+
+            showProgressBar();
+
+            BLEServer = await connectDevice(BLEDevice);
+            Orgelservice = await BLEServer.getPrimaryService(ORGEL_BLE_SERVICE_UUID);
+            playChar = await Orgelservice.getCharacteristic(ORGEL_BLE_CHAR_UUID);
+
+            await syncBpmFromoDevice();
+            await subscribeBpmChar();
+
+            mdui.snackbar({
+                message: '设备已连接',
+                position: 'top'
+            });
+
+            $("#select-device-div").prop("hidden", true);
+            $(".control-btn").each((i, e) => {
+                e.disabled = false;
+            });
+        } catch (error) {
+            console.log('Argh! ' + error);
+            BLEDevice = null;
+            Server = null;
+
+            mdui.snackbar({
+                message: '错误：' + error,
+                position: 'top'
+            });
+        } finally {
+            hideProgressBar();
+        }
+    }
+
+    // 连接BLE设备
+    async function connectDevice(BLEDevice) {
+        console.log('Connecting to Bluetooth Device...');
+        server = await BLEDevice.gatt.connect();
+        console.log('> Bluetooth Device connected');
+        return server;
+    }
+
+    // 断开BLE设备连接
+    async function disconnectDevice(BLEDevice) {
+        await BLEDevice.gatt.disconnect();
+        console.log('> Bluetooth Device disconnected');
+    }
+
+    // 设备数据回调
+    function syncBpmNoticeFromDevice(event) {
+        let value = event.target.value;
+        if (value.byteLength != 3) {
+            console.error("Unexpected data length!");
+            return;
+        }
+        const bpm = value.getUint8(0) + value.getUint8(1) * 256;
+        const isPlaying = value.getUint8(2);
+
+        $("#bpm-val").html(bpm);
+        $("#bpm-play-btn")[0].value = (isPlaying == 1 ? "play" : "pause");
+    }
+
+    // 订阅BPM特性
+    async function subscribeBpmChar() {
+        await playChar.startNotifications();
+        playChar.addEventListener('characteristicvaluechanged', syncBpmNoticeFromDevice);
+    }
+
+    // 读取BPM / 播放状态
+    async function syncBpmFromoDevice() {  
+        const value = await playChar.readValue();
+
+        const bpm = value.getUint8(0) + value.getUint8(1) * 256;
+        const isPlaying = value.getUint8(2);
+
+        $("#bpm-val").html(bpm);
+        $("#bpm-play-btn")[0].value = (isPlaying == 1 ? "play" : "pause");
+    }
+
+    // 更新BPM / 播放状态
+    async function syncBpmToDevice() {
+        // Get current settings
+        const bpm = parseInt($("#bpm-val").html());
+        const isPlaying = ($("#bpm-play-btn")[0].value == "play" ? 1 : 0);
+
+        // Create the data buffer to write to the characteristic
+        // The format is defined in the Current Time Service specification
+        let bpmBuffer = new ArrayBuffer(3);
+        let bpmView = new DataView(bpmBuffer);
+        bpmView.setUint16(0, bpm, true); // BPM (big-endian)
+        bpmView.setUint8(2, isPlaying);        // Play Status
+
+        // write BPM
+        await playChar.writeValueWithResponse(bpmBuffer);
+    }
+
+    ////////////////////
+    // 按钮回调函数
+    ////////////////////
+
+    // 选择设备按钮
+    document.querySelector("#select-device-btn").addEventListener('click', async function () {
+        await selectDevice();
+    });
+
+    // BPM输入
+    document.querySelector("#bpm-input-btn").addEventListener('click', function () {
+        mdui.prompt({
+            headline: "请输入BPM",
+            confirmText: "OK",
+            cancelText: "取消",
+            closeOnOverlayClick: true,
+            onConfirm: async (val) => { $("#bpm-val").html(parseInt(val)); await syncBpmToDevice(); },
+            onCancel: () => { },
+            validator: (val) => { return parseInt(val) >= 0 && parseInt(val) < 512; },
+        });
+    });
+
+    // BPM快捷按钮
+    document.querySelectorAll(".bpm-quick-btn").forEach(element => {
+        element.addEventListener('click', async function () {
+            const originalBPM = parseInt($("#bpm-val").html());
+            let newBPM = originalBPM + parseInt(this.innerHTML);
+            if (newBPM < 0) { newBPM = 0; } else if (newBPM > 511) { newBPM = 511; }
+            $("#bpm-val").html(newBPM);
+            if (newBPM != originalBPM) { await syncBpmToDevice(); }
+        });
+    });
+
+    // 播放状态按钮
+    document.querySelector("#bpm-play-btn").addEventListener('click', async function () {
+        await syncBpmToDevice();
+    });
+
+    // 侧栏
+    document.querySelector("#drawer-menu-btn").addEventListener('click', function () {
+        document.querySelector("#drawer").open = !document.querySelector("#drawer").open;
+    });
+
+    // 侧栏 - 关于
+    document.querySelector("#utility-about-div").addEventListener('click', function () {
+        mdui.dialog({
+            headline: "关于实用程序", body: "八音盒实用程序 BLE</br>版本：" + UTILITY_VERSION + "</br>@mr258876 2024</br></br>如果您喜欢本项目，请在<a href='https://github.com/mr258876/Project-Orgel'>Github</a>上Star本项目！", actions: [
+                {
+                    text: "OK",
+                }]
+        });
+    });
+</script>
+
+</html>
