@@ -47,7 +47,7 @@ void interface_setup()
     pOrgelService = pBLEServer->createService(BLE_ORGEL_SERVICE_UUID);
     pOrgelCharacteristic = pOrgelService->createCharacteristic(
         BLE_ORGEL_CHAR_UUID,
-        NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::WRITE_ENC | NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::READ_ENC | NIMBLE_PROPERTY::NOTIFY // Only allow paired devices to write
+        NIMBLE_PROPERTY::WRITE| NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY // Allow all devices to write due to web ble bug on windows
     );
     pOrgelCharacteristic->setCallbacks(new OrgelInCharacteristicCallbacks());
     pOrgelService->start();
