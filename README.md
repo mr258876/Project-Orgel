@@ -164,7 +164,7 @@ NimBLE      @1.4.1
 
 ### 无线控制
 
->TODO
+> 请打开设置中的蓝牙开关，随后访问[https://mr258876.github.io/Project-Orgel/](https://mr258876.github.io/Project-Orgel/)并按提示操作。
 
 Have fun!
 
@@ -322,7 +322,7 @@ Explations on adjustable values:
 
 ### Wireless Control
 
->TODO
+> Turn ON the `bluetooth` option in settings menu, then visit [https://mr258876.github.io/Project-Orgel/](https://mr258876.github.io/Project-Orgel/).
 
 Have fun!
 
