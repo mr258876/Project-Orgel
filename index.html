@@ -175,7 +175,6 @@
         try {
             console.log('Requesting Bluetooth Device...');
             BLEDevice = await navigator.bluetooth.requestDevice(options);
-            BLEDevice.addEventListener('gattserverconnected', onDeviceConnected);
             BLEDevice.addEventListener('gattserverdisconnected', onDeviceDisconnected);
 
             showProgressBar();
@@ -187,6 +186,13 @@
             await syncBpmFromoDevice();
             await subscribeBpmChar();
 
+            mdui.snackbar({
+                message: '设备已连接',
+                position: 'top'
+            });
+            $(".control-btn").each((i, e) => {
+                e.disabled = false;
+            });
             $("#select-device-div").prop("hidden", true);
         } catch (error) {
             console.log('Argh! ' + error);
