@@ -175,6 +175,8 @@
         try {
             console.log('Requesting Bluetooth Device...');
             BLEDevice = await navigator.bluetooth.requestDevice(options);
+            BLEDevice.addEventListener('gattserverconnected', onDeviceConnected);
+            BLEDevice.addEventListener('gattserverdisconnected', onDeviceDisconnected);
 
             showProgressBar();
 
@@ -185,15 +187,7 @@
             await syncBpmFromoDevice();
             await subscribeBpmChar();
 
-            mdui.snackbar({
-                message: '设备已连接',
-                position: 'top'
-            });
-
             $("#select-device-div").prop("hidden", true);
-            $(".control-btn").each((i, e) => {
-                e.disabled = false;
-            });
         } catch (error) {
             console.log('Argh! ' + error);
             BLEDevice = null;
@@ -206,6 +200,28 @@
         } finally {
             hideProgressBar();
         }
+    }
+
+    // 连接成功回调
+    function onDeviceConnected(event) {
+        mdui.snackbar({
+            message: '设备已连接',
+            position: 'top'
+        });
+        $(".control-btn").each((i, e) => {
+            e.disabled = false;
+        });
+    }
+
+    // 连接断开回调
+    function onDeviceDisconnected(event) {
+        mdui.snackbar({
+            message: '连接已断开',
+            position: 'top'
+        });
+        $(".control-btn").each((i, e) => {
+            e.disabled = true;
+        });
     }
 
     // 连接BLE设备
