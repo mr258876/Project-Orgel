@@ -217,6 +217,7 @@
         $(".control-btn").each((i, e) => {
             e.disabled = false;
         });
+        $("#select-device-div").prop("hidden", true);
     }
 
     // 连接断开回调
@@ -228,6 +229,7 @@
         $(".control-btn").each((i, e) => {
             e.disabled = true;
         });
+        $("#select-device-div").prop("hidden", false);
     }
 
     // 连接BLE设备
