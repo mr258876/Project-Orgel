@@ -224,45 +224,19 @@ void CALLBACK_FUNCTION setLanguage(int id)
     menuMgr.resetMenu(false);
 }
 
-static bool bluetooth_switching = false;
 void CALLBACK_FUNCTION setBluetoothOn(int id)
 {
-    if (bluetooth_switching)
-    {
-        return;
-    }
-
     if (menuBluetooth.getBoolean())
     {
-        /* Start a new task to handle switching */
-        xTaskCreate(enableBluetooth, "enableBLE", 3072, NULL, 1, NULL);
-        bluetooth_switching = true;
+        ble_on();
     }
     else
     {
-        /* Start a new task to handle switching */
-        xTaskCreate(disableBluetooth, "disableBLE", 3072, NULL, 1, NULL);
-        bluetooth_switching = true;
+        ble_off();
     }
 
     menuMgr.save();
 #if defined(ESP_PLATFORM)
     EEPROM.commit();
 #endif
-}
-
-static void enableBluetooth(void *params)
-{
-    ble_on();
-
-    bluetooth_switching = false;
-    vTaskDelete(NULL);
-}
-
-static void disableBluetooth(void *params)
-{
-    ble_off();
-
-    bluetooth_switching = false;
-    vTaskDelete(NULL);
 }
