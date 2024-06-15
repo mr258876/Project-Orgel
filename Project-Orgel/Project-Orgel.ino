@@ -61,6 +61,7 @@ void setup()
 {
 #if defined(ESP_PLATFORM)
     EEPROM.begin(512);
+    Serial.begin(115200);
 #elif defined(NRF51)
     EEPROM.begin();
 #else

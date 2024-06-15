@@ -49,11 +49,11 @@ public:
             gfx.setFont(u8g2_wqy_14_project_orgel);
             if (menuPlay.getCurrentValue())
             {
-                gfx.drawUTF8(0, 14, _("Playing"));
+                gfx.drawUTF8(0, 13, _("Playing"));
             }
             else
             {
-                gfx.drawUTF8(0, 14, _("Stopped"));
+                gfx.drawUTF8(0, 13, _("Stopped"));
             }
 
             gfx.setFont(u8g2_font_open_iconic_play_4x_t);

@@ -1,6 +1,7 @@
 #include "BLEInterface.h"
 #include <NimBLEDevice.h>
 #include "Project-Orgel_menu.h"
+#include "lv_i18n.h"
 
 static bool BLEStarted = false;
 
@@ -47,7 +48,7 @@ void interface_setup()
     pOrgelService = pBLEServer->createService(BLE_ORGEL_SERVICE_UUID);
     pOrgelCharacteristic = pOrgelService->createCharacteristic(
         BLE_ORGEL_CHAR_UUID,
-        NIMBLE_PROPERTY::WRITE| NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY // Allow all devices to write due to web ble bug on windows
+        NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE_ENC | NIMBLE_PROPERTY::READ_ENC | NIMBLE_PROPERTY::NOTIFY // Only allow paired devices to write
     );
     pOrgelCharacteristic->setCallbacks(new OrgelInCharacteristicCallbacks());
     pOrgelService->start();
@@ -56,11 +57,40 @@ void interface_setup()
     pBLEAdvertising->addServiceUUID(pOrgelService->getUUID());
 }
 
+class ServerCallbacks : public NimBLEServerCallbacks
+{
+private:
+    uint32_t pin = 0;
+public:
+    bool onConfirmPIN(uint32_t providedPIN) override
+    {
+        return (this->pin == providedPIN);
+    }
+
+    uint32_t onPassKeyRequest() override
+    {
+        randomSeed(analogRead(0));
+        if (renderer.getDialog())
+        {
+            this->pin = random(0, 1000000);
+            renderer.getDialog()->setButtons(BTNTYPE_NONE, BTNTYPE_OK);
+            renderer.getDialog()->show(_("Pairing PIN"), true);
+            char buf[7];
+            ltoaClrBuff(buf, pin, 6, '0', sizeof(buf));
+            renderer.getDialog()->copyIntoBuffer(buf);
+        }
+        return this->pin;
+    }
+};
+
 void ble_on()
 {
     if (!BLEStarted)
     {
         NimBLEDevice::init("Project-Orgel");
+
+        // Set IO Cap to Display only, so we will display PIN code on pairing
+        NimBLEDevice::setSecurityIOCap(BLE_HS_IO_DISPLAY_ONLY);
 
         // Enable IRK distribution from both ends
         NimBLEDevice::setSecurityInitKey(BLE_SM_PAIR_KEY_DIST_ENC | BLE_SM_PAIR_KEY_DIST_ID);
@@ -68,7 +98,7 @@ void ble_on()
 
         // Enable pairing & RPA
 #if defined(ESP_PLATFORM)
-        NimBLEDevice::setOwnAddrType(BLE_OWN_ADDR_PUBLIC, false);
+        NimBLEDevice::setOwnAddrType(BLE_OWN_ADDR_RANDOM, false);
 #endif
         NimBLEDevice::setSecurityAuth(true, true, true);
 
@@ -78,7 +108,7 @@ void ble_on()
         interface_setup();
         pBLEAdvertising->start();
 
-        // pBLEServer->setCallbacks(new ServerCallbacks());
+        pBLEServer->setCallbacks(new ServerCallbacks());
 
         BLEStarted = true;
     }

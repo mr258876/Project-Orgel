@@ -56,6 +56,7 @@ static const lv_i18n_phrase_t zh_cn_singulars[] = {
     {"Bluetooth", "蓝牙"},
     {"ON", "开"},
     {"OFF", "关"},
+    {"Pairing PIN", "配对PIN"},
     {NULL, NULL} // End mark
 };
 
