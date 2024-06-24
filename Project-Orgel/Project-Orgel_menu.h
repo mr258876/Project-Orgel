@@ -21,11 +21,7 @@
 
 // variables we declare that you may need to access
 extern const PROGMEM ConnectorLocalInfo applicationInfo;
-#if defined(ESP_PLATFORM)
 extern U8G2_SSD1306_128X64_NONAME_F_HW_I2C gfx;
-#elif defined(NRF51)
-extern U8G2_SSD1306_128X64_NONAME_1_HW_I2C gfx;
-#endif
 extern U8g2Drawable gfxDrawable;
 extern GraphicsDeviceRenderer renderer;
 

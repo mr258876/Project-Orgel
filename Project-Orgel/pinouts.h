@@ -25,8 +25,8 @@
 #define DISPLAY_I2C_SCL_Pin 24
 #define DISPLAY_I2C_SDA_Pin 25
 
-#define ENCODER_A_Pin 22
-#define ENCODER_B_Pin 23
+#define ENCODER_A_Pin 23
+#define ENCODER_B_Pin 22
 #define ENCODER_OK_Pin 21
 
 #endif

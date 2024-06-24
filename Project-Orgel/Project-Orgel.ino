@@ -64,6 +64,7 @@ void setup()
     Serial.begin(115200);
 #elif defined(NRF51)
     EEPROM.begin();
+    Wire.setPins(DISPLAY_I2C_SDA_Pin, DISPLAY_I2C_SCL_Pin);   // Have to change pin here since nrf51 dont have Wire.begin(SDA, SCL)
 #else
 #error unsupported platform!
 #endif

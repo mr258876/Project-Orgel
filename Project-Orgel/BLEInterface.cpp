@@ -70,13 +70,13 @@ public:
     uint32_t onPassKeyRequest() override
     {
         randomSeed(analogRead(0));
-        if (renderer.getDialog())
+        if (renderer.getDialog() && !renderer.getDialog()->isInUse())
         {
             this->pin = random(0, 1000000);
-            renderer.getDialog()->setButtons(BTNTYPE_NONE, BTNTYPE_OK);
-            renderer.getDialog()->show(_("Pairing PIN"), true);
             char buf[7];
             ltoaClrBuff(buf, pin, 6, '0', sizeof(buf));
+            renderer.getDialog()->setButtons(BTNTYPE_NONE, BTNTYPE_OK);
+            renderer.getDialog()->show(_("Pairing PIN"), true);
             renderer.getDialog()->copyIntoBuffer(buf);
         }
         return this->pin;

@@ -15,11 +15,7 @@
 // Global variable declarations
 const PROGMEM  ConnectorLocalInfo applicationInfo = { "Project-Orgel", "b17605de-fb70-4e86-93dc-73130cb2c43e" };
 ArduinoEEPROMAbstraction glArduinoEeprom(&EEPROM);
-#if defined(ESP_PLATFORM)
-U8G2_SSD1306_128X64_NONAME_F_HW_I2C gfx(U8G2_R0, U8X8_PIN_NONE, U8X8_PIN_NONE, U8X8_PIN_NONE);
-#elif defined(NRF51)
-U8G2_SSD1306_128X64_NONAME_1_HW_I2C gfx(U8G2_R0, U8X8_PIN_NONE, U8X8_PIN_NONE, U8X8_PIN_NONE);
-#endif
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C gfx(U8G2_R0, DISPLAY_I2C_SCL_Pin, DISPLAY_I2C_SDA_Pin, DISPLAY_I2C_RST_Pin);
 U8g2Drawable gfxDrawable(&gfx);
 GraphicsDeviceRenderer renderer(30, applicationInfo.name, &gfxDrawable);
 

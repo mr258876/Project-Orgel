@@ -3,3 +3,5 @@ build/
 /debug.cfg
 /esp32.svd
 .backup/
+.theia/
+.vscode/
