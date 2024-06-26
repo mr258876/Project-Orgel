@@ -42,6 +42,8 @@ class OrgelInCharacteristicCallbacks : public NimBLECharacteristicCallbacks
     }
 };
 
+static OrgelInCharacteristicCallbacks orgelInCharCb;
+
 void interface_setup()
 {
     // Setup current time service
@@ -50,7 +52,7 @@ void interface_setup()
         BLE_ORGEL_CHAR_UUID,
         NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE_ENC | NIMBLE_PROPERTY::READ_ENC | NIMBLE_PROPERTY::NOTIFY // Only allow paired devices to write
     );
-    pOrgelCharacteristic->setCallbacks(new OrgelInCharacteristicCallbacks());
+    pOrgelCharacteristic->setCallbacks(&orgelInCharCb);
     pOrgelService->start();
 
     // Add service to advertising
@@ -83,10 +85,14 @@ public:
     }
 };
 
+static ServerCallbacks serverCb;
+
+static uint32_t fh = 0;
 void ble_on()
 {
     if (!BLEStarted)
     {
+        fh = RTOS.getFreeHeap();
         NimBLEDevice::init("Project-Orgel");
 
         // Set IO Cap to Display only, so we will display PIN code on pairing
@@ -108,7 +114,7 @@ void ble_on()
         interface_setup();
         pBLEAdvertising->start();
 
-        pBLEServer->setCallbacks(new ServerCallbacks());
+        pBLEServer->setCallbacks(&serverCb);
 
         BLEStarted = true;
     }

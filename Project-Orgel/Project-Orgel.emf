@@ -219,7 +219,7 @@
     {
       "parentId": 6,
       "type": "textItem",
-      "defaultValue": "0.3.1",
+      "defaultValue": "0.3.3",
       "item": {
         "textLength": 5,
         "itemType": "PLAIN_TEXT",

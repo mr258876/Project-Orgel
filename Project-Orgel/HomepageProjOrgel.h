@@ -108,11 +108,13 @@ public:
             ble_notify_bpm();
         }
     }
-} HomePageDrawingHandler;
+};
+
+static HomePageDrawingHandler homePageDrawingHandler;
 
 void homePage()
 {
-    renderer.setCustomDrawingHandler(&HomePageDrawingHandler);
+    renderer.setCustomDrawingHandler(&homePageDrawingHandler);
     renderer.takeOverDisplay();
 }
 

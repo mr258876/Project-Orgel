@@ -42,7 +42,7 @@ const double ORGEL_BPM_PER_ROUND = 4.51603944; // 齿轮周长约1.15picm,纸带
 double BPM_CALC_CONST = STEPS_PER_ROTOR_REV * GEAR_REDUCTION * ORGEL_GEAR / ORGEL_BPM_PER_ROUND / 60; // <- 电机齿轮现在由菜单赋值并在设置BPM时计算齿轮比
 
 // Create a Driver Object
-TMC2209Stepper *driver;
+TMC2209Stepper driver(&DRIVER_SERIAL, R_SENSE, DRIVER_ADDRESS);
 
 // Variables
 bool playStatus = false;
@@ -100,7 +100,6 @@ void setup()
 #else
 #error unsupported platform!
 #endif
-    driver = new TMC2209Stepper(&DRIVER_SERIAL, R_SENSE, DRIVER_ADDRESS);
 
     // Init TMC2209 driver
     driverSetup();
@@ -130,11 +129,11 @@ void driverSetup()
 
     DRIVER_SERIAL.begin(115200); // 启动串口
 
-    driver->begin();       // 开始通讯
-    driver->microsteps(8); // 设置微步大小
+    driver.begin();       // 开始通讯
+    driver.microsteps(8); // 设置微步大小
 
     // 电流设置
-    driver->rms_current(50); // 设置电流大小 (mA)
+    driver.rms_current(50); // 设置电流大小 (mA)
 }
 
 // 改变电机速度
@@ -147,20 +146,20 @@ void setMotorSpeed(int BPM)
         // Set Motor Speed
         if (motorDirection)
         {
-            driver->VACTUAL(BPM * BPM_CALC_CONST / motorGear / 0.715);
+            driver.VACTUAL(BPM * BPM_CALC_CONST / motorGear / 0.715);
         }
         else
         {
-            driver->VACTUAL(-BPM * BPM_CALC_CONST / motorGear / 0.715);
+            driver.VACTUAL(-BPM * BPM_CALC_CONST / motorGear / 0.715);
         }
 
         // Set Current
-        driver->rms_current(motorCurrent); // 设置电流大小 (mA)
+        driver.rms_current(motorCurrent); // 设置电流大小 (mA)
     }
     else
     {
-        driver->VACTUAL(0);
-        driver->rms_current(50);
+        driver.VACTUAL(0);
+        driver.rms_current(50);
     }
 }
 
