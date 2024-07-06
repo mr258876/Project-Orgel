@@ -1,6 +1,7 @@
 #ifndef TCMENU_THEME_PROJ_ORGEL
 #define TCMENU_THEME_PROJ_ORGEL
 
+#ifndef NRF51
 const color_t defaultItemPaletteMono[] = {1, 0, 1, 1};
 const color_t defaultTitlePaletteMono[] = {0, 1, 0, 0};
 
@@ -34,5 +35,6 @@ void installMonoInverseTitleTheme(GraphicsDeviceRenderer &bgr, const MenuFontDef
 
     tcgfx::ConfigurableItemDisplayPropertiesFactory::refreshCache();
 }
+#endif // ifndef NRF51
 
 #endif // TCMENU_THEME_PROJ_ORGEL

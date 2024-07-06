@@ -42,7 +42,7 @@ static const lv_i18n_lang_t en_us_lang = {
 };
 
 static const lv_i18n_phrase_t zh_cn_singulars[] = {
-    {"Back", "返回"},
+    {"Back and Save", "保存并返回"},
     {"Motor", "电机设置"},
     {"Language", "语言(Lang)"},
     {"About", "关于"},

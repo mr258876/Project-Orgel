@@ -4,7 +4,10 @@
 #include <BaseRenderers.h>
 #include "lv_i18n.h"
 #include "BLEInterface.h"
+
+#ifndef NRF51
 #include "u8g2_wqy_14_project_orgel.h"
+#endif
 
 class HomePageDrawingHandler : public CustomDrawing
 {
@@ -26,9 +29,11 @@ public:
 
     void started(BaseMenuRenderer *currentRenderer) override
     {
-        // take over display has just been called, and we
-        // now need to do any initial activity
+// take over display has just been called, and we
+// now need to do any initial activity
+#ifndef NRF51
         gfx.setFontPosBaseline();
+#endif
         switches.changeEncoderPrecision(menuBPM.getMaximumValue(), menuBPM.getCurrentValue());
         isPlaying = menuPlay.getBoolean();
         lastEncVal = menuBPM.getCurrentValue();
@@ -37,7 +42,20 @@ public:
     }
 
     void draw()
-    {   
+    {
+#if defined(NRF51)
+        oled.clear();
+        oled.setFont(System5x7);
+        oled.print(menuBPM.getCurrentValue());
+        if (menuPlay.getCurrentValue())
+        {
+            oled.print(_("Playing"));
+        }
+        else
+        {
+            oled.print(_("Stopped"));
+        }
+#else
         gfx.setFontDirection(0);
         gfx.firstPage();
         do
@@ -70,6 +88,7 @@ public:
             gfx.drawUTF8(3, 62, _("BPM"));
 
         } while (gfx.nextPage());
+#endif
     }
 
     void renderLoop(unsigned int currentValue, RenderPressMode userClick) override

@@ -16,14 +16,16 @@
 #include <NimBLEDevice.h> // Bluetooth
 #include "BLEInterface.h"
 
+#ifndef NRF51
 #include "u8g2_wqy_14_project_orgel.h"
+#endif
 
 #if SOC_UART_NUM > 2
 #define DRIVER_SERIAL Serial2 // TMC2209 Serial Port
 #elif SOC_UART_NUM > 1
 #define DRIVER_SERIAL Serial1 // ESP32C3 have only 2 serial ports
 #else
-#define DRIVER_SERIAL Serial  // nRF51 have only 1 serial port
+#define DRIVER_SERIAL Serial // nRF51 have only 1 serial port
 #endif
 
 #define DRIVER_ADDRESS 0b00 // Serial Address
@@ -55,6 +57,10 @@ int16_t motorGear = 60;
 ////////// FUNCTION PROTOTYPES //////////
 static void enableBluetooth(void *params);
 static void disableBluetooth(void *params);
+static void storeNvsDefaults();
+static void installTheme();
+static void driverSetup();
+static void setMotorSpeed(int BPM);
 
 ////////// FUNCTIONS ///////////
 void setup()
@@ -63,8 +69,10 @@ void setup()
     EEPROM.begin(512);
     Serial.begin(115200);
 #elif defined(NRF51)
-    EEPROM.begin();
-    Wire.setPins(DISPLAY_I2C_SDA_Pin, DISPLAY_I2C_SCL_Pin);   // Have to change pin here since nrf51 dont have Wire.begin(SDA, SCL)
+    // EEPROM.begin();
+    Wire.setPins(DISPLAY_I2C_SDA_Pin, DISPLAY_I2C_SCL_Pin); // Have to change pin here since nrf51 dont have Wire.begin(SDA, SCL)
+    Wire.begin();
+    Wire.setClock(1000000L);
 #else
 #error unsupported platform!
 #endif
@@ -72,10 +80,10 @@ void setup()
     // Init locale engine first, or gfx crashes
     lv_i18n_init(lv_i18n_language_pack);
     lv_i18n_set_locale(lv_i18n_language_pack[0]->locale_name);
-
+    
     // TcMenu Initialize
     setupMenu();
-    menuMgr.load();
+    menuMgr.load(0xfade, storeNvsDefaults);
 
     // Reset language base on value loaded
     lv_i18n_set_locale(lv_i18n_language_pack[menuLanguage.getCurrentValue()]->locale_name);
@@ -112,17 +120,29 @@ void loop()
 }
 
 // TcMenu 主题设置
-void installTheme()
+static void installTheme()
 {
+#ifndef NRF51
     renderer.setTitleMode(BaseGraphicalRenderer::TITLE_FIRST_ROW);
     renderer.setUseSliderForAnalog(false);
     installMonoInverseTitleTheme(renderer, MenuFontDef(u8g2_wqy_14_project_orgel, 1), MenuFontDef(u8g2_wqy_14_project_orgel, 1), true);
     gfx.enableUTF8Print();    // 启用UTF-8以支持多语言
     gfx.setFontPosBaseline(); // 设置字体基线
+#endif
+}
+
+// 向NVS中写入初始值
+static void storeNvsDefaults()
+{
+#if defined(NRF51)
+    EEPROM.format();
+#endif
+
+    menuMgr.save();
 }
 
 // 电机初始化
-void driverSetup()
+static void driverSetup()
 {
     pinMode(MOTOR_ENABLE_Pin, OUTPUT);   // 控制TMC2209使能引脚为输出模式
     digitalWrite(MOTOR_ENABLE_Pin, LOW); // 将使能控制引脚设置为低电平从而让电机驱动板进入工作状态
@@ -137,7 +157,7 @@ void driverSetup()
 }
 
 // 改变电机速度
-void setMotorSpeed(int BPM)
+static void setMotorSpeed(int BPM)
 {
     if (playStatus)
     {
@@ -194,6 +214,7 @@ void CALLBACK_FUNCTION changeMotorDir(int id)
 void CALLBACK_FUNCTION toHomePage(int id)
 {
     menuMgr.save();
+
 #if defined(ESP_PLATFORM)
     EEPROM.commit();
 #endif
@@ -218,7 +239,9 @@ void CALLBACK_FUNCTION setCurrent(int id)
 void CALLBACK_FUNCTION setLanguage(int id)
 {
     lv_i18n_set_locale(lv_i18n_language_pack[menuLanguage.getCurrentValue()]->locale_name);
+
     menuMgr.save();
+
 #if defined(ESP_PLATFORM)
     EEPROM.commit();
 #endif
@@ -237,6 +260,7 @@ void CALLBACK_FUNCTION setBluetoothOn(int id)
     }
 
     menuMgr.save();
+
 #if defined(ESP_PLATFORM)
     EEPROM.commit();
 #endif

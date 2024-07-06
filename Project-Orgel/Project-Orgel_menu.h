@@ -13,7 +13,13 @@
 
 #include <Arduino.h>
 #include <tcMenu.h>
+#if defined(NRF51)
+#include <SSD1306Ascii.h>
+#include "SSD1306AsciiWire.h"
+#include "ssd1306asciiRenderer.h"
+#else
 #include "tcMenuU8g2.h"
+#endif
 #include <RuntimeMenuItem.h>
 #include <IoAbstraction.h>
 #include <EepromItemStorage.h>
@@ -21,9 +27,14 @@
 
 // variables we declare that you may need to access
 extern const PROGMEM ConnectorLocalInfo applicationInfo;
+#if defined(NRF51)
+extern SSD1306AsciiWire oled;
+extern SSD1306AsciiRenderer renderer;
+#else
 extern U8G2_SSD1306_128X64_NONAME_F_HW_I2C gfx;
 extern U8g2Drawable gfxDrawable;
 extern GraphicsDeviceRenderer renderer;
+#endif
 
 // Any externals needed by IO expanders, EEPROMs etc
 

@@ -108,7 +108,7 @@
     {
       "parentId": 4,
       "type": "analogItem",
-      "defaultValue": "0",
+      "defaultValue": "60",
       "item": {
         "maxValue": 255,
         "offset": 0,
@@ -129,7 +129,7 @@
     {
       "parentId": 4,
       "type": "analogItem",
-      "defaultValue": "0",
+      "defaultValue": "1023",
       "item": {
         "maxValue": 2047,
         "offset": 0,

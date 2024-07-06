@@ -50,7 +50,11 @@ void interface_setup()
     pOrgelService = pBLEServer->createService(BLE_ORGEL_SERVICE_UUID);
     pOrgelCharacteristic = pOrgelService->createCharacteristic(
         BLE_ORGEL_CHAR_UUID,
+#if defined(ESP_PLATFORM)
         NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE_ENC | NIMBLE_PROPERTY::READ_ENC | NIMBLE_PROPERTY::NOTIFY // Only allow paired devices to write
+#else
+        NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY // Allow any device to read/write
+#endif
     );
     pOrgelCharacteristic->setCallbacks(&orgelInCharCb);
     pOrgelService->start();
@@ -87,16 +91,15 @@ public:
 
 static ServerCallbacks serverCb;
 
-static uint32_t fh = 0;
 void ble_on()
 {
     if (!BLEStarted)
     {
-        fh = RTOS.getFreeHeap();
         NimBLEDevice::init("Project-Orgel");
 
         // Set IO Cap to Display only, so we will display PIN code on pairing
-        NimBLEDevice::setSecurityIOCap(BLE_HS_IO_DISPLAY_ONLY);
+        // NimBLEDevice::setSecurityIOCap(BLE_HS_IO_DISPLAY_ONLY);
+        NimBLEDevice::setSecurityIOCap(BLE_HS_IO_NO_INPUT_OUTPUT);
 
         // Enable IRK distribution from both ends
         NimBLEDevice::setSecurityInitKey(BLE_SM_PAIR_KEY_DIST_ENC | BLE_SM_PAIR_KEY_DIST_ID);
@@ -105,8 +108,10 @@ void ble_on()
         // Enable pairing & RPA
 #if defined(ESP_PLATFORM)
         NimBLEDevice::setOwnAddrType(BLE_OWN_ADDR_RANDOM, false);
-#endif
         NimBLEDevice::setSecurityAuth(true, true, true);
+#else
+        NimBLEDevice::setSecurityAuth(false, false, false);
+#endif
 
         pBLEServer = NimBLEDevice::createServer();
 
