@@ -24,7 +24,7 @@ ArduinoEEPROMAbstraction glArduinoEeprom(&EEPROM);
 
 #if defined(NRF51)
 SSD1306AsciiWire oled;
-SSD1306AsciiRenderer renderer(20, Arial14, System5x7);
+SSD1306AsciiRenderer renderer(20, Arial14, Arial14);
 #else
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C gfx(U8G2_R0, DISPLAY_I2C_SCL_Pin, DISPLAY_I2C_SDA_Pin, DISPLAY_I2C_RST_Pin);
 U8g2Drawable gfxDrawable(&gfx);

@@ -7,6 +7,9 @@
 
 #ifndef NRF51
 #include "u8g2_wqy_14_project_orgel.h"
+#else
+#include "ssd1306ascii_Ligconsolata.h"
+#include "ssd1306ascii_Icon.h"
 #endif
 
 class HomePageDrawingHandler : public CustomDrawing
@@ -15,6 +18,9 @@ private:
     bool isPlaying = false;
     uint16_t lastEncVal = 0;
     uint16_t lastBPM = 0;
+#if defined(NRF51)
+    uint16_t lastDrawedBPM = 0;
+#endif
 
 public:
     ~HomePageDrawingHandler() = default;
@@ -33,6 +39,8 @@ public:
 // now need to do any initial activity
 #ifndef NRF51
         gfx.setFontPosBaseline();
+#else
+        oled.clear();
 #endif
         switches.changeEncoderPrecision(menuBPM.getMaximumValue(), menuBPM.getCurrentValue());
         isPlaying = menuPlay.getBoolean();
@@ -41,19 +49,49 @@ public:
         draw();
     }
 
-    void draw()
+    void draw(bool drawPlayStatus = true, bool drawBPM = true)
     {
 #if defined(NRF51)
-        oled.clear();
-        oled.setFont(System5x7);
-        oled.print(menuBPM.getCurrentValue());
-        if (menuPlay.getCurrentValue())
+        if (drawPlayStatus)
         {
-            oled.print(_("Playing"));
+            oled.setCursor(0, 0);
+            oled.setFont(Arial14);
+            oled.clearToEOL();
+            if (menuPlay.getCurrentValue())
+            {
+                oled.println(_("Playing"));
+            }
+            else
+            {
+                oled.println(_("Stopped"));
+            }
+
+            oled.setCursor(0, 2);
+            oled.setFont(ssd1306ascii_Icon);
+            if (menuPlay.getCurrentValue())
+            {
+                oled.write(0x12);
+            }
+            else
+            {
+                oled.write(0x11);
+            }
         }
-        else
+
+        if (drawBPM)
         {
-            oled.print(_("Stopped"));
+            oled.setCursor(32, 2);
+
+            uint16_t val = menuBPM.getCurrentValue();
+            if ((val < 100 && lastDrawedBPM >= 100) || (val < 10 && lastDrawedBPM >= 10))
+            {
+                oled.clearToEOL();   // Clear only when digit missing
+            }
+            
+            oled.setFont(ssd1306ascii_Ligconsolata);
+
+            oled.print(val);
+            lastDrawedBPM = val;
         }
 #else
         gfx.setFontDirection(0);
@@ -104,7 +142,7 @@ public:
             menuPlay.setBoolean(!menuPlay.getBoolean());
             isPlaying = menuPlay.getBoolean();
             switches.changeEncoderPrecision(menuBPM.getMaximumValue(), currentValue);
-            draw();
+            draw(true, false);
             ble_notify_bpm();
         }
         // Rotate: change speed
@@ -113,7 +151,7 @@ public:
             menuBPM.setCurrentValue(menuBPM.getCurrentValue() + (currentValue - lastEncVal));
             lastEncVal = currentValue;
             lastBPM = menuBPM.getCurrentValue();
-            draw();
+            draw(false, true);
             ble_notify_bpm();
         }
         // Value changed from BLE

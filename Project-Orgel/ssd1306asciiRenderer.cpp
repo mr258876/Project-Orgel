@@ -2,8 +2,6 @@
  * Copyright (c) 2018 https://www.thecoderscorner.com (Dave Cherry).
  * This product is licensed under an Apache license, see the LICENSE file in the top-level directory.
  *
- * NOTE: Be aware that the underlying SSD1306ascii library is GPL and linking with it will essentially make your code GPL
- *
  */
 
 /**
@@ -17,9 +15,16 @@
  * provides text based functions.
  *
  * LIBRARY REQUIREMENT
- * This renderer is designed for use with this library: https://github.com/greiman/SSD1306Ascii
+ * This renderer is designed for use with this library: https://github.com/mr258876/SSD1306Ascii
+ */
+/**
+ * @history
+ *  
+ *  @mr258876   Jul 10, 2023    Fixed row height when not using System5x7 for menu items 
+ *  @mr258876   Jul 13, 2023    Fill rows as title background, taking advtange of modded library
  */
 #include "ssd1306asciiRenderer.h"
+#include "lv_i18n.h"
 
 extern const ConnectorLocalInfo applicationInfo;
 
@@ -65,20 +70,19 @@ void SSD1306AsciiRenderer::renderList(uint8_t titleRows) {
 }
 
 void SSD1306AsciiRenderer::renderTitle() {
+    buffer[0] = ' ';
     if(menuMgr.getCurrentMenu() == menuMgr.getRoot()) {
-        safeProgCpy(buffer, applicationInfo.name, bufferSize);
+        safeProgCpy(buffer + 1, applicationInfo.name, bufferSize - 1);
     }
     else {
-        menuMgr.getCurrentMenu()->copyNameToBuffer(buffer, bufferSize);
+        menuMgr.getCurrentMenu()->copyNameToBuffer(buffer, 1, bufferSize);
     }
-    serdebugF2("print app name", buffer);
     size_t bufSz = bufferSize;
-    size_t last = min(bufSz, strlen(buffer));
-    for(uint8_t i = last; i < bufSz; i++) {
-        buffer[i] = ' ';
-    }
     buffer[bufSz] = 0;
     ssd1306->setFont(fontTitle);
+    ssd1306->setClearFiller(0xFF);
+    ssd1306->clearToEOL();
+    ssd1306->setClearFiller(0);
     ssd1306->setInvertMode(true);
     ssd1306->setCursor(0,0);
     ssd1306->print(buffer);
@@ -109,8 +113,9 @@ void SSD1306AsciiRenderer::render() {
 
 		// first we find the first currently active item in our single linked list
         int activeOffs = offsetOfCurrentActive(item);
-
-        int rowsAvailable = ssd1306->displayRows() - titleRows;
+        
+        ssd1306->setFont(fontItem);
+        int rowsAvailable = (ssd1306->displayRows() - titleRows) / ssd1306->fontRows();
 		if (activeOffs >= rowsAvailable) {
 			uint8_t toOffsetBy = (activeOffs - rowsAvailable) + 1;
 
@@ -133,21 +138,16 @@ void SSD1306AsciiRenderer::render() {
                 if (locRedrawMode != MENUDRAW_NO_CHANGE || item->isChanged()) {
                     renderMenuItem(cnt, item);
                 }
-                ++cnt;
+                cnt += ssd1306->fontRows();
             }
 			item = item->getNext();
 		}
 	}
 }
 
-void SSD1306AsciiRenderer::renderMenuItem(uint8_t row, MenuItem* item) {
-	if (item == nullptr || row > ssd1306->displayRows()) return;
-
-	item->setChanged(false);
-	ssd1306->setCursor(0, row);
-
-	int offs;
-	if (item->getMenuType() == MENUTYPE_BACK_VALUE) {
+uint8_t SSD1306AsciiRenderer::drawMenuCursor(MenuItem* item) {
+    uint8_t offs = 0;
+    if (item->getMenuType() == MENUTYPE_BACK_VALUE) {
 		buffer[0] = item == activeItem ? (char)backChar : ' ';
 		buffer[1] = (char)backChar;
 		offs = 2;
@@ -156,12 +156,31 @@ void SSD1306AsciiRenderer::renderMenuItem(uint8_t row, MenuItem* item) {
 		buffer[0] = char(item == menuMgr.getCurrentEditor() ? editChar : (item == activeItem ? forwardChar : ' '));
 		offs = 1;
 	}
-    uint8_t finalPos = item->copyNameToBuffer(buffer, offs, bufferSize);
+    return offs;
+}
+
+void SSD1306AsciiRenderer::renderMenuItem(uint8_t row, MenuItem* item) {
+	if (item == nullptr || row > ssd1306->displayRows()) return;
+
+	item->setChanged(false);
+	ssd1306->setCursor(0, row);
+
+    uint8_t offs = drawMenuCursor(item);
+
+    uint8_t finalPos = 0;
+	if (item->getMenuType() == MENUTYPE_BACK_VALUE) {
+        uint8_t ret = safeProgCpy(buffer + offs, "Back", bufferSize - offs);
+        finalPos = ret + offs;
+	}
+	else {
+        finalPos = item->copyNameToBuffer(buffer, offs, bufferSize);
+	}
+    
 	for(uint8_t i = finalPos; i < bufferSize; ++i)  buffer[i] = 32;
 	buffer[bufferSize] = 0;
 
     ssd1306->setFont(fontItem);
-
+    ssd1306->clearToEOL();
 	if (isItemActionable(item)) {
 		buffer[bufferSize - 2] = (char)forwardChar;
         buffer[bufferSize - 1] = 0;
@@ -180,32 +199,22 @@ void SSD1306AsciiRenderer::renderMenuItem(uint8_t row, MenuItem* item) {
         if(menuMgr.getCurrentEditor() && hints.getEditorRenderingType() != CurrentEditorRenderingHints::EDITOR_REGULAR && item==menuMgr.getCurrentEditor()) {
             int startIndex = min(count, hints.getStartIndex());
             int endIndex = min(count, hints.getEndIndex());
-            Serial.print("0");
             strncpy(buffer + cpy, sz, startIndex);
-            Serial.print("00");
             buffer[cpy + startIndex] = 0;
-            Serial.print("1");
             ssd1306->print(buffer);
-            Serial.print("2");
             if(startIndex != endIndex) {
                 ssd1306->setInvertMode(true);
-                Serial.print("3");
                 strncpy(buffer, &sz[startIndex], endIndex - startIndex);
-                Serial.print("4");
                 buffer[endIndex - startIndex] = 0;
                 ssd1306->print(buffer);
                 ssd1306->setInvertMode(false);
-                Serial.print("5");
             }
             strncpy(buffer, &sz[endIndex], bufferSize);
-            Serial.print("6");
             buffer[bufferSize-1]=0;
             ssd1306->print(buffer);
-            Serial.print("7");
         } else {
             strcpy(buffer + cpy, sz);
             buffer[bufferSize - 1] = 0;
-            serdebugF3("Buffer: ", row, buffer);
             ssd1306->print(buffer);
         }
     }

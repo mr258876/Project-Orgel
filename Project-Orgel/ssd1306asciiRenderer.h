@@ -2,8 +2,6 @@
  * Copyright (c) 2018 https://www.thecoderscorner.com (Dave Cherry).
  * This product is licensed under an Apache license, see the LICENSE file in the top-level directory.
  *
- * NOTE: Be aware that the underlying SSD1306ascii library is GPL and linking with it will essentially make your code GPL
- *
  */
 
 /**
@@ -17,7 +15,12 @@
  * provides text based functions.
  *
  * LIBRARY REQUIREMENT
- * This renderer is designed for use with this library: https://github.com/greiman/SSD1306Ascii
+ * This renderer is designed for use with this library: https://github.com/mr258876/SSD1306Ascii
+ */
+/**
+ * @history
+ * 
+ *  @mr258876   Jul 10, 2023    Fixed row height when not using System5x7 for menu items 
  */
 
 #ifndef _TCMENU_SSD1306ASCII_DRIVER
@@ -55,6 +58,7 @@ public:
     const uint8_t* getItemFont() { return fontItem; }
     const uint8_t* getTitleFont() { return fontTitle; }
 private:
+    uint8_t drawMenuCursor(MenuItem* item);
     void renderTitle();
 	void renderMenuItem(uint8_t row, MenuItem* item);
 	void renderList(uint8_t titleHeight);

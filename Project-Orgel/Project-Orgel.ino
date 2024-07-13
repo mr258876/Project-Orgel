@@ -72,7 +72,7 @@ void setup()
     // EEPROM.begin();
     Wire.setPins(DISPLAY_I2C_SDA_Pin, DISPLAY_I2C_SCL_Pin); // Have to change pin here since nrf51 dont have Wire.begin(SDA, SCL)
     Wire.begin();
-    Wire.setClock(1000000L);
+    Wire.setClock(400000L);
 #else
 #error unsupported platform!
 #endif

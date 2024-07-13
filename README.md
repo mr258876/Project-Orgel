@@ -117,13 +117,16 @@
 
 首先需要在电脑上搭建Arduino-ESP32环境。[知乎用户铁熊的文章][zhihu_esp32_environment_url]可供参考。
 
-在环境搭建完成后，还需要在库管理器中安装以下库：
+对于`ESP32`版本，在环境搭建完成后，还需要在库管理器中安装以下库：
 ```
 tcMenu      @4.2.1
 TMCStepper  @0.7.3
 U8g2        @2.34.4
-NimBLE      @1.4.1
+NimBLE      @1.4.2
 ```
+
+对于`nRF51`版本，您需要将上述列表中的`U8g2`库替换为修改过的`SSD1306Ascii`库，请从[此处](https://github.com/mr258876/SSD1306Ascii)下载。
+
 准备完成后，使用Arduino IDE打开`Project-Oegel`文件夹中的`Project-Orgel.ino`进行烧录。
 
 >⚠注意：Arduino IDE中的esp32开发板版本不可使用`3.0.0`及以上版本！
@@ -275,13 +278,16 @@ You can flash the compiled firmware directly into Release, or use Arduino to com
 
 First, you will need an Arduino-ESP32 environment. There's a [guide from randomnerdtutorials][randomnerdtutorials_esp32_environment_url] could be used as a reference.
 
-The following libraries are also required after building up the environment:
+For `ESP32` devices, he following libraries are also required after building up the environment:
 ```
 tcMenu      @4.2.1
 TMCStepper  @0.7.3
 U8g2        @2.34.4
-NimBLE      @1.4.1
+NimBLE      @1.4.2
 ```
+
+For `nRF51` devices, you need to replace `U8g2` in the list above as an MODDED `SSD1306Ascii` library, which could be found [here](https://github.com/mr258876/SSD1306Ascii).
+
 After that, open `Project-Orgel.ino` in folder `Project-Oegel` with Arduino-IDE to upload.
 
 >⚠Note：`esp32` version in Arduino IDE should be below `3.0.0`, or compilation will fail!
