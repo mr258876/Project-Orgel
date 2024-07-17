@@ -27,6 +27,8 @@
  *  @mr258876   Jul 13, 2023    Fill rows as title background, taking advtange of modded library
  *  @mr258876   Jul 17, 2023    i18n support with mr258876/SSD1306Ascii and lvgl/lv_i18n
  */
+#ifdef NRF51
+
 #include "ssd1306asciiRenderer.h"
 #include "lv_i18n.h"
 
@@ -276,3 +278,5 @@ void SSD1306AsciiDialog::internalRender(int currentValue) {
         display->setInvertMode(false);
     }
 }
+
+#endif

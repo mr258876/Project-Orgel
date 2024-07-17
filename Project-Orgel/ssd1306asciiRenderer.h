@@ -21,6 +21,8 @@
 #ifndef _TCMENU_SSD1306ASCII_DRIVER
 #define _TCMENU_SSD1306ASCII_DRIVER
 
+#ifdef NRF51
+
 #include "tcMenu.h"
 #include "BaseRenderers.h"
 #include <SSD1306Ascii.h>
@@ -68,5 +70,6 @@ protected:
     void internalRender(int currentValue) override;
 };
 
+#endif  // NRF51
 
 #endif // _TCMENU_SSD1306ASCII_DRIVER

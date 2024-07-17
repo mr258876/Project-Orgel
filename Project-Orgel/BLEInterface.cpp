@@ -10,7 +10,7 @@ static NimBLEAdvertising *pBLEAdvertising = nullptr;
 static NimBLEService *pOrgelService = nullptr;
 static NimBLECharacteristic *pOrgelCharacteristic = nullptr;
 
-static const NimBLEUUID BLE_ORGEL_SERVICE_UUID(0x00003200, 0x0000, 0x1000, 0x74EE55C0F7E56C13); // 0x74EE55C0F7E56C13 is 16-bit MD5 of "Project-Orgel"
+static const NimBLEUUID BLE_ORGEL_SERVICE_UUID(0x00003200, 0x0000, 0x1000, 0x74EE55C0F7E56C13); // 0x74EE55C0F7E56C13 is 16-digit MD5 of "Project-Orgel"
 static const NimBLEUUID BLE_ORGEL_CHAR_UUID(0x00003201, 0x0000, 0x1000, 0x74EE55C0F7E56C13);
 
 // Callback class for handling API characteristic read and write events
