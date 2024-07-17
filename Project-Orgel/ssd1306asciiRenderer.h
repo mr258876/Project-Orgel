@@ -17,11 +17,6 @@
  * LIBRARY REQUIREMENT
  * This renderer is designed for use with this library: https://github.com/mr258876/SSD1306Ascii
  */
-/**
- * @history
- * 
- *  @mr258876   Jul 10, 2023    Fixed row height when not using System5x7 for menu items 
- */
 
 #ifndef _TCMENU_SSD1306ASCII_DRIVER
 #define _TCMENU_SSD1306ASCII_DRIVER

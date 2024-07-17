@@ -57,6 +57,7 @@ static const lv_i18n_phrase_t zh_cn_singulars[] = {
     {"ON", "开"},
     {"OFF", "关"},
     {"Pairing PIN", "配对PIN"},
+    {"Back", "返回"},
     {NULL, NULL} // End mark
 };
 

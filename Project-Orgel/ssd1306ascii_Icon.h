@@ -34,11 +34,11 @@
 #ifndef SSD1306ASCII_ICON_H
 #define SSD1306ASCII_ICON_H
 
-#define SSD1306ASCII_ICON_WIDTH 24
-#define SSD1306ASCII_ICON_HEIGHT 24
+#define SSD1306ASCII_ICON_WIDTH 32
+#define SSD1306ASCII_ICON_HEIGHT 32
 
 static const uint8_t ssd1306ascii_Icon[] = {
-    0x0, 0x0, // size of zero indicates fixed width font,
+    0x00, 0x01, // fixed width font with no padding pixels
     0x20, // width
     0x20, // height
     0x11, // first char

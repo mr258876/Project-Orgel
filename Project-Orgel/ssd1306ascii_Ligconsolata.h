@@ -38,7 +38,7 @@
 #define SSD1306ASCII_LIGCONSOLATA_HEIGHT 48
 
 static const uint8_t ssd1306ascii_Ligconsolata[] = {
-    0x0, 0x0, // size of zero indicates fixed width font,
+    0x00, 0x01, // fixed width font with no padding pixels
     0x1E, // width
     0x30, // height
     0x30, // first char

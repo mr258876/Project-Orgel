@@ -10,6 +10,7 @@
 #else
 #include "ssd1306ascii_Ligconsolata.h"
 #include "ssd1306ascii_Icon.h"
+#include "ssd1306ascii_wqy14.h"
 #endif
 
 class HomePageDrawingHandler : public CustomDrawing
@@ -41,6 +42,11 @@ public:
         gfx.setFontPosBaseline();
 #else
         oled.clear();
+        oled.setCursor(0, 6);
+        oled.setFont(System5x7);
+        oled.set2X();
+        oled.print(_("BPM"));
+        oled.set1X();
 #endif
         switches.changeEncoderPrecision(menuBPM.getMaximumValue(), menuBPM.getCurrentValue());
         isPlaying = menuPlay.getBoolean();
@@ -55,7 +61,7 @@ public:
         if (drawPlayStatus)
         {
             oled.setCursor(0, 0);
-            oled.setFont(Arial14);
+            oled.setFont(ssd1306ascii_wqy14);
             oled.clearToEOL();
             if (menuPlay.getCurrentValue())
             {
@@ -80,7 +86,7 @@ public:
 
         if (drawBPM)
         {
-            oled.setCursor(32, 2);
+            oled.setCursor(34, 2);
 
             uint16_t val = menuBPM.getCurrentValue();
             if ((val < 100 && lastDrawedBPM >= 100) || (val < 10 && lastDrawedBPM >= 10))

@@ -14,7 +14,11 @@
 #include "pinouts.h"
 
 // Global variable declarations
+#if defined(NRF51)
+const PROGMEM  ConnectorLocalInfo applicationInfo = { "Project-Orgel-LITE", "b17605de-fb70-4e86-93dc-73130cb2c43e" };
+#else
 const PROGMEM  ConnectorLocalInfo applicationInfo = { "Project-Orgel", "b17605de-fb70-4e86-93dc-73130cb2c43e" };
+#endif
 #if defined(NRF51)
 #include "nrfEEPROMAbstraction.h"
 NrfEEPROMAbstraction glArduinoEeprom(&EEPROM);  // the EEPROM.read() in n-able-nRF behave different from the original Arduino EEPROM, so we use get/put only.
@@ -23,8 +27,9 @@ ArduinoEEPROMAbstraction glArduinoEeprom(&EEPROM);
 #endif
 
 #if defined(NRF51)
+#include "ssd1306ascii_wqy14.h"
 SSD1306AsciiWire oled;
-SSD1306AsciiRenderer renderer(20, Arial14, Arial14);
+SSD1306AsciiRenderer renderer(20, ssd1306ascii_wqy14, ssd1306ascii_wqy14);
 #else
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C gfx(U8G2_R0, DISPLAY_I2C_SCL_Pin, DISPLAY_I2C_SDA_Pin, DISPLAY_I2C_RST_Pin);
 U8g2Drawable gfxDrawable(&gfx);
@@ -36,7 +41,11 @@ const PROGMEM AnyMenuInfo minfoAboutText3 = { "Version", 23, 0xffff, 0, NO_CALLB
 TextMenuItem menuAboutText3(&minfoAboutText3, "0.3.3", 5, nullptr, INFO_LOCATION_PGM);
 const PROGMEM AnyMenuInfo minfoAboutText2 = { "By Mr258876", 8, 0xffff, 0, NO_CALLBACK };
 TextMenuItem menuAboutText2(&minfoAboutText2, "", 1, &menuAboutText3, INFO_LOCATION_PGM);
+#if defined(NRF51)
+const PROGMEM AnyMenuInfo minfoAboutText1 = { "Project-Orgel-LITE", 7, 0xffff, 0, NO_CALLBACK };
+#else
 const PROGMEM AnyMenuInfo minfoAboutText1 = { "Project-Orgel", 7, 0xffff, 0, NO_CALLBACK };
+#endif
 TextMenuItem menuAboutText1(&minfoAboutText1, "", 1, &menuAboutText2, INFO_LOCATION_PGM);
 const PROGMEM SubMenuInfo minfoAbout = { "About", 6, 0xffff, 0, NO_CALLBACK };
 BackMenuItem menuBackAbout(&minfoAbout, &menuAboutText1, INFO_LOCATION_PGM);
