@@ -73,6 +73,15 @@ void setup()
     Wire.setPins(DISPLAY_I2C_SDA_Pin, DISPLAY_I2C_SCL_Pin); // Have to change pin here since nrf51 dont have Wire.begin(SDA, SCL)
     Wire.begin();
     Wire.setClock(400000L);
+
+    // force 12v power for now
+    pinMode(4, OUTPUT);
+    pinMode(7, OUTPUT);
+    pinMode(6, OUTPUT);
+
+    digitalWrite(4, LOW);
+    digitalWrite(7, LOW);
+    digitalWrite(6, HIGH);
 #else
 #error unsupported platform!
 #endif
