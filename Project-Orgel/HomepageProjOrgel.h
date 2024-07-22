@@ -19,9 +19,6 @@ private:
     bool isPlaying = false;
     uint16_t lastEncVal = 0;
     uint16_t lastBPM = 0;
-#if defined(NRF51)
-    uint16_t lastDrawedBPM = 0;
-#endif
 
 public:
     ~HomePageDrawingHandler() = default;
@@ -88,15 +85,10 @@ public:
         {
             oled.setCursor(34, 2);
 
-            uint16_t val = menuBPM.getCurrentValue();
-            if ((val < 100 && lastDrawedBPM >= 100) || (val < 10 && lastDrawedBPM >= 10))
-            {
-                oled.clearToEOL();   // Clear only when digit missing
-            }
-            
+            uint16_t val = menuBPM.getCurrentValue();            
             oled.setFont(ssd1306utf8_Ligconsolata);
-
             oled.print(val);
+            oled.clearToEOL();   // Clear possible digits remains on the screen
             lastDrawedBPM = val;
         }
 #else
