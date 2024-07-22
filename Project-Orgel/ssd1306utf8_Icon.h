@@ -2,10 +2,10 @@
 
 /*
  *
- * ssd1306ascii_Icon
+ * ssd1306utf8_Icon
  *
  *
- * File Name           : ssd1306ascii_Icon.h
+ * File Name           : ssd1306utf8_Icon.h
  * Date                : 13.07.2024
  * Font size in bytes  : 0
  * Font width          : 32
@@ -31,13 +31,13 @@
  *                  // bit field of all characters
  */
 
-#ifndef SSD1306ASCII_ICON_H
-#define SSD1306ASCII_ICON_H
+#ifndef SSD1306UTF8_ICON_H
+#define SSD1306UTF8_ICON_H
 
-#define SSD1306ASCII_ICON_WIDTH 32
-#define SSD1306ASCII_ICON_HEIGHT 32
+#define SSD1306UTF8_ICON_WIDTH 32
+#define SSD1306UTF8_ICON_HEIGHT 32
 
-static const uint8_t ssd1306ascii_Icon[] = {
+static const uint8_t ssd1306utf8_Icon[] = {
     0x00, 0x01, // fixed width font with no padding pixels
     0x20, // width
     0x20, // height

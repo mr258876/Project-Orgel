@@ -8,9 +8,9 @@
 #ifndef NRF51
 #include "u8g2_wqy_14_project_orgel.h"
 #else
-#include "ssd1306ascii_Ligconsolata.h"
-#include "ssd1306ascii_Icon.h"
-#include "ssd1306ascii_wqy14.h"
+#include "ssd1306utf8_Ligconsolata.h"
+#include "ssd1306utf8_Icon.h"
+#include "ssd1306utf8_wqy14.h"
 #endif
 
 class HomePageDrawingHandler : public CustomDrawing
@@ -61,7 +61,7 @@ public:
         if (drawPlayStatus)
         {
             oled.setCursor(0, 0);
-            oled.setFont(ssd1306ascii_wqy14);
+            oled.setFont(ssd1306utf8_wqy14);
             oled.clearToEOL();
             if (menuPlay.getCurrentValue())
             {
@@ -73,7 +73,7 @@ public:
             }
 
             oled.setCursor(0, 2);
-            oled.setFont(ssd1306ascii_Icon);
+            oled.setFont(ssd1306utf8_Icon);
             if (menuPlay.getCurrentValue())
             {
                 oled.write(0x12);
@@ -94,7 +94,7 @@ public:
                 oled.clearToEOL();   // Clear only when digit missing
             }
             
-            oled.setFont(ssd1306ascii_Ligconsolata);
+            oled.setFont(ssd1306utf8_Ligconsolata);
 
             oled.print(val);
             lastDrawedBPM = val;

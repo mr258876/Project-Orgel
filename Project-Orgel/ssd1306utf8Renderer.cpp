@@ -8,33 +8,33 @@
  */
 
 /**
- * @file ssd1306ascii.h
+ * @file SSD1306UTF8.h
  *
- *  ssd1306ascii renderer that renders menus onto this type of display. This file is a plugin file and should not
+ *  SSD1306UTF8 renderer that renders menus onto this type of display. This file is a plugin file and should not
  * be directly edited, it will be replaced each time the project is built. If you want to edit this file in place,
  * make sure to rename it first.
  *
- * This plugin allows rendering to the Ssd1306Ascii library. It is a low memory ascii renderer that
+ * This plugin allows rendering to the SSD1306UTF8 library. It is a low memory ascii renderer that
  * provides text based functions.
  *
  * LIBRARY REQUIREMENT
- * This renderer is designed for use with this library: https://github.com/mr258876/SSD1306Ascii
+ * This renderer is designed for use with this library: https://github.com/mr258876/SSD1306UTF8
  */
 /**
  * @history
  *  
  *  @mr258876   Jul 10, 2023    Fixed row height when not using System5x7 for menu items 
  *  @mr258876   Jul 13, 2023    Fill rows as title background, taking advtange of modded library
- *  @mr258876   Jul 17, 2023    i18n support with mr258876/SSD1306Ascii and lvgl/lv_i18n
+ *  @mr258876   Jul 17, 2023    i18n support with mr258876/SSD1306UTF8 and lvgl/lv_i18n
  */
 #ifdef NRF51
 
-#include "ssd1306asciiRenderer.h"
+#include "ssd1306utf8Renderer.h"
 #include "lv_i18n.h"
 
 extern const ConnectorLocalInfo applicationInfo;
 
-SSD1306AsciiRenderer::SSD1306AsciiRenderer(uint8_t dimX, const uint8_t* titleFont, const uint8_t* itemFont) : BaseMenuRenderer(dimX) {
+SSD1306UTF8Renderer::SSD1306UTF8Renderer(uint8_t dimX, const uint8_t* titleFont, const uint8_t* itemFont) : BaseMenuRenderer(dimX) {
 	this->backChar = '<';
 	this->forwardChar = '>';
 	this->editChar = '=';
@@ -43,18 +43,18 @@ SSD1306AsciiRenderer::SSD1306AsciiRenderer(uint8_t dimX, const uint8_t* titleFon
     this->fontItem = itemFont;
 }
 
-SSD1306AsciiRenderer::~SSD1306AsciiRenderer() {
+SSD1306UTF8Renderer::~SSD1306UTF8Renderer() {
     delete this->buffer;
     delete dialog;
 }
 
-void SSD1306AsciiRenderer::setEditorChars(char back, char forward, char edit) {
+void SSD1306UTF8Renderer::setEditorChars(char back, char forward, char edit) {
 	backChar = back;
 	forwardChar = forward;
 	editChar = edit;
 }
 
-void SSD1306AsciiRenderer::renderList(uint8_t titleRows) {
+void SSD1306UTF8Renderer::renderList(uint8_t titleRows) {
 	auto runList = reinterpret_cast<ListRuntimeMenuItem*>(menuMgr.getCurrentMenu());
 
 	uint8_t maxY = min((ssd1306->displayRows() - titleRows), runList->getNumberOfParts());
@@ -75,7 +75,7 @@ void SSD1306AsciiRenderer::renderList(uint8_t titleRows) {
 	runList->asParent();
 }
 
-void SSD1306AsciiRenderer::renderTitle() {
+void SSD1306UTF8Renderer::renderTitle() {
     size_t bufSz;
     if(menuMgr.getCurrentMenu() == menuMgr.getRoot()) {
         bufSz = safeProgCpy(buffer, applicationInfo.name, bufferSize);
@@ -85,9 +85,6 @@ void SSD1306AsciiRenderer::renderTitle() {
     }
     buffer[bufSz] = 0;
     ssd1306->setFont(fontTitle);
-    ssd1306->setClearFiller(0xFF);
-    ssd1306->clearToEOL();
-    ssd1306->setClearFiller(0);
     ssd1306->setInvertMode(true);
     ssd1306->setCursor(0,0);
     // write a space for better looking
@@ -95,9 +92,10 @@ void SSD1306AsciiRenderer::renderTitle() {
     // write localized title directly
     ssd1306->print(_(buffer));
     ssd1306->setInvertMode(false);
+    ssd1306->fillToEOL();
 }
 
-void SSD1306AsciiRenderer::render() {
+void SSD1306UTF8Renderer::render() {
 	uint8_t locRedrawMode = redrawMode;
 	redrawMode = MENUDRAW_NO_CHANGE;
 
@@ -153,7 +151,7 @@ void SSD1306AsciiRenderer::render() {
 	}
 }
 
-uint8_t SSD1306AsciiRenderer::drawMenuCursor(MenuItem* item) {
+uint8_t SSD1306UTF8Renderer::drawMenuCursor(MenuItem* item) {
     if (item->getMenuType() == MENUTYPE_BACK_VALUE) {
 		ssd1306->write(item == activeItem ? (char)backChar : ' ');
 		ssd1306->write(backChar);
@@ -164,7 +162,7 @@ uint8_t SSD1306AsciiRenderer::drawMenuCursor(MenuItem* item) {
     return 0;
 }
 
-void SSD1306AsciiRenderer::renderMenuItem(uint8_t row, MenuItem* item) {
+void SSD1306UTF8Renderer::renderMenuItem(uint8_t row, MenuItem* item) {
 	if (item == nullptr || row > ssd1306->displayRows()) return;
 
 	item->setChanged(false);
@@ -187,10 +185,14 @@ void SSD1306AsciiRenderer::renderMenuItem(uint8_t row, MenuItem* item) {
 	// buffer[bufferSize] = 0;
 
     ssd1306->setFont(fontItem);
-    ssd1306->clearToEOL();
 	if (isItemActionable(item)) {
+        // print menu name first
         ssd1306->print(buffer);
-        ssd1306->setCol(127 - ssd1306->charWidth(' ') - ssd1306->charWidth(forwardChar));
+        // clear whatever after menu name
+        ssd1306->clearToEOL();
+        // write forward char
+        ssd1306->setCol(127 - ssd1306->charWidth(' ') - ssd1306->charWidth(forwardChar) * 2);
+        ssd1306->write(forwardChar);
         ssd1306->write(forwardChar);
     }
 	else {
@@ -204,6 +206,8 @@ void SSD1306AsciiRenderer::renderMenuItem(uint8_t row, MenuItem* item) {
         
         // print menu name first
         ssd1306->print(buffer);
+        // clear whatever after menu name
+        ssd1306->clearToEOL();
         auto hints = menuMgr.getEditorHints();
         if(menuMgr.getCurrentEditor() && hints.getEditorRenderingType() != CurrentEditorRenderingHints::EDITOR_REGULAR && item==menuMgr.getCurrentEditor()) {
             int startIndex = min(count, hints.getStartIndex());
@@ -234,18 +238,18 @@ void SSD1306AsciiRenderer::renderMenuItem(uint8_t row, MenuItem* item) {
     }
 }
 
-BaseDialog* SSD1306AsciiRenderer::getDialog() {
+BaseDialog* SSD1306UTF8Renderer::getDialog() {
     if(dialog == nullptr) {
-        dialog = new SSD1306AsciiDialog(this);
+        dialog = new SSD1306UTF8Dialog(this);
     }
     return dialog;
 }
 
 // dialog
 
-void SSD1306AsciiDialog::internalRender(int currentValue) {
-    SSD1306AsciiRenderer* lcdRender = ((SSD1306AsciiRenderer*)MenuRenderer::getInstance());
-    SSD1306Ascii* display = lcdRender->getDisplay();
+void SSD1306UTF8Dialog::internalRender(int currentValue) {
+    SSD1306UTF8Renderer* lcdRender = ((SSD1306UTF8Renderer*)MenuRenderer::getInstance());
+    SSD1306UTF8* display = lcdRender->getDisplay();
 
     if(needsDrawing == MENUDRAW_COMPLETE_REDRAW) {
         display->clear();

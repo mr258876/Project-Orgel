@@ -2,10 +2,10 @@
 
 /*
  *
- * ssd1306ascii_Ligconsolata
+ * ssd1306utf8_Ligconsolata
  *
  *
- * File Name           : ssd1306ascii_Ligconsolata.h
+ * File Name           : ssd1306utf8_Ligconsolata.h
  * Date                : 13.07.2024
  * Font size in bytes  : 0
  * Font width          : 24
@@ -31,13 +31,13 @@
  *                  // bit field of all characters
  */
 
-#ifndef SSD1306ASCII_LIGCONSOLATA_H
-#define SSD1306ASCII_LIGCONSOLATA_H
+#ifndef SSD1306UTF8_LIGCONSOLATA_H
+#define SSD1306UTF8_LIGCONSOLATA_H
 
-#define SSD1306ASCII_LIGCONSOLATA_WIDTH 30
-#define SSD1306ASCII_LIGCONSOLATA_HEIGHT 48
+#define SSD1306UTF8_LIGCONSOLATA_WIDTH 30
+#define SSD1306UTF8_LIGCONSOLATA_HEIGHT 48
 
-static const uint8_t ssd1306ascii_Ligconsolata[] = {
+static const uint8_t ssd1306utf8_Ligconsolata[] = {
     0x00, 0x01, // fixed width font with no padding pixels
     0x1E, // width
     0x30, // height
