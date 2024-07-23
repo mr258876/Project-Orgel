@@ -13,7 +13,7 @@
     - [传动改造](#传动改造)
     - [八音盒及电机的固定](#八音盒及电机的固定)
     - [电路搭建](#电路搭建)
-    - [控制程序烧录](#控制程序烧录)
+- [控制程序烧录](#控制程序烧录)
 - [使用指南](#使用指南)
     - [初次使用](#初次使用)
     - [基本操作](#基本操作)
@@ -48,7 +48,41 @@
 * 用于固定八音盒与电机的木盒、木块等 *1
 * 用于固定的M3螺丝、M3螺母若干
 
-### 参考链接
+
+
+
+## 某个简短的改装指南
+接下来的步骤组成了一个简短的安装指南。步骤供参考，可根据实际情况进行调整。
+### 传动改造
+如图所示，改装电动只需使用八音盒传动部分中的部分齿轮。由于避开了传动部分中的易损齿轮，对该齿轮损坏的八音盒进行改装不失为一个绝佳选择。
+![before_modding][before_modding_url]
+![after_modding][after_modding_url]
+
+>⚠注意：在手摇八音盒中，手柄部分通常为噪音的源头之一。为了达到静音目的，断开手柄与其他齿轮间的传动是必要的。移除手柄或②号齿轮均可实现。图为移除了手柄及②号齿轮的八音盒。
+![handle_removed][handle_removed_url]
+### 八音盒及电机的固定
+毫无疑问，电机需要与八音盒固定在一起以进行传动。该部分有较多方案可供选择，故此处将不做较多阐述，实际应用时可不必遵照。
+
+>⚠注意：不论以何种方式固定，**电机齿轮必须尽量与八音盒齿轮紧密配合**，否则可能会产生噪音并损坏齿轮。
+
+考虑到八音盒可能需要一个共鸣腔，推荐将八音盒与电机固定在木盒中。如不考虑共鸣，或不方便对木盒进行钻孔/开槽，则也可固定在木块或其他材料上。此处以固定在木盒中为例。
+
+由于42电机的体积较大，因此八音盒原配木盒大概率需要进行更换。目前市面上有多种尺寸木盒可供选择。上一节示例中的木盒尺寸为 长20cm\*宽13.5cm*高9cm。
+### 电路搭建
+
+本项目提供两个不同平台版本：一个较为简易的使用ESP32开发板与其他现成部件进行搭建的版本，与一个从零开始构建的nRF51平台版本。您可以根据实际需要进行选择。
+
+#### ESP32版本
+`ESP32`版本基于现成部件，电路十分简单，如下图所示。
+
+![curcit_schema][schema_url]
+
+处于空间利用方面的考量，推荐使用PCB实现上图中电路。Gerber文件请点击[这里][gerber_url]。
+>ℹ注：仅适用于尺寸为22mm\*17mm的MP1584模块与焊接了TX,RX针脚的乐积TMC2209模块
+
+如果无法进行焊接，该版本同样可以考虑使用面包板完成接线。
+
+**ESP32版本参考BOM**
 - 以下链接仅供参考，您可以根据实际情况自行购买
 - 链接可能失效，如需更新请提起issue
 
@@ -71,39 +105,21 @@
 | telesky旗舰店 | [单排母双排母2.54mm排针母座排座针插座插针2.0 1/2/3/4/6/10-40P](https://item.taobao.com/item.htm?id=559102944871) | 1*8p单排母座2.54mm 20个 | 3.59 | 1 | 可选, 实际需要2个 |
 | telesky旗舰店 | [单排母双排母2.54mm排针母座排座针插座插针2.0 1/2/3/4/6/10-40P](https://item.taobao.com/item.htm?id=559102944871) | 1*15p单排母座2.54mm 10个 | 2.52 | 1 | 可选, 实际需要2个 |
 
+#### nRF51版本
+`nRF51`版本将主控、步进电机驱动、DCDC电路等部分集成在一块PCB上，进而减小了控制板体积，但同时也提升了制作难度。电路图如下所示。
 
-## 某个简短的改装指南
-接下来的步骤组成了一个简短的安装指南。步骤供参考，可根据实际情况进行调整。
-### 传动改造
-如图所示，改装电动只需使用八音盒传动部分中的部分齿轮。由于避开了传动部分中的易损齿轮，对该齿轮损坏的八音盒进行改装不失为一个绝佳选择。
-![before_modding][before_modding_url]
-![after_modding][after_modding_url]
+![curcit_schema_nrf51][schema_url_nrf51]
 
->⚠注意：在手摇八音盒中，手柄部分通常为噪音的源头之一。为了达到静音目的，断开手柄与其他齿轮间的传动是必要的。移除手柄或②号齿轮均可实现。图为移除了手柄及②号齿轮的八音盒。
-![handle_removed][handle_removed_url]
-### 八音盒及电机的固定
-毫无疑问，电机需要与八音盒固定在一起以进行传动。该部分有较多方案可供选择，故此处将不做较多阐述，实际应用时可不必遵照。
+项目BOM可在[此处][bom_nrf51]查看。参考PCB可以在[此处][gerber_url_nrf51]下载。[此处][solder_helper_nrf51]可查看对应焊接辅助工具。
 
->⚠注意：不论以何种方式固定，**电机齿轮必须尽量与八音盒齿轮紧密配合**，否则可能会产生噪音并损坏齿轮。
-
-考虑到八音盒可能需要一个共鸣腔，推荐将八音盒与电机固定在木盒中。如不考虑共鸣，或不方便对木盒进行钻孔/开槽，则也可固定在木块或其他材料上。此处以固定在木盒中为例。
-
-由于42电机的体积较大，因此八音盒原配木盒大概率需要进行更换。目前市面上有多种尺寸木盒可供选择。上一节示例中的木盒尺寸为 长20cm\*宽13.5cm*高9cm。
-### 电路搭建
-本项目中的电路十分简单，如下图所示。
-
-![curcit_schema][schema_url]
-
-处于空间利用方面的考量，推荐使用PCB实现上图中电路。水平稀烂，只能画出一手烂板子。如有需要，请点击[这里][gerber_url]。
->ℹ注：仅适用于尺寸为22mm\*17mm的MP1584模块与焊接了TX,RX针脚的乐积TMC2209模块
-
-如果无法进行焊接，则可以考虑使用面包板完成接线。
-### 控制程序烧录
-改装的最后一步是将电机控制程序烧录至ESP32中。
+## 控制程序烧录
+改装的最后一步是将电机控制程序烧录至`ESP32`或`nRF51802/nRF51822`中。
 
 您可以直接刷入 Release 中已编译好的固件，或自行使用Arduino编译并刷入。
 
-#### 刷入已编译固件
+### 刷入预编译固件
+
+#### 为ESP32刷入预编译固件
 
 0. 移步[乐鑫科技网站]("https://www.espressif.com.cn/zh-hans/support/download/other-tools")并下载`ESP Download Tool(Flash下载工具)`。</br>
 
@@ -111,13 +127,37 @@
 ![image](/pics/flash_step1.png)</br>
 2. 按照下图设置刷入的文件、flash地址、flash速度，串口及下载速度按实际情况选择。</br>
 ![image](/pics/flash_step2.png)</br>
-3. 点击`下载`按钮。当状态显示`完成`后，断开开发版与电脑的连接。</br>
+3. 点击`下载`按钮。当状态显示`完成`后，断开开发板与电脑的连接。</br>
 
-#### 自行编译并刷入
+#### 为nRF51刷入预编译固件
 
+>ℹ注：为了向nRF51芯片刷入程序，您额外需要一个适用于ARM架构单片机的编程器，例如`ST-Link`、`J-Link`等。下方的流程以在Windows环境下使用`ST-Link`刷入为例，您可能需要根据实际情况适当修改命令行参数。
+
+0. 移步[OpenOCD Github页面](https://github.com/openocd-org/openocd/releases)，下载并解压`OpenOCD`。</br>
+1. 将编程器连接至控制板。
+```
+编程器             控制板
+______         _____________
+3V3   | ----> | 3V3   SWCLK | <-----,
+GND   | ----> | GND   SWDIO | <--,  |
+SWDIO | ----, |_____________|    |  |
+SWCLK | --, `--------------------`  |
+______|   `-------------------------`
+```
+2. 打开命令提示符(`CMD`)或`PowerShell`，并切换路径至`OpenOCD`文件夹中的`bin`目录下。</br>
+3. 使用以下命令刷入预编译固件。在刷入完成后，命令行中应出现`** Verified OK **`提示。
+   - 此处假设`Project-Orgel-nRF51.hex`与`openocd.exe`置于同一目录下。
+   - 您可以根据实际情况将`st-link.cfg`替换为其他受支持的编程器配置文件。
+```powershell
+./openocd.exe -f "interface/st-link.cfg" -f "target/nrf51.cfg" -c "init" -c "reset halt" -c "nrf51 mass_erase" -c "program Project-Orgel-nRF51.hex verify reset exit"
+```
+
+### 自行编译并刷入
+
+#### 为ESP32编译程序并刷入
 首先需要在电脑上搭建Arduino-ESP32环境。[知乎用户铁熊的文章][zhihu_esp32_environment_url]可供参考。
 
-对于`ESP32`版本，在环境搭建完成后，还需要在库管理器中安装以下库：
+在环境搭建完成后，还需要在库管理器中安装以下库：
 ```
 tcMenu      @4.2.1
 TMCStepper  @0.7.3
@@ -125,11 +165,21 @@ U8g2        @2.34.4
 NimBLE      @1.4.2
 ```
 
-对于`nRF51`版本，您需要将上述列表中的`U8g2`库替换为修改过的`SSD1306Ascii`库，请从[此处](https://github.com/mr258876/SSD1306Ascii)下载。
-
 准备完成后，使用Arduino IDE打开`Project-Oegel`文件夹中的`Project-Orgel.ino`进行烧录。
 
->⚠注意：Arduino IDE中的esp32开发板版本不可使用`3.0.0`及以上版本！
+>⚠注意：Arduino IDE中的`esp32开发板`版本不可使用`3.0.0`及以上版本！
+
+#### 为nRF51编译程序并刷入
+
+对于`nRF51`版本，您需要将`arduino-esp32`开发环境替换为`n-able-Arduino`，具体操作如下：
+1. 在`文件`->`首选项`->`附加开发板管理器网址`中添加链接`https://h2zero.github.io/n-able-Arduino/package_n-able_boards_index.json`
+2. 待安装完成后，在`工具`->`开发板`->`Arm (Nim)BLE Boards`菜单中选择`Waveshare BLE400`开发板。
+3. 在`工具`->`Low Frequency Clock`菜单中选择`Synthesized`选项。
+4. 在`工具`->`编程器`菜单中选择`st-link v2`选项。
+
+对于`nRF51`版本，您还需要将上述列表中的`U8g2`库替换为`SSD1306UTF8`库(基于`SSD1306Ascii`库)，请从[此处](https://github.com/mr258876/SSD1306UTF8)下载。
+
+>ℹ注：对于`nRF51`版本，您需要点击`项目`菜单中的`使用编程器上传`选项刷入自编译程序。
 
 ## 使用指南
 >⚠注意：由于硬件组合及改装操作的多样性，在不同情形下运行可能触发未知的bug，如部分功能不可用等。该指南仅代表在测试硬件上的操作及运行效果。
@@ -177,14 +227,19 @@ Have fun!
     - [赛博音乐盒计划第一部分](#赛博音乐盒计划第一部分)
     - [Cyber Musicbox Project Part I](#cyber-musicbox-project-part-i)
 - [中文](#中文)
-    - [参考链接](#参考链接)
   - [某个简短的改装指南](#某个简短的改装指南)
     - [传动改造](#传动改造)
     - [八音盒及电机的固定](#八音盒及电机的固定)
     - [电路搭建](#电路搭建)
-    - [控制程序烧录](#控制程序烧录)
-      - [刷入已编译固件](#刷入已编译固件)
-      - [自行编译并刷入](#自行编译并刷入)
+      - [ESP32版本](#esp32版本)
+      - [nRF51版本](#nrf51版本)
+  - [控制程序烧录](#控制程序烧录)
+    - [刷入预编译固件](#刷入预编译固件)
+      - [为ESP32刷入预编译固件](#为esp32刷入预编译固件)
+      - [为nRF51刷入预编译固件](#为nrf51刷入预编译固件)
+    - [自行编译并刷入](#自行编译并刷入)
+      - [为ESP32编译程序并刷入](#为esp32编译程序并刷入)
+      - [为nRF51编译程序并刷入](#为nrf51编译程序并刷入)
   - [使用指南](#使用指南)
     - [初次使用](#初次使用)
     - [基本操作](#基本操作)
@@ -338,6 +393,10 @@ Have fun!
 
 [schema_url]:https://github.com/mr258876/Project-Orgel/raw/main/PCB/Schematic_Project%20Orgel_2021-11-29.png
 [gerber_url]:https://github.com/mr258876/Project-Orgel/raw/main/PCB/Gerber_PCB_Project%20Orgel.zip
+
+[schema_url_nrf51]:https://github.com/mr258876/Project-Orgel/raw/main/PCB/SCH_Orgel%20nRF51_1-P1_2024-07-24.png
+[gerber_url_nrf51]:https://github.com/mr258876/Project-Orgel/raw/main/PCB/Gerber_PCB1_Orgel%20nRF51_2024-07-24.zip
+[solder_helper_url_nrf51]:https://raw.githubusercontent.com/mr258876/Project-Orgel/raw/main/PCB/Solder_Helper_PCB1_Orgel%20nRF51_2024-7-24.html
 
 [zhihu_esp32_environment_url]:https://zhuanlan.zhihu.com/p/107804270
 [randomnerdtutorials_esp32_environment_url]:https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/
