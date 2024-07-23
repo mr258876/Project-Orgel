@@ -92,7 +92,7 @@ void setupMenu() {
     gfx.begin();
     renderer.setUpdatesPerSecond(30);
     #endif
-    switches.init(internalDigitalIo(), SWITCHES_POLL_EVERYTHING, true);
+    switches.init(internalDigitalIo(), SWITCHES_NO_POLLING, true);
     menuMgr.initForEncoder(&renderer, &menuBackToHomepage, ENCODER_A_Pin, ENCODER_B_Pin, ENCODER_OK_Pin);
 }
 

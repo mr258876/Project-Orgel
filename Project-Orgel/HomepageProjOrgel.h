@@ -89,7 +89,6 @@ public:
             oled.setFont(ssd1306utf8_Ligconsolata);
             oled.print(val);
             oled.clearToEOL();   // Clear possible digits remains on the screen
-            lastDrawedBPM = val;
         }
 #else
         gfx.setFontDirection(0);

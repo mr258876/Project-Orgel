@@ -219,7 +219,7 @@
     {
       "parentId": 6,
       "type": "textItem",
-      "defaultValue": "0.3.3",
+      "defaultValue": "0.3.4",
       "item": {
         "textLength": 5,
         "itemType": "PLAIN_TEXT",
@@ -302,7 +302,7 @@
       },
       {
         "name": "SW_POLLING_MODE",
-        "latestValue": "SWITCHES_POLL_EVERYTHING",
+        "latestValue": "SWITCHES_NO_POLLING",
         "subsystem": "INPUT"
       },
       {

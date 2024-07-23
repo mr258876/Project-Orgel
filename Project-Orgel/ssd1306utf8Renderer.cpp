@@ -170,19 +170,14 @@ void SSD1306UTF8Renderer::renderMenuItem(uint8_t row, MenuItem* item) {
 
     uint8_t offs = drawMenuCursor(item);
 
-    uint8_t finalPos = 0;
 	if (item->getMenuType() == MENUTYPE_BACK_VALUE) {
-        uint8_t ret = safeProgCpy(buffer + offs, _("Back"), bufferSize - offs);
-        finalPos = ret + offs;
+        uint8_t ret = safeProgCpy(buffer, _("Back"), bufferSize);
 	}
 	else {
-        finalPos = item->copyNameToBuffer(buffer, offs, bufferSize);
+        uint8_t finalPos = item->copyNameToBuffer(buffer, bufferSize);
         buffer[finalPos] = 0;
         finalPos = strlcpy(buffer, _(buffer), bufferSize);
 	}
-    
-	// for(uint8_t i = finalPos; i < bufferSize; ++i)  buffer[i] = 32;
-	// buffer[bufferSize] = 0;
 
     ssd1306->setFont(fontItem);
 	if (isItemActionable(item)) {
