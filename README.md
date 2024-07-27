@@ -32,7 +32,8 @@
 
 >## 配件
 * 八音盒 (废话) *1
-* ESP32-D0DWQ6 开发板 30针 *1
+* 支持串口通信的单片机 *1
+>ℹ注：推荐使用ESP32或nRF51802
 * TMC2209 步进电机驱动模块 *1
 >⚠注意：模块需要支持以串口方式与MCU进行通信
 * 42BYGH40/39 步进电机 (高40/39mm) *1  
@@ -68,6 +69,13 @@
 考虑到八音盒可能需要一个共鸣腔，推荐将八音盒与电机固定在木盒中。如不考虑共鸣，或不方便对木盒进行钻孔/开槽，则也可固定在木块或其他材料上。此处以固定在木盒中为例。
 
 由于42电机的体积较大，因此八音盒原配木盒大概率需要进行更换。目前市面上有多种尺寸木盒可供选择。上一节示例中的木盒尺寸为 长20cm\*宽13.5cm*高9cm。
+
+#### 使用3D打印支架进行固定
+
+项目提供了提供一个支架3D模型可进行参考。支架由两部分组成，分别负责替换原有支架与步进电机的固定。
+
+[模型可在此下载](/Models/)
+
 ### 电路搭建
 
 本项目提供两个不同平台版本：一个较为简易的使用ESP32开发板与其他现成部件进行搭建的版本，与一个从零开始构建的nRF51平台版本。您可以根据实际需要进行选择。
@@ -77,7 +85,7 @@
 
 ![curcit_schema][schema_url]
 
-处于空间利用方面的考量，推荐使用PCB实现上图中电路。Gerber文件请点击[这里][gerber_url]。
+处于空间利用方面的考量，推荐使用PCB实现上图中电路。[Gerber文件请点击这里][gerber_url]。
 >ℹ注：仅适用于尺寸为22mm\*17mm的MP1584模块与焊接了TX,RX针脚的乐积TMC2209模块
 
 如果无法进行焊接，该版本同样可以考虑使用面包板完成接线。
@@ -110,7 +118,17 @@
 
 ![curcit_schema_nrf51][schema_url_nrf51]
 
-项目BOM可在[此处][bom_nrf51]查看。参考PCB可以在[此处][gerber_url_nrf51]下载。[此处][solder_helper_nrf51]可查看对应焊接辅助工具。
+**项目BOM**
+
+[项目BOM可在此处查看。][bom_url_nrf51]
+
+**参考PCB**
+
+[参考PCB可以在此处下载。][gerber_url_nrf51]
+
+**焊接辅助工具**
+
+[此处可查看对应焊接辅助工具。][solder_helper_url_nrf51]
 
 ## 控制程序烧录
 改装的最后一步是将电机控制程序烧录至`ESP32`或`nRF51802/nRF51822`中。
@@ -230,6 +248,7 @@ Have fun!
   - [某个简短的改装指南](#某个简短的改装指南)
     - [传动改造](#传动改造)
     - [八音盒及电机的固定](#八音盒及电机的固定)
+      - [使用3D打印支架进行固定](#使用3d打印支架进行固定)
     - [电路搭建](#电路搭建)
       - [ESP32版本](#esp32版本)
       - [nRF51版本](#nrf51版本)
@@ -387,24 +406,25 @@ Explations on adjustable values:
 
 Have fun!
 
-[before_modding_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/before_modding.jpg
-[after_modding_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/after_modding.jpg
-[handle_removed_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/handle_removed.jpg
+[before_modding_url]:/pics/before_modding.jpg
+[after_modding_url]:/pics/after_modding.jpg
+[handle_removed_url]:/pics/handle_removed.jpg
 
-[schema_url]:https://github.com/mr258876/Project-Orgel/raw/main/PCB/Schematic_Project%20Orgel_2021-11-29.png
-[gerber_url]:https://github.com/mr258876/Project-Orgel/raw/main/PCB/Gerber_PCB_Project%20Orgel.zip
+[schema_url]:/PCB/Schematic_Project%20Orgel_2021-11-29.png
+[gerber_url]:/PCB/Gerber_PCB_Project%20Orgel.zip
 
-[schema_url_nrf51]:https://github.com/mr258876/Project-Orgel/raw/main/PCB/SCH_Orgel%20nRF51_1-P1_2024-07-24.png
-[gerber_url_nrf51]:https://github.com/mr258876/Project-Orgel/raw/main/PCB/Gerber_PCB1_Orgel%20nRF51_2024-07-24.zip
+[bom_url_nrf51]:/PCB/BOM_Board1_Orgel%20nRF51_2024-07-24.xlsx
+[schema_url_nrf51]:/PCB/SCH_Orgel%20nRF51_1-P1_2024-07-24.png
+[gerber_url_nrf51]:/PCB/Gerber_PCB1_Orgel%20nRF51_2024-07-24.zip
 [solder_helper_url_nrf51]:https://raw.githubusercontent.com/mr258876/Project-Orgel/raw/main/PCB/Solder_Helper_PCB1_Orgel%20nRF51_2024-7-24.html
 
 [zhihu_esp32_environment_url]:https://zhuanlan.zhihu.com/p/107804270
 [randomnerdtutorials_esp32_environment_url]:https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/
 
-[mainframe_zh_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/MainFrame_zh.jpg
-[tomenu_zh_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/ToMenu_zh.jpg
-[menu_zh_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/Menu_zh.jpg
+[mainframe_zh_url]:/pics/MainFrame_zh.jpg
+[tomenu_zh_url]:/pics/ToMenu_zh.jpg
+[menu_zh_url]:/pics/Menu_zh.jpg
 
-[mainframe_en_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/MainFrame_en.jpg
-[tomenu_en_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/ToMenu_en.jpg
-[menu_en_url]:https://github.com/mr258876/Project-Orgel/raw/main/pics/Menu_en.jpg
+[mainframe_en_url]:/pics/MainFrame_en.jpg
+[tomenu_en_url]:/pics/ToMenu_en.jpg
+[menu_en_url]:/pics/Menu_en.jpg

@@ -79,9 +79,9 @@ void setup()
     pinMode(7, OUTPUT);
     pinMode(6, OUTPUT);
 
-    digitalWrite(4, LOW);
+    digitalWrite(4, HIGH);
     digitalWrite(7, LOW);
-    digitalWrite(6, HIGH);
+    digitalWrite(6, LOW);
 #else
 #error unsupported platform!
 #endif
@@ -114,6 +114,7 @@ void setup()
 #elif defined(NRF51)
     DRIVER_SERIAL.setPins(MOTOR_SERIAL_RX_Pin, MOTOR_SERIAL_TX_Pin);
     DRIVER_SERIAL.begin(115200);
+    vTaskDelay(100);
 #else
 #error unsupported platform!
 #endif
@@ -154,7 +155,7 @@ static void storeNvsDefaults()
 static void driverSetup()
 {
     pinMode(MOTOR_ENABLE_Pin, OUTPUT);   // 控制TMC2209使能引脚为输出模式
-    digitalWrite(MOTOR_ENABLE_Pin, LOW); // 将使能控制引脚设置为低电平从而让电机驱动板进入工作状态
+    digitalWrite(MOTOR_ENABLE_Pin, HIGH); // 将使能控制引脚设置为低电平从而让电机驱动板进入工作状态
 
     DRIVER_SERIAL.begin(115200); // 启动串口
 
@@ -163,6 +164,8 @@ static void driverSetup()
 
     // 电流设置
     driver.rms_current(50); // 设置电流大小 (mA)
+
+    digitalWrite(MOTOR_ENABLE_Pin, LOW); // 将使能控制引脚设置为低电平从而让电机驱动板进入工作状态
 }
 
 // 改变电机速度
@@ -184,6 +187,7 @@ static void setMotorSpeed(int BPM)
 
         // Set Current
         driver.rms_current(motorCurrent); // 设置电流大小 (mA)
+    digitalWrite(4, LOW);
     }
     else
     {
