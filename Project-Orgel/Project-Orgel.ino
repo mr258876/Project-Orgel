@@ -29,19 +29,24 @@
 #endif
 
 #define DRIVER_ADDRESS 0b00 // Serial Address
-#define R_SENSE 0.11f       // Match to your driver <- ???
+
+#ifndef NRF51
+#define R_SENSE 0.11f       // Match to your driver <- Refer "Selecting Sense Resistors" section in datasheet
+#else
+#define R_SENSE 0.12f       // Refer to schema
+#endif
 
 // 电机内部输出轴旋转一周步数
-const int STEPS_PER_ROTOR_REV = 1600; // 42电机 一圈1600*八分之一微步
+#define STEPS_PER_ROTOR_REV 1600 // 42电机 一圈1600*八分之一微步
 // 输出轴减速比
-const double GEAR_REDUCTION = 1.0; // 42电机 输出轴直出
+#define GEAR_REDUCTION    1.0f // 42电机 输出轴直出
 // 八音盒减速比
-const double ORGEL_GEAR = 29.0; // 29齿八音盒齿轮
+#define ORGEL_GEAR        29 // 29齿八音盒齿轮
 // 八音盒齿轮周拍
-const double ORGEL_BPM_PER_ROUND = 4.51603944; // 齿轮周长约1.15picm,纸带一拍0.8cm,故八音盒齿轮旋转一周约4.516拍
+#define ORGEL_BPM_PER_ROUND 4.51603944f // 齿轮周长约1.15picm,纸带一拍0.8cm,故八音盒齿轮旋转一周约4.516拍
 // 获得BPM计算常数
 // const double BPM_CALC_CONST = STEPS_PER_ROTOR_REV * GEAR_REDUCTION * ORGEL_GEAR / MOTOR_GEAR / ORGEL_BPM_PER_ROUND / 60;
-double BPM_CALC_CONST = STEPS_PER_ROTOR_REV * GEAR_REDUCTION * ORGEL_GEAR / ORGEL_BPM_PER_ROUND / 60; // <- 电机齿轮现在由菜单赋值并在设置BPM时计算齿轮比
+const float BPM_CALC_CONST = STEPS_PER_ROTOR_REV * GEAR_REDUCTION * ORGEL_GEAR / ORGEL_BPM_PER_ROUND / 60; // <- 电机齿轮现在由菜单赋值并在设置BPM时计算齿轮比
 
 // Create a Driver Object
 TMC2209Stepper driver(&DRIVER_SERIAL, R_SENSE, DRIVER_ADDRESS);
@@ -79,9 +84,9 @@ void setup()
     pinMode(7, OUTPUT);
     pinMode(6, OUTPUT);
 
-    digitalWrite(4, HIGH);
+    digitalWrite(4, LOW);
     digitalWrite(7, LOW);
-    digitalWrite(6, LOW);
+    digitalWrite(6, HIGH);
 #else
 #error unsupported platform!
 #endif
@@ -127,6 +132,11 @@ void setup()
 void loop()
 {
     taskManager.runLoop();
+    if (ble_new_value_received) {
+        menuBPM.setCurrentValue(ble_bpm_received);
+        menuPlay.setBoolean(ble_play_status_received);
+        ble_new_value_received = false;
+    }
 }
 
 // TcMenu 主题设置
@@ -187,7 +197,6 @@ static void setMotorSpeed(int BPM)
 
         // Set Current
         driver.rms_current(motorCurrent); // 设置电流大小 (mA)
-    digitalWrite(4, LOW);
     }
     else
     {
@@ -274,6 +283,15 @@ void CALLBACK_FUNCTION setBluetoothOn(int id)
 
     menuMgr.save();
 
+#if defined(ESP_PLATFORM)
+    EEPROM.commit();
+#endif
+}
+
+
+
+void CALLBACK_FUNCTION setPowerVoltage(int id) {
+    // TODO - your menu change code
 #if defined(ESP_PLATFORM)
     EEPROM.commit();
 #endif

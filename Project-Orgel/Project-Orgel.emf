@@ -7,7 +7,7 @@
       "parentId": 0,
       "type": "actionMenu",
       "item": {
-        "name": "Back",
+        "name": "Back and Save",
         "variableName": "BackToHomepage",
         "id": 20,
         "eepromAddress": -1,
@@ -141,6 +141,49 @@
         "id": 22,
         "eepromAddress": 5,
         "functionName": "setCurrent",
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true,
+        "staticDataInRAM": false
+      }
+    },
+    {
+      "parentId": 4,
+      "type": "enumItem",
+      "defaultValue": "2",
+      "item": {
+        "enumEntries": [
+          "5V",
+          "9V",
+          "12V",
+          "15V",
+          "20V"
+        ],
+        "name": "PWR Voltage",
+        "variableName": "Voltage",
+        "id": 26,
+        "eepromAddress": 10,
+        "functionName": "setPowerVoltage",
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true,
+        "staticDataInRAM": false
+      }
+    },
+    {
+      "parentId": 4,
+      "type": "enumItem",
+      "defaultValue": "0",
+      "item": {
+        "enumEntries": [
+          "Unknown",
+          "Error",
+          "Good"
+        ],
+        "name": "PWR Status",
+        "variableName": "PWRStatus",
+        "id": 27,
+        "eepromAddress": -1,
         "readOnly": false,
         "localOnly": false,
         "visible": true,

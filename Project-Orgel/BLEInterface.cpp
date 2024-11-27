@@ -3,6 +3,10 @@
 #include "Project-Orgel_menu.h"
 #include "lv_i18n.h"
 
+bool ble_new_value_received = false;
+uint16_t ble_bpm_received = 0;
+bool ble_play_status_received = false;
+
 static bool BLEStarted = false;
 
 static NimBLEServer *pBLEServer = nullptr;
@@ -22,12 +26,9 @@ class OrgelInCharacteristicCallbacks : public NimBLECharacteristicCallbacks
         NimBLEAttValue value = pCharacteristic->getValue();
         if (value.length() == 3)
         {
-            uint16_t current_bpm = 0;
-            memcpy(&current_bpm, value.data(), 2);
-            menuBPM.setCurrentValue(current_bpm);
-
-            bool current_play_status = false;
-            menuPlay.setBoolean(value.data()[2]);
+            memcpy(&ble_bpm_received, value.data(), 2);
+            ble_play_status_received = value.data()[2];
+            ble_new_value_received = true;
         }
         // Ignore if data size != 3
     }
@@ -63,33 +64,33 @@ void interface_setup()
     pBLEAdvertising->addServiceUUID(pOrgelService->getUUID());
 }
 
-class ServerCallbacks : public NimBLEServerCallbacks
-{
-private:
-    uint32_t pin = 0;
-public:
-    bool onConfirmPIN(uint32_t providedPIN) override
-    {
-        return (this->pin == providedPIN);
-    }
+// class ServerCallbacks : public NimBLEServerCallbacks
+// {
+// private:
+//     uint32_t pin = 0;
+// public:
+//     bool onConfirmPIN(uint32_t providedPIN) override
+//     {
+//         return (this->pin == providedPIN);
+//     }
 
-    uint32_t onPassKeyRequest() override
-    {
-        randomSeed(analogRead(0));
-        if (renderer.getDialog() && !renderer.getDialog()->isInUse())
-        {
-            this->pin = random(0, 1000000);
-            char buf[7];
-            ltoaClrBuff(buf, pin, 6, '0', sizeof(buf));
-            renderer.getDialog()->setButtons(BTNTYPE_NONE, BTNTYPE_OK);
-            renderer.getDialog()->show(_("Pairing PIN"), true);
-            renderer.getDialog()->copyIntoBuffer(buf);
-        }
-        return this->pin;
-    }
-};
+//     uint32_t onPassKeyRequest() override
+//     {
+//         randomSeed(analogRead(0));
+//         if (renderer.getDialog() && !renderer.getDialog()->isInUse())
+//         {
+//             this->pin = random(0, 1000000);
+//             char buf[7];
+//             ltoaClrBuff(buf, pin, 6, '0', sizeof(buf));
+//             renderer.getDialog()->setButtons(BTNTYPE_NONE, BTNTYPE_OK);
+//             renderer.getDialog()->show(_("Pairing PIN"), true);
+//             renderer.getDialog()->copyIntoBuffer(buf);
+//         }
+//         return this->pin;
+//     }
+// };
 
-static ServerCallbacks serverCb;
+// static ServerCallbacks serverCb;
 
 void ble_on()
 {
@@ -119,7 +120,7 @@ void ble_on()
         interface_setup();
         pBLEAdvertising->start();
 
-        pBLEServer->setCallbacks(&serverCb);
+        // pBLEServer->setCallbacks(&serverCb);
 
         BLEStarted = true;
     }

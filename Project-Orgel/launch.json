@@ -1,0 +1,8 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "configFiles": ["interface/stlink.cfg", "target/nrf51.cfg"]
+      }
+    ]
+  }

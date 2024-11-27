@@ -1,6 +1,6 @@
 # Project Orgel
-### 赛博音乐盒计划第一部分
-### Cyber Musicbox Project Part I
+>### 赛博音乐盒计划第一部分
+>### Cyber Musicbox Project Part I
 
 - [中文](#中文)
 - [English](#english)
@@ -189,7 +189,7 @@ NimBLE      @1.4.2
 
 #### 为nRF51编译程序并刷入
 
-对于`nRF51`版本，您需要将`arduino-esp32`开发环境替换为`n-able-Arduino`，具体操作如下：
+对于`nRF51`版本，您需要将`arduino-esp32`开发环境替换为[n-able-Arduino](https://github.com/h2zero/n-able-Arduino)，具体操作如下：
 1. 在`文件`->`首选项`->`附加开发板管理器网址`中添加链接`https://h2zero.github.io/n-able-Arduino/package_n-able_boards_index.json`
 2. 待安装完成后，在`工具`->`开发板`->`Arm (Nim)BLE Boards`菜单中选择`Waveshare BLE400`开发板。
 3. 在`工具`->`Low Frequency Clock`菜单中选择`Synthesized`选项。
@@ -242,8 +242,6 @@ Have fun!
 # English
 >## Table of Contents
 - [Project Orgel](#project-orgel)
-    - [赛博音乐盒计划第一部分](#赛博音乐盒计划第一部分)
-    - [Cyber Musicbox Project Part I](#cyber-musicbox-project-part-i)
 - [中文](#中文)
   - [某个简短的改装指南](#某个简短的改装指南)
     - [传动改造](#传动改造)
@@ -265,6 +263,7 @@ Have fun!
     - [菜单与设置](#菜单与设置)
     - [无线控制](#无线控制)
 - [English](#english)
+  - [Hardware Requirements](#hardware-requirements)
   - [A Brief Modding Guide](#a-brief-modding-guide)
     - [Gear Modding](#gear-modding)
     - [Mounting](#mounting)
@@ -288,7 +287,7 @@ Have fun!
 * Multi Platform Support ✔
 
 
->## Hardware Requirements
+## Hardware Requirements
 * Musicbox (of course) *1
 * ESP32-D0DWQ6 Dev Moudle 30pin *1
 * TMC2209 Stepper Driver Module *1

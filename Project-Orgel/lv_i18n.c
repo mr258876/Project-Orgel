@@ -58,6 +58,15 @@ static const lv_i18n_phrase_t zh_cn_singulars[] = {
     {"OFF", "关"},
     {"Pairing PIN", "配对PIN"},
     {"Back", "返回"},
+    {"PWR Status", "电源状态"},
+    {"PWR Voltage", "电源电压"},
+    {"Play as Programmed", "按程序播放"},
+    {"Program Loaded", "程序已加载"},
+    {"Warning", "警告"},
+    {"Voltage accquire fail", "请求电压失败"},
+    {"Motor might not work", "电机可能不工作"},
+    {"Higher voltages will", "选择更高电压将"},
+    {"lead to extra heat", "显著提升发热"},
     {NULL, NULL} // End mark
 };
 
