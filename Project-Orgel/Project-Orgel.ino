@@ -349,4 +349,3 @@ void CALLBACK_FUNCTION setPowerVoltage(int id)
     EEPROM.commit();
 #endif
 }
-current power supply is unable to provide the required voltage
