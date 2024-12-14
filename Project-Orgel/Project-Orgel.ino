@@ -16,6 +16,8 @@
 #include <NimBLEDevice.h> // Bluetooth
 #include "BLEInterface.h"
 
+#include "PowerManager.h"
+
 #ifndef NRF51
 #include "u8g2_wqy_14_project_orgel.h"
 #endif
@@ -52,6 +54,9 @@ const float BPM_CALC_CONST = STEPS_PER_ROTOR_REV * DRIVER_MICROSTEPS * GEAR_REDU
 // Create a Driver Object
 TMC2209Stepper driver(&DRIVER_SERIAL, R_SENSE, DRIVER_ADDRESS);
 
+// Power Manager
+PowerManager pm(CH224K_PG_Pin, CH224K_CFG1_Pin, CH224K_CFG2_Pin, CH224K_CFG3_Pin);
+
 // Variables
 bool playStatus = false;
 int16_t playBPM = 120;
@@ -59,12 +64,14 @@ int16_t motorCurrent = 500;
 bool autoCurrentEnabled;
 bool motorDirection;
 int16_t motorGear = 60;
+bool lastPowerStatus = false;
 
 ////////// FUNCTION PROTOTYPES //////////
-static void enableBluetooth(void *params);
-static void disableBluetooth(void *params);
+static void syncValuesFromBluetooth();
 static void storeNvsDefaults();
 static void installTheme();
+static void powerSetup();
+static void checkPowerStatus();
 static void driverSetup();
 static void updateMotorParams();
 
@@ -126,6 +133,7 @@ void setup()
 #endif
 
     // Init TMC2209 driver
+    powerSetup();
     driverSetup();
     setSpeed(0);
 }
@@ -133,12 +141,8 @@ void setup()
 void loop()
 {
     taskManager.runLoop();
-    if (ble_new_value_received)
-    {
-        menuBPM.setCurrentValue(ble_bpm_received);
-        menuPlay.setBoolean(ble_play_status_received);
-        ble_new_value_received = false;
-    }
+    syncValuesFromBluetooth();
+    checkPowerStatus();
 }
 
 // TcMenu 主题设置
@@ -163,7 +167,34 @@ static void storeNvsDefaults()
     menuMgr.save();
 }
 
-// 电机初始化
+/*
+    @brief Init power manager
+*/
+static void powerSetup()
+{
+    pm.begin();
+    pm.acquireVoltage(menuVoltage.getCurrentValue());
+
+    lastPowerStatus = false;
+    menuPWRStatus.setCurrentValue(1);   // Set to "Error"
+}
+
+/*
+    @brief Poll PG signal
+*/
+static void checkPowerStatus()
+{
+    uint8_t pg = pm.powerGood();
+    if (lastPowerStatus != pg)
+    {
+        menuPWRStatus.setCurrentValue(pg + 1);
+        lastPowerStatus = pg;
+    }
+}
+
+/*
+    @brief Init stepper driver
+*/
 static void driverSetup()
 {
     pinMode(MOTOR_ENABLE_Pin, OUTPUT);    // 控制TMC2209使能引脚为输出模式
@@ -204,6 +235,16 @@ static void updateMotorParams()
     {
         driver.VACTUAL(0);
         driver.rms_current(5);
+    }
+}
+
+static void syncValuesFromBluetooth()
+{
+    if (ble_new_value_received)
+    {
+        menuBPM.setCurrentValue(ble_bpm_received);
+        menuPlay.setBoolean(ble_play_status_received);
+        ble_new_value_received = false;
     }
 }
 
@@ -303,8 +344,9 @@ void CALLBACK_FUNCTION setBluetoothOn(int id)
 */
 void CALLBACK_FUNCTION setPowerVoltage(int id)
 {
-    // TODO - your menu change code
+    pm.acquireVoltage(menuVoltage.getCurrentValue());
 #if defined(ESP_PLATFORM)
     EEPROM.commit();
 #endif
 }
+current power supply is unable to provide the required voltage

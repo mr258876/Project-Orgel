@@ -15,6 +15,11 @@
 #define ENCODER_B_Pin 35
 #define ENCODER_OK_Pin 32
 
+#define CH224K_PG_Pin 255
+#define CH224K_CFG1_Pin 255
+#define CH224K_CFG2_Pin 255
+#define CH224K_CFG3_Pin 255
+
 #elif defined(NRF51)
 
 #define MOTOR_ENABLE_Pin 16
@@ -28,6 +33,11 @@
 #define ENCODER_A_Pin 23
 #define ENCODER_B_Pin 22
 #define ENCODER_OK_Pin 21
+
+#define CH224K_PG_Pin 5
+#define CH224K_CFG1_Pin 4
+#define CH224K_CFG2_Pin 7
+#define CH224K_CFG3_Pin 6
 
 #endif
 
