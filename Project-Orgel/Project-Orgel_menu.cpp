@@ -92,6 +92,7 @@ void setupMenu() {
     setSizeBasedEEPROMStorageEnabled(false);
     menuMgr.setEepromRef(&glArduinoEeprom);
     // Now add any readonly, non-remote and visible flags.
+    menuPWRStatus.setReadOnly(true);
     menuAboutText1.setReadOnly(true);
     menuAboutText3.setReadOnly(true);
     menuAboutText2.setReadOnly(true);
