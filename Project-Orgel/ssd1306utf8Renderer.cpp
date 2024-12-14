@@ -211,6 +211,7 @@ void SSD1306UTF8Renderer::renderMenuItem(uint8_t row, MenuItem* item) {
             ssd1306->setCol(127 - ssd1306->charWidth(' ') - ssd1306->strWidth(sz));
             //part before hint
             strncpy(buffer, sz, startIndex);
+            buffer[startIndex] = '\0';
             ssd1306->print(buffer);
             // hint part
             if(startIndex != endIndex) {
