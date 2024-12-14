@@ -17,6 +17,16 @@ static NimBLECharacteristic *pOrgelCharacteristic = nullptr;
 static const NimBLEUUID BLE_ORGEL_SERVICE_UUID(0x00003200, 0x0000, 0x1000, 0x74EE55C0F7E56C13); // 0x74EE55C0F7E56C13 is 16-digit MD5 of "Project-Orgel"
 static const NimBLEUUID BLE_ORGEL_CHAR_UUID(0x00003201, 0x0000, 0x1000, 0x74EE55C0F7E56C13);
 
+static void set_bpm_values(NimBLECharacteristic *pCharacteristic)
+{
+    uint8_t buf[4];
+    buf[0] = 0;
+    buf[1] = menuPlay.getBoolean() ? 1 : 0;
+    uint16_t bpm = menuBPM.getCurrentValue();
+    memcpy(buf + 2, &bpm, 2);
+    pCharacteristic->setValue(buf, 4);
+}
+
 // Callback class for handling API characteristic read and write events
 class OrgelInCharacteristicCallbacks : public NimBLECharacteristicCallbacks
 {
@@ -24,22 +34,20 @@ class OrgelInCharacteristicCallbacks : public NimBLECharacteristicCallbacks
     {
         /* read */
         NimBLEAttValue value = pCharacteristic->getValue();
-        if (value.length() == 3)
+        if (value.length() == 4)
         {
-            memcpy(&ble_bpm_received, value.data(), 2);
-            ble_play_status_received = value.data()[2];
+            ble_play_status_received = value.data()[1];
+            memcpy(&ble_bpm_received, value.data() + 2, 2);
             ble_new_value_received = true;
         }
-        // Ignore if data size != 3
+        else if (value.length() == 20) {
+            // value.data();
+        }
     }
 
     void onRead(NimBLECharacteristic *pCharacteristic)
     {
-        uint8_t buf[3];
-        uint16_t bpm = menuBPM.getCurrentValue();
-        memcpy(buf, &bpm, 2);
-        buf[2] = menuPlay.getBoolean() ? 1 : 0;
-        pCharacteristic->setValue(buf, 3);
+        set_bpm_values(pCharacteristic);
     }
 };
 
@@ -144,11 +152,7 @@ void ble_notify_bpm()
 {
     if (pOrgelCharacteristic)
     {
-        uint8_t buf[3];
-        uint16_t bpm = menuBPM.getCurrentValue();
-        memcpy(buf, &bpm, 2);
-        buf[2] = menuPlay.getBoolean() ? 1 : 0;
-        pOrgelCharacteristic->setValue(buf, 3);
+        set_bpm_values(pOrgelCharacteristic);
         pOrgelCharacteristic->notify();
     }
 }
