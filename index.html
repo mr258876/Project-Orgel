@@ -249,12 +249,12 @@
     // 设备数据回调
     function syncBpmNoticeFromDevice(event) {
         let value = event.target.value;
-        if (value.byteLength != 3) {
+        if (value.byteLength != 4) {
             console.error("Unexpected data length!");
             return;
         }
-        const bpm = value.getUint8(0) + value.getUint8(1) * 256;
-        const isPlaying = value.getUint8(2);
+        const bpm = value.getUint8(2) + value.getUint8(3) * 256;
+        const isPlaying = value.getUint8(1);
 
         $("#bpm-val").html(bpm);
         $("#bpm-play-btn")[0].value = (isPlaying == 1 ? "play" : "pause");
@@ -270,8 +270,8 @@
     async function syncBpmFromoDevice() {
         const value = await playChar.readValue();
 
-        const bpm = value.getUint8(0) + value.getUint8(1) * 256;
-        const isPlaying = value.getUint8(2);
+        const isPlaying = value.getUint8(1);
+        const bpm = value.getUint8(2) + value.getUint8(3) * 256;
 
         $("#bpm-val").html(bpm);
         $("#bpm-play-btn")[0].value = (isPlaying == 1 ? "play" : "pause");
@@ -285,10 +285,10 @@
 
         // Create the data buffer to write to the characteristic
         // The format is defined in the Current Time Service specification
-        let bpmBuffer = new ArrayBuffer(3);
+        let bpmBuffer = new ArrayBuffer(4);
         let bpmView = new DataView(bpmBuffer);
-        bpmView.setUint16(0, bpm, true); // BPM (big-endian)
-        bpmView.setUint8(2, isPlaying);        // Play Status
+        bpmView.setUint8(1, isPlaying);  // Play Status
+        bpmView.setUint16(2, bpm, true); // BPM (big-endian)
 
         // write BPM
         await playChar.writeValueWithResponse(bpmBuffer);
