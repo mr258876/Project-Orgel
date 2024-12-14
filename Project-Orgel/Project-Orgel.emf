@@ -59,7 +59,7 @@
     {
       "parentId": 0,
       "type": "boolItem",
-      "defaultValue": "false",
+      "defaultValue": "true",
       "item": {
         "naming": "ON_OFF",
         "name": "Bluetooth",

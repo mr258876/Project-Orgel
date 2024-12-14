@@ -38,7 +38,7 @@ GraphicsDeviceRenderer renderer(30, applicationInfo.name, &gfxDrawable);
 
 // Global Menu Item declarations
 const PROGMEM AnyMenuInfo minfoAboutText3 = { "Version", 23, 0xffff, 0, NO_CALLBACK };
-TextMenuItem menuAboutText3(&minfoAboutText3, "0.3.4", 5, nullptr, INFO_LOCATION_PGM);
+TextMenuItem menuAboutText3(&minfoAboutText3, "0.3.5", 5, nullptr, INFO_LOCATION_PGM);
 const PROGMEM AnyMenuInfo minfoAboutText2 = { "By Mr258876", 8, 0xffff, 0, NO_CALLBACK };
 TextMenuItem menuAboutText2(&minfoAboutText2, "", 1, &menuAboutText3, INFO_LOCATION_PGM);
 #if defined(NRF51)
@@ -81,7 +81,7 @@ const PROGMEM SubMenuInfo minfoMotor = { "Motor", 4, 0xffff, 0, NO_CALLBACK };
 BackMenuItem menuBackMotor(&minfoMotor, &menuDirection, INFO_LOCATION_PGM);
 SubMenuItem menuMotor(&minfoMotor, &menuBackMotor, &menuLanguage, INFO_LOCATION_PGM);
 const PROGMEM BooleanMenuInfo minfoBluetooth = { "Bluetooth", 25, 9, 1, setBluetoothOn, NAMING_ON_OFF };
-BooleanMenuItem menuBluetooth(&minfoBluetooth, false, &menuMotor, INFO_LOCATION_PGM);
+BooleanMenuItem menuBluetooth(&minfoBluetooth, true, &menuMotor, INFO_LOCATION_PGM);
 const PROGMEM AnalogMenuInfo minfoBPM = { "BPM", 2, 0xffff, 511, setSpeed, 0, 1, "" };
 AnalogMenuItem menuBPM(&minfoBPM, 120, &menuBluetooth, INFO_LOCATION_PGM);
 const PROGMEM BooleanMenuInfo minfoPlay = { "play", 1, 0xffff, 1, switchPlayStatus, NAMING_TRUE_FALSE };
