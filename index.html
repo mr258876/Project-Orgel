@@ -287,7 +287,6 @@
         // The format is defined in the Current Time Service specification
         let bpmBuffer = new ArrayBuffer(4);
         let bpmView = new DataView(bpmBuffer);
-        bpmView.setUint8(1, 0);          // Dummy
         bpmView.setUint8(1, isPlaying);  // Play Status
         bpmView.setUint16(2, bpm, true); // BPM (big-endian)
 
