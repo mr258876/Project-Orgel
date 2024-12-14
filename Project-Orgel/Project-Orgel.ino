@@ -60,6 +60,7 @@ PowerManager pm(CH224K_PG_Pin, CH224K_CFG1_Pin, CH224K_CFG2_Pin, CH224K_CFG3_Pin
 // Variables
 bool playStatus = false;
 int16_t playBPM = 120;
+float bpmTweak = 1.0;
 int16_t motorCurrent = 500;
 bool autoCurrentEnabled;
 bool motorDirection;
@@ -120,6 +121,7 @@ void setup()
     motorDirection = menuDirection.getBoolean();
     motorCurrent = menuCurrent.getCurrentValue();
     motorGear = menuGearTeeth.getCurrentValue();
+    bpmTweak = menuBPMTweak.getLargeNumber()->getAsFloat();
 
     // Set serial pinout
 #if defined(ESP_PLATFORM)
@@ -221,11 +223,11 @@ static void updateMotorParams()
         // Set Motor Speed
         if (motorDirection)
         {
-            driver.VACTUAL(playBPM * BPM_CALC_CONST / motorGear / 0.715);
+            driver.VACTUAL(playBPM * BPM_CALC_CONST / motorGear / 0.715 * bpmTweak);
         }
         else
         {
-            driver.VACTUAL(-playBPM * BPM_CALC_CONST / motorGear / 0.715);
+            driver.VACTUAL(-playBPM * BPM_CALC_CONST / motorGear / 0.715 * bpmTweak);
         }
 
         // Set Current
@@ -345,6 +347,14 @@ void CALLBACK_FUNCTION setBluetoothOn(int id)
 void CALLBACK_FUNCTION setPowerVoltage(int id)
 {
     pm.acquireVoltage(menuVoltage.getCurrentValue());
+#if defined(ESP_PLATFORM)
+    EEPROM.commit();
+#endif
+}
+
+void CALLBACK_FUNCTION setBpmTweak(int id)
+{
+    bpmTweak = menuBPMTweak.getLargeNumber()->getAsFloat();
 #if defined(ESP_PLATFORM)
     EEPROM.commit();
 #endif

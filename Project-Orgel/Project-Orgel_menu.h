@@ -21,6 +21,7 @@
 #include "tcMenuU8g2.h"
 #endif
 #include <RuntimeMenuItem.h>
+#include <EditableLargeNumberMenuItem.h>
 #include <IoAbstraction.h>
 #include <EepromItemStorage.h>
 #include <ArduinoEEPROMAbstraction.h>
@@ -48,6 +49,7 @@ extern SubMenuItem menuAbout;
 extern EnumMenuItem menuLanguage;
 extern EnumMenuItem menuPWRStatus;
 extern EnumMenuItem menuVoltage;
+extern EditableLargeNumberMenuItem menuBPMTweak;
 extern AnalogMenuItem menuCurrent;
 extern AnalogMenuItem menuGearTeeth;
 extern BooleanMenuItem menuDirection;
@@ -67,6 +69,7 @@ void setupMenu();
 
 void CALLBACK_FUNCTION changeMotorDir(int id);
 void CALLBACK_FUNCTION setBluetoothOn(int id);
+void CALLBACK_FUNCTION setBpmTweak(int id);
 void CALLBACK_FUNCTION setCurrent(int id);
 void CALLBACK_FUNCTION setGearTeeth(int id);
 void CALLBACK_FUNCTION setLanguage(int id);
